@@ -23,7 +23,7 @@ import Button from '../components/ui/Button';
 
 // Assets
 import loginImage from '../assets/login-image.png';
-import mascot from '../assets/login-mascot.gif';
+import mascot from '../assets/login-mascot.png';
 import logo from '../assets/logo.png';
 
 const CustomerLogin = () => {

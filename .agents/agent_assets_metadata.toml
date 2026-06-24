@@ -1,0 +1,26 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "LaRQkHTgf8h-nU3CO-QDK"
+uri = "file://src/assets/login-image.png"
+type = "image"
+title = "optical lens product showcase"
+
+[[generated]]
+id = "PW408HUXNOuxz_PS-2_QB"
+uri = "file://src/assets/login-mascot.png"
+type = "image"
+title = "optician mascot character"
+
+[[generated]]
+id = "xj9kzj-igBs0UOG83_dBD"
+uri = "file://src/assets/futuristic-bg.png"
+type = "image"
+title = "dark optical tech background"
+
+[[generated]]
+id = "t6dgdNllKmbcuXX306IjE"
+uri = "file://src/assets/logo.png"
+type = "image"
+title = "optical lens logo icon"
