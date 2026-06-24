@@ -3,33 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, NavLink } from 'react-router-dom';
 import { useState, useEffect, useMemo } from 'react';
 import { Icon } from '@iconify/react';
-import {
-    Box,
-    Drawer,
-    List,
-    ListItem,
-    ListItemButton,
-    useMediaQuery,
-    ListItemIcon,
-    ListItemText,
-    Collapse,
-    Typography,
-    IconButton,
-    Tooltip,
-    Divider,
-    Avatar,
-    useTheme,
-    alpha
-} from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { logoutUser } from '../../services/authService';
 import { logOut, selectCurrentUser } from '../../store/slices/authSlice';
 import usePermissions from '../../hooks/usePermissions';
 import { resetRegistration } from '../../store/slices/customerRegistrationSlice';
 import logo from '../../assets/logo.png';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, ChevronLeft, ChevronRight, LogOut } from 'lucide-react';
 
-// ── Nav item definitions ─────────────────────────────────────────────────────
-// `page` must match a pageAccess[] key from the backend login response.
-// Items without a `page` key are visible to all authenticated users.
 const navItems = [
     { label: 'Dashboard', icon: 'lucide:layout-dashboard', path: PATHS.ROOT, page: 'DASHBOARD' },
     {
@@ -76,7 +58,7 @@ const navItems = [
             { label: 'Exchange Requests', path: PATHS.RETURNS.EXCHANGE,      page: 'EXCHANGE_REQUESTS' },
         ],
     },
-    { label: 'Drafts', icon: 'lucide:file-text', path: PATHS.DRAFTS, page: 'DRAFTS' },
+    { label: 'Drafts',   icon: 'lucide:file-text',    path: PATHS.DRAFTS,              page: 'DRAFTS' },
     {
         label: 'Reports',
         icon: 'lucide:chart-column',
@@ -108,17 +90,16 @@ const navItems = [
     { label: 'Inventory', icon: 'lucide:package-search', path: PATHS.INVENTORY,           page: 'INVENTORY' },
 ];
 
+const drawerWidth = 280;
+
 const Sidebar = ({ isOpen, toggleSidebar }) => {
-    const dispatch = useDispatch();
-    const location = useLocation();
-    const user = useSelector(selectCurrentUser);
+    const dispatch   = useDispatch();
+    const location   = useLocation();
+    const user       = useSelector(selectCurrentUser);
     const { hasPageAccess } = usePermissions();
-    const theme = useTheme();
+    const isMobile   = useMediaQuery('(max-width:900px)');
     const [openSubmenus, setOpenSubmenus] = useState({});
 
-    // Filter nav items using user.pageAccess[] only.
-    // Items without a `page` key are always shown.
-    // Parent groups are hidden when ALL their children are hidden.
     const filteredNavItems = useMemo(() => {
         return navItems
             .map(item => {
@@ -133,260 +114,218 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             })
             .filter(Boolean);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user]);  // re-filter whenever the stored user changes
+    }, [user]);
 
     useEffect(() => {
-        const newOpenSubmenus = {};
+        const newOpen = {};
         filteredNavItems.forEach(item => {
             if (item.subItems?.some(sub => sub.path === location.pathname)) {
-                newOpenSubmenus[item.label] = true;
+                newOpen[item.label] = true;
             }
         });
-        setOpenSubmenus(prev => ({ ...prev, ...newOpenSubmenus }));
+        setOpenSubmenus(prev => ({ ...prev, ...newOpen }));
     }, [location.pathname, filteredNavItems]);
 
-    const toggleSubmenu = (label) => {
-        setOpenSubmenus(prev => ({
-            ...prev,
-            [label]: !prev[label]
-        }));
-    };
+    const toggleSubmenu = (label) =>
+        setOpenSubmenus(prev => ({ ...prev, [label]: !prev[label] }));
 
     const handleLogout = async () => {
-        try {
-            await logoutUser();
-        } catch (error) {
-            console.error('Logout failed', error);
-        } finally {
+        try { await logoutUser(); } catch {}
+        finally {
             dispatch(resetRegistration());
             dispatch(logOut());
         }
     };
 
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const isParentActive = (item) =>
+        item.subItems?.some(sub => sub.path === location.pathname);
 
-    const isParentActive = (item) => {
-        return item.subItems?.some(sub => sub.path === location.pathname);
-    };
+    const SidebarContent = () => (
+        <div className="flex flex-col h-full" style={{ background: 'rgba(8,18,36,0.97)', backdropFilter: 'blur(28px)' }}>
+            {/* Logo */}
+            <div className="flex items-center justify-center px-6 py-6 border-b"
+                 style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+                <img src={logo} alt="DigiOptics" className="max-w-[140px] w-full object-contain" />
+            </div>
 
-    const drawerWidth = 280;
+            {/* Nav Items */}
+            <div className="flex-1 overflow-y-auto px-3 py-4 custom-scrollbar">
+                <nav className="flex flex-col gap-1">
+                    {filteredNavItems.map((item) => {
+                        const hasSub   = !!item.subItems;
+                        const isActive = hasSub ? isParentActive(item) : location.pathname === item.path;
+                        const isOpenSub = openSubmenus[item.label];
 
-    const renderNavIcon = (icon, active) => (
-        <ListItemIcon sx={{ minWidth: 40 }}>
-            <Icon
-                icon={icon}
-                style={{
-                    fontSize: '22px',
-                    color: active ? '#FFFFFF' : '#636e72'
-                }}
-            />
-        </ListItemIcon>
-    );
+                        return (
+                            <div key={item.label}>
+                                {hasSub ? (
+                                    <button
+                                        onClick={() => toggleSubmenu(item.label)}
+                                        className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200"
+                                        style={{
+                                            background: isActive
+                                                ? 'linear-gradient(135deg, color-mix(in oklab, var(--primary) 25%, transparent), color-mix(in oklab, var(--primary-glow) 15%, transparent))'
+                                                : 'transparent',
+                                            color: isActive ? 'var(--primary-glow)' : 'var(--muted-foreground)',
+                                            border: isActive ? '1px solid color-mix(in oklab, var(--primary-glow) 25%, transparent)' : '1px solid transparent',
+                                        }}>
+                                        <Icon icon={item.icon} style={{ fontSize: '18px', flexShrink: 0 }} />
+                                        <span className="flex-1 text-left" style={{ fontFamily: 'var(--font-sans)' }}>{item.label}</span>
+                                        <ChevronDown size={14} style={{
+                                            transition: 'transform 0.2s',
+                                            transform: isOpenSub ? 'rotate(180deg)' : 'rotate(0deg)',
+                                            opacity: 0.6
+                                        }} />
+                                    </button>
+                                ) : (
+                                    <NavLink
+                                        to={item.path}
+                                        onClick={() => isMobile && toggleSidebar()}
+                                        className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200"
+                                        style={({ isActive: navActive }) => ({
+                                            background: navActive
+                                                ? 'linear-gradient(135deg, color-mix(in oklab, var(--primary) 25%, transparent), color-mix(in oklab, var(--primary-glow) 15%, transparent))'
+                                                : 'transparent',
+                                            color: navActive ? 'var(--primary-glow)' : 'var(--muted-foreground)',
+                                            border: navActive ? '1px solid color-mix(in oklab, var(--primary-glow) 25%, transparent)' : '1px solid transparent',
+                                        })}>
+                                        <Icon icon={item.icon} style={{ fontSize: '18px', flexShrink: 0 }} />
+                                        <span style={{ fontFamily: 'var(--font-sans)' }}>{item.label}</span>
+                                    </NavLink>
+                                )}
 
-    return (
-        <>
-            <Drawer
-                variant={isMobile ? "temporary" : "persistent"}
-                anchor="left"
-                open={isOpen}
-                onClose={toggleSidebar}
-                sx={{
-                    width: isOpen && !isMobile ? drawerWidth : 0,
-                    flexShrink: 0,
-                    transition: theme.transitions.create('width', {
-                        easing: theme.transitions.easing.sharp,
-                        duration: theme.transitions.duration.enteringScreen,
-                    }),
-                    '& .MuiDrawer-paper': {
-                        width: drawerWidth,
-                        boxSizing: 'border-box',
-                        borderRight: '1px solid rgba(0,0,0,0.06)',
-                        boxShadow: '4px 0 24px rgba(0,0,0,0.02)',
-                        background: '#FFFFFF',
-                        display: 'flex',
-                        flexDirection: 'column',
-                    },
-                }}
-            >
-                {/* Logo Area */}
-                <Box sx={{ p: 4, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <img src={logo} alt="DigiOptics" style={{ width: '100%', maxWidth: '160px', objectFit: 'contain' }} />
-                </Box>
-
-                {/* Nav Items */}
-                <Box sx={{ flexGrow: 1, overflowY: 'auto', px: 2, pb: 2 }} className="custom-scrollbar">
-                    <List component="nav" sx={{ gap: 0.5, display: 'flex', flexDirection: 'column' }}>
-                        {filteredNavItems.map((item) => {
-                            const hasSub = !!item.subItems;
-                            const isActive = hasSub ? isParentActive(item) : location.pathname === item.path;
-                            const isOpenSub = openSubmenus[item.label];
-
-                            return (
-                                <Box key={item.label}>
-                                    <ListItem disablePadding sx={{ mb: 0.5 }}>
-                                        {hasSub ? (
-                                            <ListItemButton
-                                                onClick={() => toggleSubmenu(item.label)}
-                                                sx={{
-                                                    borderRadius: '12px',
-                                                    py: 1.5,
-                                                    px: 2,
-                                                    backgroundColor: isActive ? 'primary.dark' : 'transparent',
-                                                    color: isActive ? 'white' : 'text.primary',
-                                                    '&:hover': {
-                                                        backgroundColor: isActive ? 'primary.dark' : alpha(theme.palette.primary.main, 0.05),
-                                                        opacity: 0.9
-                                                    },
-                                                }}
-                                            >
-                                                {renderNavIcon(item.icon, isActive)}
-                                                <ListItemText
-                                                    primary={item.label}
-
-
-                                                    primaryTypographyProps={{
-                                                        fontWeight: isActive ? 700 : 500,
-                                                        fontSize: '0.95rem',
-                                                        color: isActive ? "white" : "text.primary"
-                                                    }}
-                                                />
-                                                <Icon
-                                                    icon="lucide:chevron-down"
-                                                    style={{
-                                                        transition: 'transform 0.2s',
-                                                        transform: isOpenSub ? 'rotate(180deg)' : 'rotate(0)',
-                                                        fontSize: '18px',
-                                                        opacity: 0.7
-                                                    }}
-                                                />
-                                            </ListItemButton>
-                                        ) : (
-                                            <ListItemButton
-                                                component={NavLink}
-                                                to={item.path}
-                                                onClick={() => isMobile && toggleSidebar()}
-                                                sx={{
-                                                    borderRadius: '12px',
-                                                    py: 1.5,
-                                                    px: 2,
-                                                    backgroundColor: isActive ? 'primary.main' : 'transparent',
-                                                    color: isActive ? 'white' : 'text.primary',
-                                                    '&:hover': {
-                                                        backgroundColor: isActive ? 'primary.dark' : alpha(theme.palette.primary.main, 0.05),
-                                                    },
-                                                    '&.active': {
-                                                        backgroundColor: 'primary.main',
-                                                        color: 'white',
-                                                        '& .MuiListItemIcon-root .iconify': {
-                                                            color: 'white'
-                                                        }
-                                                    }
-                                                }}
-                                            >
-                                                {renderNavIcon(item.icon, isActive)}
-                                                <ListItemText
-                                                    primary={item.label}
-                                                    primaryTypographyProps={{
-                                                        fontWeight: isActive ? 700 : 500,
-                                                        fontSize: '0.95rem',
-                                                        color: isActive ? "white" : "text.primary"
-                                                    }}
-                                                />
-                                            </ListItemButton>
-                                        )}
-                                    </ListItem>
-
-                                    {hasSub && (
-                                        <Collapse in={isOpenSub} timeout="auto" unmountOnExit>
-                                            <List component="div" disablePadding sx={{ ml: 2, borderLeft: '1px solid', borderColor: 'divider', my: 1 }}>
+                                {/* Subitems */}
+                                <AnimatePresence initial={false}>
+                                    {hasSub && isOpenSub && (
+                                        <motion.div
+                                            key="submenu"
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.2, ease: 'easeInOut' }}
+                                            className="overflow-hidden">
+                                            <div className="ml-6 mt-1 mb-1 flex flex-col gap-0.5 pl-3 border-l"
+                                                 style={{ borderColor: 'color-mix(in oklab, var(--primary) 20%, transparent)' }}>
                                                 {item.subItems.map((sub) => {
                                                     const isSubActive = location.pathname === sub.path;
                                                     return (
-                                                        <ListItemButton
+                                                        <NavLink
                                                             key={sub.path}
-                                                            component={NavLink}
                                                             to={sub.path}
                                                             onClick={() => isMobile && toggleSidebar()}
-                                                            sx={{
-                                                                borderRadius: '0 12px 12px 0',
-                                                                ml: 0,
-                                                                pl: 4,
-                                                                py: 1,
-                                                                color: isSubActive ? 'accent.main' : 'text.secondary',
-                                                                '&:hover': {
-                                                                    backgroundColor: alpha(theme.palette.accent.main, 0.05),
-                                                                    color: 'accent.main'
-                                                                },
-                                                                '&.active': {
-                                                                    color: 'accent.main',
-                                                                    fontWeight: 700
-                                                                }
-                                                            }}
-                                                        >
-                                                            <ListItemText
-                                                                primary={sub.label}
-                                                                primaryTypographyProps={{
-                                                                    fontSize: '0.85rem',
-                                                                    fontWeight: isSubActive ? 700 : 500
-                                                                }}
-                                                            />
-                                                        </ListItemButton>
+                                                            className="rounded-lg px-3 py-2 text-xs transition-all duration-150"
+                                                            style={{
+                                                                color: isSubActive ? 'var(--primary-glow)' : 'var(--muted-foreground)',
+                                                                fontWeight: isSubActive ? 600 : 400,
+                                                                background: isSubActive
+                                                                    ? 'color-mix(in oklab, var(--primary-glow) 8%, transparent)'
+                                                                    : 'transparent',
+                                                            }}>
+                                                            {sub.label}
+                                                        </NavLink>
                                                     );
                                                 })}
-                                            </List>
-                                        </Collapse>
+                                            </div>
+                                        </motion.div>
                                     )}
-                                </Box>
-                            );
-                        })}
-                    </List>
-                </Box>
+                                </AnimatePresence>
+                            </div>
+                        );
+                    })}
+                </nav>
+            </div>
 
-                {/* Logout Section */}
-                <Box sx={{ p: 2, borderTop: '1px solid rgba(0,0,0,0.06)' }}>
-                    <ListItemButton
-                        onClick={handleLogout}
-                        sx={{
-                            borderRadius: '12px',
-                            color: 'error.main',
-                            '&:hover': { backgroundColor: alpha(theme.palette.error.main, 0.1) }
-                        }}
-                    >
-                        <ListItemIcon sx={{ minWidth: 40 }}>
-                            <Icon icon="lucide:log-out" style={{ fontSize: '20px', color: theme.palette.error.main }} />
-                        </ListItemIcon>
-                        <ListItemText primary="Logout" primaryTypographyProps={{ fontWeight: 600, fontSize: '0.9rem' }} />
-                    </ListItemButton>
-                </Box>
-            </Drawer>
-
-            {/* Edge Toggle Button - Only show on desktop */}
-            {!isMobile && (
-                <IconButton
-                    onClick={toggleSidebar}
-                    sx={{
-                        position: 'fixed',
-                        top: '50%',
-                        left: isOpen ? drawerWidth - 12 : 0,
-                        zIndex: 1300,
-                        backgroundColor: 'primary.main',
-                        color: 'white',
-                        width: 32,
-                        height: 48,
-                        borderRadius: '0 12px 12px 0',
-                        transform: 'translateY(-50%)',
-                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                        boxShadow: '4px 0 12px rgba(0, 162, 255, 0.3)',
-                        '&:hover': {
-                            backgroundColor: 'accent.dark',
-                            width: 40,
-                            left: isOpen ? drawerWidth - 8 : 0,
-                        }
+            {/* User / Logout */}
+            <div className="px-3 pb-4 pt-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+                <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200"
+                    style={{
+                        color: 'var(--destructive)',
+                        background: 'transparent',
+                        border: '1px solid transparent',
                     }}
-                >
-                    <Icon icon={isOpen ? 'lucide:chevron-left' : 'lucide:chevron-right'} style={{ fontSize: '20px' }} />
-                </IconButton>
-            )}
+                    onMouseEnter={e => {
+                        e.currentTarget.style.background = 'color-mix(in oklab, var(--destructive) 12%, transparent)';
+                        e.currentTarget.style.borderColor = 'color-mix(in oklab, var(--destructive) 25%, transparent)';
+                    }}
+                    onMouseLeave={e => {
+                        e.currentTarget.style.background = 'transparent';
+                        e.currentTarget.style.borderColor = 'transparent';
+                    }}>
+                    <LogOut size={18} />
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    );
+
+    if (isMobile) {
+        return (
+            <AnimatePresence>
+                {isOpen && (
+                    <>
+                        <motion.div
+                            key="overlay"
+                            className="fixed inset-0 z-40"
+                            style={{ background: 'rgba(4,18,38,0.7)', backdropFilter: 'blur(4px)' }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={toggleSidebar}
+                        />
+                        <motion.div
+                            key="drawer"
+                            className="fixed left-0 top-0 bottom-0 z-50 overflow-hidden"
+                            style={{ width: drawerWidth }}
+                            initial={{ x: -drawerWidth }}
+                            animate={{ x: 0 }}
+                            exit={{ x: -drawerWidth }}
+                            transition={{ type: 'spring', stiffness: 320, damping: 32 }}>
+                            <SidebarContent />
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+        );
+    }
+
+    return (
+        <>
+            <AnimatePresence initial={false}>
+                {isOpen && (
+                    <motion.div
+                        key="desktop-sidebar"
+                        className="relative flex-shrink-0 h-screen sticky top-0"
+                        style={{ width: drawerWidth }}
+                        initial={{ width: 0, opacity: 0 }}
+                        animate={{ width: drawerWidth, opacity: 1 }}
+                        exit={{ width: 0, opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 280, damping: 30 }}>
+                        <div className="h-full overflow-hidden" style={{ width: drawerWidth }}>
+                            <SidebarContent />
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Edge toggle */}
+            <button
+                onClick={toggleSidebar}
+                className="fixed top-1/2 z-50 flex items-center justify-center transition-all duration-300 shadow-glow"
+                style={{
+                    left: isOpen ? drawerWidth - 12 : 0,
+                    transform: 'translateY(-50%)',
+                    width: 28,
+                    height: 52,
+                    borderRadius: '0 10px 10px 0',
+                    background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 100%)',
+                    color: 'var(--primary-foreground)',
+                }}>
+                {isOpen
+                    ? <ChevronLeft size={16} />
+                    : <ChevronRight size={16} />}
+            </button>
         </>
     );
 };

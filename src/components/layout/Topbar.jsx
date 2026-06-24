@@ -1,162 +1,86 @@
-import React from 'react';
 import { Icon } from '@iconify/react';
 import { useSelector } from 'react-redux';
-import {
-    Box,
-    Typography,
-    IconButton,
-    Badge,
-    Avatar,
-    Stack,
-    useTheme,
-    alpha,
-    Paper,
-    useMediaQuery
-} from '@mui/material';
+import { useMediaQuery, Badge } from '@mui/material';
+import { Menu, Bell, Settings } from 'lucide-react';
 
 const Topbar = ({ onMenuClick }) => {
     const user = useSelector((state) => state.auth.user);
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const isMobile = useMediaQuery('(max-width:900px)');
 
     return (
-        <Paper
-            elevation={0}
-            sx={{
-                width: '100%',
-                borderRadius: '20px',
-                background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-                color: theme.palette.primary.contrastText,
-                p: { xs: 1.5, md: 2 },
-                boxShadow: `0 10px 30px ${alpha(theme.palette.primary.main, 0.15)}`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                border: `1px solid ${alpha(theme.palette.common.white, 0.1)}`,
-                position: 'relative',
-                overflow: 'hidden'
-            }}
-        >
-            {/* Background pattern */}
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    opacity: 0.1,
-                    background: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.4) 0%, transparent 50%)',
-                    pointerEvents: 'none'
-                }}
-            />
+        <div className="w-full rounded-2xl glass-strong px-4 md:px-6 py-3 md:py-4 flex items-center justify-between relative overflow-hidden shadow-glow">
+            {/* Shimmer overlay */}
+            <div className="pointer-events-none absolute inset-0 animate-shimmer rounded-2xl" />
 
-            <Stack direction="row" alignItems="center" spacing={2} sx={{ flexGrow: 1, minWidth: 0, position: 'relative', zIndex: 1 }}>
+            {/* Left: menu + user info */}
+            <div className="flex items-center gap-3 flex-1 min-w-0 relative z-10">
                 {isMobile && (
-                    <IconButton
+                    <button
                         onClick={onMenuClick}
-                        sx={{
-                            color: 'inherit',
-                            bgcolor: alpha(theme.palette.common.white, 0.1),
-                            '&:hover': { bgcolor: alpha(theme.palette.common.white, 0.2) }
-                        }}
-                    >
-                        <Icon icon="lucide:menu" />
-                    </IconButton>
+                        className="flex items-center justify-center h-9 w-9 rounded-xl transition-colors"
+                        style={{ background: 'color-mix(in oklab, var(--primary-glow) 10%, transparent)' }}>
+                        <Menu size={18} style={{ color: 'var(--primary-glow)' }} />
+                    </button>
                 )}
 
-                <Avatar
-                    sx={{
-                        bgcolor: alpha(theme.palette.common.white, 0.2),
-                        width: { xs: 40, md: 48 },
-                        height: { xs: 40, md: 48 },
-                        border: `2px solid ${alpha(theme.palette.common.white, 0.3)}`,
-                        boxShadow: `0 4px 12px ${alpha(theme.palette.common.black, 0.1)}`
-                    }}
-                >
-                    <Icon icon="lucide:user" style={{ fontSize: '24px', color: 'white' }} />
-                </Avatar>
+                {/* Avatar */}
+                <div className="flex-shrink-0 h-10 w-10 md:h-12 md:w-12 rounded-xl flex items-center justify-center"
+                     style={{
+                         background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 100%)',
+                         boxShadow: '0 0 0 2px color-mix(in oklab, var(--primary-glow) 30%, transparent)',
+                     }}>
+                    <Icon icon="lucide:user" style={{ fontSize: '20px', color: 'var(--primary-foreground)' }} />
+                </div>
 
-                <Box sx={{ minWidth: 0 }}>
-                    <Typography
-                        variant="caption"
-                        sx={{
-                            fontWeight: 800,
-                            textTransform: 'uppercase',
-                            letterSpacing: '1.5px',
-                            opacity: 0.8,
-                            fontSize: '0.65rem',
-                            display: 'block',
-                            mb: 0.2
-                        }}
-                    >
+                {/* Name + role */}
+                <div className="min-w-0">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] mb-0.5"
+                       style={{ color: 'var(--muted-foreground)' }}>
                         Account
-                    </Typography>
-                    <Stack direction="row" alignItems="center" spacing={1.5}>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            sx={{
-                                fontSize: { xs: '0.95rem', md: '1.25rem' },
-                                fontWeight: 800,
-                                letterSpacing: '-0.02em'
-                            }}
-                        >
+                    </p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-sm md:text-base font-semibold truncate"
+                              style={{ fontFamily: 'var(--font-display)', color: 'var(--foreground)' }}>
                             {user?.employeeName || 'Team Member'}
-                        </Typography>
-                        {!isMobile && (
-                            <Box
-                                sx={{
-                                    px: 1.5,
-                                    py: 0.5,
-                                    borderRadius: '12px',
-                                    bgcolor: alpha(theme.palette.common.white, 0.15),
-                                    border: `1px solid ${alpha(theme.palette.common.white, 0.2)}`,
-                                    color: "white",
-                                    fontSize: '0.7rem',
-                                    fontWeight: 700,
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.5px'
-                                }}
-                            >
-                                {user?.Department?.name || 'Operations'}
-                            </Box>
+                        </span>
+                        {!isMobile && user?.Department?.name && (
+                            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em]"
+                                  style={{
+                                      background: 'color-mix(in oklab, var(--primary-glow) 12%, transparent)',
+                                      border: '1px solid color-mix(in oklab, var(--primary-glow) 25%, transparent)',
+                                      color: 'var(--primary-glow)',
+                                  }}>
+                                {user.Department.name}
+                            </span>
                         )}
-                    </Stack>
-                </Box>
-            </Stack>
+                    </div>
+                </div>
+            </div>
 
-            <Stack direction="row" spacing={1.5} sx={{ position: 'relative', zIndex: 1 }}>
-                <IconButton
-                    sx={{
-                        bgcolor: alpha(theme.palette.common.white, 0.1),
-                        color: 'white',
-                        '&:hover': { bgcolor: alpha(theme.palette.common.white, 0.2) }
-                    }}
-                >
-                    <Badge
-                        color="warning"
-                        variant="dot"
-                        sx={{ '& .MuiBadge-badge': { width: 10, height: 10, borderRadius: '50%' } }}
-                    >
-                        <Icon icon="lucide:bell" style={{ fontSize: '20px' }} />
-                    </Badge>
-                </IconButton>
-                <IconButton
-                    sx={{
-                        bgcolor: alpha(theme.palette.common.white, 0.1),
-                        color: 'white',
-                        '&:hover': { bgcolor: alpha(theme.palette.common.white, 0.2) }
-                    }}
-                >
-                    <Icon icon="lucide:settings" style={{ fontSize: '20px' }} />
-                </IconButton>
-            </Stack>
-        </Paper>
+            {/* Right: actions */}
+            <div className="flex items-center gap-2 relative z-10">
+                <button className="flex items-center justify-center h-9 w-9 rounded-xl relative transition-colors"
+                        style={{ background: 'color-mix(in oklab, var(--foreground) 6%, transparent)' }}
+                        onMouseEnter={e => e.currentTarget.style.background = 'color-mix(in oklab, var(--primary-glow) 10%, transparent)'}
+                        onMouseLeave={e => e.currentTarget.style.background = 'color-mix(in oklab, var(--foreground) 6%, transparent)'}>
+                    <Bell size={18} style={{ color: 'var(--muted-foreground)' }} />
+                    {/* Notification dot */}
+                    <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full"
+                          style={{ background: 'var(--warning)' }}>
+                        <span className="absolute inset-0 rounded-full animate-ping"
+                              style={{ background: 'var(--warning)', opacity: 0.5 }} />
+                    </span>
+                </button>
+
+                <button className="flex items-center justify-center h-9 w-9 rounded-xl transition-colors"
+                        style={{ background: 'color-mix(in oklab, var(--foreground) 6%, transparent)' }}
+                        onMouseEnter={e => e.currentTarget.style.background = 'color-mix(in oklab, var(--primary-glow) 10%, transparent)'}
+                        onMouseLeave={e => e.currentTarget.style.background = 'color-mix(in oklab, var(--foreground) 6%, transparent)'}>
+                    <Settings size={18} style={{ color: 'var(--muted-foreground)' }} />
+                </button>
+            </div>
+        </div>
     );
 };
 
 export default Topbar;
-
-
-
