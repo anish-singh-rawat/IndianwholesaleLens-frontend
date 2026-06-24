@@ -1,0 +1,9 @@
+/* Legacy App.css has been replaced by Tailwind CSS utility classes */
+/* Add any highly specific non-utility styles here if needed */
+#root {
+  min-width: 100%;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  text-align: left;
+}
