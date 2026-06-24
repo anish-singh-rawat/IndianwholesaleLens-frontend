@@ -329,7 +329,7 @@ const OrderDetails = () => {
                 <div className="pt-10 flex flex-col items-center justify-center gap-4 text-center">
                     <div className="w-16 h-px bg-gray-200" />
                     <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.4em]">
-                        Digi-Optics Order Management System Protocol v2.0
+                        Indian Lens Wholesale Order Management System Protocol v2.0
                     </p>
                     <div className="flex items-center gap-4 text-gray-300">
                         <Icon icon="mdi:shield-check" className="text-xl" />

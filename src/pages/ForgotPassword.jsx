@@ -71,7 +71,7 @@ const ForgotPassword = ({ type = 'employee' }) => {
                 {/* Right Side - Form */}
                 <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-white">
                     <div className="flex justify-center mb-8">
-                        <img src={logo} alt="DigiOptics" className="h-16 object-contain" />
+                        <img src={logo} alt="Indian Lens Wholesale" className="h-16 object-contain" />
                     </div>
 
                     <div className="text-center mb-8">

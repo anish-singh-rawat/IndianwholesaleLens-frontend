@@ -17,7 +17,7 @@ const initialState = {
     data: {
         allCategories: ['Frame', 'Lens', 'Contact Lens', 'Sunglass', 'Solution', 'Accessory'],
         gst: [0, 5, 12, 18, 28],
-        storeName: 'DigiOptics',
+        storeName: 'Indian Lens Wholesale',
     },
     loading: false,
     error: null,

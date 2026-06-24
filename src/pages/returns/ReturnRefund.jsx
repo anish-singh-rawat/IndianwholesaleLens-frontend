@@ -274,7 +274,7 @@ export default function ReturnRefund() {
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Return & Refund Successful</h2>
           <p className="text-gray-500 text-sm mb-6">Your transaction has been processed successfully.</p>
 
-          {/* DigiOptics Mascot Illustration (as shown in mock) */}
+          {/* Indian Lens Wholesale Mascot Illustration (as shown in mock) */}
           <div className="w-48 h-48 mx-auto mb-8 bg-gradient-to-br from-blue-50 to-blue-100 rounded-full flex items-center justify-center relative shadow-inner">
             <div className="absolute inset-0 rounded-full border border-blue-200/50 animate-pulse"></div>
             <Icon icon="mdi:emoticon-happy-outline" className="text-9xl text-erp-primary animate-bounce duration-1000" />

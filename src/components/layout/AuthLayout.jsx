@@ -216,7 +216,7 @@ const AuthLayout = () => {
                 }}
             >
                 <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.2)', fontWeight: 800, letterSpacing: '1px', textTransform: 'uppercase' }}>
-                    © 2026 DigiOptics Industrial. All Rights Reserved.
+                    © 2026 Indian Lens Wholesale. All rights reserved.
                 </Typography>
                 <Stack direction="row" spacing={4}>
                     {['Privacy', 'Terms', 'Support'].map((link) => (

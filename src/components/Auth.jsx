@@ -37,7 +37,7 @@ const Auth = () => {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-erp-primary to-erp-secondary p-4">
             <div className="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md text-center transform transition-all hover:scale-[1.01]">
-                <h2 className="text-3xl font-extrabold text-erp-primary mb-2">DigiOptics Lens ERP</h2>
+                <h2 className="text-3xl font-extrabold text-erp-primary mb-2">Indian Lens Wholesale</h2>
                 <h3 className="text-lg text-erp-accent mb-8 font-medium">{isLogin ? 'Welcome Back' : 'Create Industry Account'}</h3>
 
                 <form onSubmit={handleSubmit} className="space-y-6">

@@ -145,7 +145,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             {/* Logo */}
             <div className="flex items-center justify-center px-6 py-6 border-b"
                  style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-                <img src={logo} alt="DigiOptics" className="max-w-[140px] w-full object-contain" />
+                <img src={logo} alt="Indian Lens Wholesale" className="max-w-[140px] w-full object-contain" />
             </div>
 
             {/* Nav Items */}

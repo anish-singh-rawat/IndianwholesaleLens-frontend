@@ -135,7 +135,7 @@ const Login = () => {
                             initial={{ opacity: 0, y: -12 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1, duration: 0.45 }}>
-                            <img src={logo} alt="DigiOptics" className="h-28 object-contain" />
+                            <img src={logo} alt="Indian Lens Wholesale" className="h-28 object-contain" />
                         </motion.div>
 
                         <motion.div

@@ -88,7 +88,7 @@ const Welcome = () => {
                     }}
                 >
                     <Box sx={{ mb: 2 }}>
-                        <img src={logo} alt="DigiOptics" style={{ height: '150px', objectFit: 'contain' }} />
+                        <img src={logo} alt="Indian Lens Wholesale" style={{ height: '150px', objectFit: 'contain' }} />
                     </Box>
 
                     <Box>

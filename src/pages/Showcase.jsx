@@ -115,7 +115,7 @@ const Showcase = () => {
             >
                 <Container maxWidth="lg">
                     <Stack direction="row" justifyContent="space-between" alignItems="center">
-                        <img src={logo} alt="DigiOptics" style={{ height: '50px' }} />
+                        <img src={logo} alt="Indian Lens Wholesale" style={{ height: '50px' }} />
                         <Stack direction="row" spacing={3} alignItems="center">
                             <Button
                                 component={Link}
@@ -175,7 +175,7 @@ const Showcase = () => {
                                     display: 'block'
                                 }}
                             >
-                                INTRODUCING DIGIOPTICS 2.0
+                                INTRODUCING INDIAN LENS WHOLESALE 2.0
                             </Typography>
                             <Typography
                                 variant="h1"

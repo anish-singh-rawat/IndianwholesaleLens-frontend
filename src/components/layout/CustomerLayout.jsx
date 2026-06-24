@@ -98,7 +98,7 @@ const CustomerLayout = () => {
                                     border: '1px solid rgba(255, 99, 0, 0.1)'
                                 }}
                             >
-                                <img src={logo} alt="DigiOptics" style={{ height: '34px' }} />
+                                <img src={logo} alt="Indian Lens Wholesale" style={{ height: '34px' }} />
                             </Box>
 
                             <Box sx={{ display: { xs: 'none', md: 'block' } }}>
@@ -198,8 +198,8 @@ const CustomerLayout = () => {
                 <DialogContent dividers sx={{ border: 'none', px: 4 }}>
                     <Typography variant="body2" component="div" sx={{ color: 'text.secondary', lineHeight: 1.7 }}>
                         <Box sx={{ mb: 2 }}>
-                            <Typography variant="subtitle1" fontWeight={700} color="text.primary">Digi-Optics Customer Agreement</Typography>
-                            By accessing and using the Digi-Optics Customer Portal, you agree to be bound by the following terms and conditions.
+                            <Typography variant="subtitle1" fontWeight={700} color="text.primary">Indian Lens Wholesale Customer Agreement</Typography>
+                            By accessing and using the Indian Lens Wholesale Customer Portal, you agree to be bound by the following terms and conditions.
                         </Box>
 
                         <Box sx={{ mb: 2 }}>
