@@ -33,9 +33,9 @@ const OrderDetails = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center gap-6">
-                <div className="w-16 h-16 border-4 border-erp-accent/20 border-t-erp-accent rounded-full animate-spin"></div>
-                <p className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] animate-pulse">Loading Order Details...</p>
+            <div className="min-h-screen flex flex-col items-center justify-center gap-6" style={{ background: 'var(--background)' }}>
+                <div className="w-16 h-16 border-4 border-t-[var(--primary-glow)] rounded-full animate-spin" style={{ borderColor: 'rgba(255,255,255,0.08)', borderTopColor: 'var(--primary-glow)' }}></div>
+                <p className="text-xs font-black uppercase tracking-[0.2em] animate-pulse" style={{ color: 'var(--muted-foreground)' }}>Loading Order Details...</p>
             </div>
         );
     }
@@ -46,21 +46,21 @@ const OrderDetails = () => {
         const s = status?.toUpperCase() || 'PENDING';
         switch (s) {
             case 'SUBMITTED':
-            case 'PROCESSING': return 'bg-blue-50 text-blue-600 border-blue-200 shadow-blue-500/10';
-            case 'COMPLETED': return 'bg-green-50 text-green-600 border-green-200 shadow-green-500/10';
-            case 'CANCELLED': return 'bg-red-50 text-red-600 border-red-200 shadow-red-500/10';
-            case 'DRAFT': return 'bg-erp-accent/5 text-erp-accent/80 border-amber-200 shadow-erp-accent/10';
-            default: return 'bg-gray-50 text-gray-600 border-gray-200';
+            case 'PROCESSING': return 'bg-blue-900/30 text-blue-300 border-blue-700/40';
+            case 'COMPLETED': return 'bg-green-900/30 text-green-300 border-green-700/40';
+            case 'CANCELLED': return 'bg-red-900/30 text-red-300 border-red-700/40';
+            case 'DRAFT': return 'bg-amber-900/20 text-amber-300 border-amber-700/30';
+            default: return 'bg-white/5 text-white/50 border-white/10';
         }
     };
 
     const InfoCard = ({ title, icon, children, className = "" }) => (
-        <div className={`bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300 ${className}`}>
+        <div className={`rounded-3xl p-6 transition-shadow duration-300 ${className}`} style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
             <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-2xl bg-erp-accent/5 flex items-center justify-center text-erp-accent shadow-sm">
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm" style={{ background: 'color-mix(in oklab, var(--primary-glow) 12%, transparent)', color: 'var(--primary-glow)' }}>
                     <Icon icon={icon} className="text-xl" />
                 </div>
-                <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.15em]">{title}</h3>
+                <h3 className="text-xs font-black uppercase tracking-[0.15em]" style={{ color: 'var(--muted-foreground)' }}>{title}</h3>
             </div>
             {children}
         </div>
@@ -74,15 +74,15 @@ const OrderDetails = () => {
     );
 
     const EyeDetailCard = ({ side, data, prism, centration }) => (
-        <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden group hover:border-amber-200 transition-colors duration-300">
-            <div className={`py-4 px-8 border-b border-gray-50 flex items-center justify-between ${side === 'R' ? 'bg-erp-accent/5/30' : 'bg-blue-50/30'}`}>
+        <div className="rounded-[2.5rem] overflow-hidden group transition-colors duration-300" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
+            <div className="py-4 px-8 border-b flex items-center justify-between" style={{ borderColor: 'rgba(255,255,255,0.06)', background: side === 'R' ? 'rgba(254,154,0,0.06)' : 'rgba(59,130,246,0.06)' }}>
                 <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-2xl flex items-center justify-center font-black text-xl text-white shadow-lg ${side === 'R' ? 'bg-[#fe9a00] rotate-3' : 'bg-blue-500 -rotate-3'}`}>
                         {side}
                     </div>
                     <div>
-                        <h4 className="font-black text-gray-800 text-sm uppercase tracking-widest">{side === 'R' ? 'Right Eye' : 'Left Eye'}</h4>
-                        <p className="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">Ocular Configuration</p>
+                        <h4 className="font-black text-sm uppercase tracking-widest" style={{ color: 'var(--foreground)' }}>{side === 'R' ? 'Right Eye' : 'Left Eye'}</h4>
+                        <p className="text-[9px] font-bold uppercase tracking-tighter" style={{ color: 'var(--muted-foreground)' }}>Ocular Configuration</p>
                     </div>
                 </div>
                 {data?.diameter && (
@@ -102,7 +102,7 @@ const OrderDetails = () => {
                     <PowerValue label="ADD" value={data?.add} />
                 </div>
 
-                <div className="h-px bg-gray-50" />
+                <div className="h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
 
                 {/* Prism & Centration */}
                 <div className="grid grid-cols-2 gap-8">
@@ -127,7 +127,7 @@ const OrderDetails = () => {
     );
 
     return (
-        <div className="min-h-screen bg-gray-50/50 p-6 md:p-10 pb-24">
+        <div className="min-h-screen p-6 md:p-10 pb-24" style={{ background: 'transparent' }}>
             <div className="max-w-7xl mx-auto space-y-10">
                 {/* Header Action Bar */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -135,18 +135,19 @@ const OrderDetails = () => {
                         <div className="flex items-center gap-3">
                             <button
                                 onClick={() => navigate(PATHS.CUSTOMER_CARE.ALL_ORDERS)}
-                                className="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:text-erp-accent hover:border-amber-200 transition-all active:scale-95 shadow-sm"
+                                className="w-10 h-10 rounded-xl flex items-center justify-center transition-all active:scale-95"
+                                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--muted-foreground)' }}
                             >
                                 <Icon icon="mdi:arrow-left" className="text-xl" />
                             </button>
-                            <h1 className="text-4xl font-black text-gray-900 uppercase tracking-tighter">Order Details</h1>
+                            <h1 className="text-4xl font-black uppercase tracking-tighter" style={{ color: 'var(--foreground)', fontFamily: 'var(--font-display)' }}>Order Details</h1>
                         </div>
                         <div className="flex items-center gap-3 ml-13">
 
                             <span className="px-4 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-[0.2em] shadow-sm animate-in fade-in slide-in-from-left-4 duration-500" >
                                 {order.status || 'PENDING'}
                             </span>
-                            <span className="text-[11px] text-gray-400 font-bold uppercase tracking-widest flex items-center gap-2 border-l border-gray-200 pl-3">
+                            <span className="text-[11px] font-bold uppercase tracking-widest flex items-center gap-2 pl-3" style={{ color: 'var(--muted-foreground)', borderLeft: '1px solid rgba(255,255,255,0.10)' }}>
                                 <Icon icon="mdi:calendar" className="text-erp-accent" />
                                 {dayjs(order.createdAt).format('DD MMMM YYYY | hh:mm A')}
                             </span>
@@ -180,7 +181,7 @@ const OrderDetails = () => {
                     <InfoCard title="Customer Profile" icon="mdi:account-details-outline">
                         <div className="space-y-6">
                             <div>
-                                <h4 className="text-2xl font-black text-gray-800 tracking-tight leading-none mb-1">{order.customer?.shopName}</h4>
+                                <h4 className="text-2xl font-black tracking-tight leading-none mb-1" style={{ color: 'var(--foreground)' }}>{order.customer?.shopName}</h4>
                                 <div className="flex items-center gap-2">
                                     <span className="px-2 py-0.5 bg-gray-100 text-gray-500 text-[10px] font-black rounded uppercase tracking-widest leading-none">ID: {order.customer?.customerCode || '---'}</span>
                                     {order.opticianName && (
@@ -197,9 +198,9 @@ const OrderDetails = () => {
                                     <p className="text-xs font-bold text-gray-700 leading-relaxed">{order.customer?.address || 'Shipping branch details missing'}</p>
                                 </div>
                             </div>
-                            <div className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded-xl">
-                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Running Balance</span>
-                                <span className="text-sm font-black text-gray-800 tracking-tight">₹{order.customer?.customerBalance || '0.00'}</span>
+                            <div className="flex justify-between items-center py-2 px-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                                <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--muted-foreground)' }}>Running Balance</span>
+                                <span className="text-sm font-black tracking-tight" style={{ color: 'var(--foreground)' }}>₹{order.customer?.customerBalance || '0.00'}</span>
                             </div>
                         </div>
                     </InfoCard>
@@ -288,7 +289,7 @@ const OrderDetails = () => {
                             <div className="w-2 h-8 bg-blue-500 rounded-full" />
                             <h2 className="text-xs font-black text-gray-400 uppercase tracking-[0.3em]">Anatomical Fitting Data</h2>
                         </div>
-                        <div className="bg-white rounded-[2.5rem] border border-gray-100 p-8 grid grid-cols-2 md:grid-cols-4 gap-10 shadow-sm">
+                        <div className="rounded-[2.5rem] p-8 grid grid-cols-2 md:grid-cols-4 gap-10" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.09)' }}>
                             <PowerValue label="Frame Type" value={order.fittingData?.frameType} />
                             <PowerValue label="DBL" value={order.frameData?.dbl} unit="mm" />
                             <PowerValue label="Frame Length" value={order.frameData?.frameLength} unit="mm" />
@@ -311,7 +312,7 @@ const OrderDetails = () => {
                             <div className="w-2 h-8 bg-amber-200 rounded-full" />
                             <h2 className="text-xs font-black text-gray-400 uppercase tracking-[0.3em]">Final Directives</h2>
                         </div>
-                        <div className="bg-white rounded-[2.5rem] border border-gray-100 p-8 h-[220px] shadow-sm relative overflow-hidden group">
+                        <div className="rounded-[2.5rem] p-8 h-[220px] relative overflow-hidden group" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.09)' }}>
                             <div className="relative z-10">
                                 <h5 className="text-[9px] font-black text-[#fe9a00] uppercase tracking-[0.2em] mb-4">Internal Remarks</h5>
                                 <p className="text-sm font-bold text-gray-600 leading-relaxed max-h-[140px] overflow-y-auto">

@@ -5,8 +5,9 @@ import { useDispatch } from "react-redux";
 import { hideLoader, showLoader } from "../../features/loader/loaderSlice";
 import { Icon } from "@iconify/react";
 
-const inputCls = "w-full px-5 py-3 text-sm border border-gray-100 rounded-[1.2rem] outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 hover:border-erp-accent/20 bg-gray-50/50 text-gray-700 transition-all placeholder:text-gray-300";
-const labelCls = "text-xs font-semibold text-gray-500 block mb-2 ml-2";
+const inputCls = "w-full px-5 py-3 text-sm border rounded-[1.2rem] outline-none transition-all";
+const labelCls = "text-xs font-semibold block mb-2 ml-2";
+const inputStyle = { background: 'color-mix(in oklab, var(--foreground) 5%, transparent)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' };
 
 const Field = ({ label, icon, error, children }) => (
     <div className="flex flex-col">
@@ -71,7 +72,7 @@ export default function AddVendor() {
         <div className="w-full animate-in fade-in duration-500">
             <div className="w-full">
                 <form onSubmit={handleSubmit} noValidate>
-                    <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-erp-accent/5 border border-gray-100 overflow-hidden">
+                    <div className="rounded-[2rem] overflow-hidden" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.10)' }}>
 
                         {/* Header Section */}
                         <div className="bg-erp-accent p-8 text-white relative overflow-hidden">
@@ -95,7 +96,7 @@ export default function AddVendor() {
                             {/* Section label */}
                              <div className="flex items-center gap-3 mb-8">
                                 <div className="w-1.5 h-6 bg-erp-accent rounded-full" />
-                                <span className="text-sm font-bold text-gray-700">Vendor Details</span>
+                                <span className="text-sm font-semibold" style={{ color: 'var(--foreground)' }}>Vendor Details</span>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10">
@@ -174,11 +175,12 @@ export default function AddVendor() {
                             </div>
 
                             {/* Footer Actions */}
-                            <div className="flex items-center justify-end gap-4 mt-16 pt-8 border-t border-gray-50">
+                            <div className="flex items-center justify-end gap-4 mt-16 pt-8 border-t" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
                                 <button
                                     type="button"
                                     onClick={handleReset}
-                                    className="flex items-center gap-2 px-8 py-3 text-sm font-semibold text-gray-400 hover:text-erp-accent hover:bg-erp-accent/5 rounded-full transition-all duration-300 group"
+                                    className="flex items-center gap-2 px-8 py-3 text-sm font-semibold rounded-full transition-all duration-300 group"
+                                    style={{ color: 'var(--muted-foreground)' }}
                                 >
                                     <Icon icon="mdi:refresh" className="text-lg group-hover:rotate-180 transition-transform duration-700" /> Reset
                                 </button>

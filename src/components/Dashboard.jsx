@@ -1,11 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../services/apiInstance';
 import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-    PieChart, Pie, Cell
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell,
 } from 'recharts';
 
-const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
+const COLORS = ['#5EADD4', '#67E8F9', '#34D399', '#FBBF24', '#A78BFA'];
+
+const cardStyle = {
+    background: 'color-mix(in oklab, var(--card) 75%, transparent)',
+    backdropFilter: 'blur(20px) saturate(160%)',
+    border: '1px solid color-mix(in oklab, var(--foreground) 10%, transparent)',
+    borderRadius: '1rem',
+};
+
+const tooltipStyle = {
+    backgroundColor: 'rgba(8,18,36,0.97)',
+    border: '1px solid rgba(255,255,255,0.1)',
+    borderRadius: '12px',
+    boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+    color: 'var(--foreground)',
+    fontFamily: 'var(--font-sans)',
+};
 
 const Dashboard = () => {
     const [analytics, setAnalytics] = useState(null);
@@ -15,150 +30,128 @@ const Dashboard = () => {
         const fetchAnalytics = async () => {
             try {
                 const response = await api.get('/api/analytics/dashboard');
-                if (response.data.success && response.data.data) {
-                    setAnalytics(response.data.data);
-                } else {
-                    throw new Error("Invalid response");
-                }
-            } catch (error) {
-                console.error("Failed to fetch analytics, using sample data:", error);
-                // Fallback to sample data for demonstration if API fails
+                if (response.data.success && response.data.data) setAnalytics(response.data.data);
+                else throw new Error('Invalid response');
+            } catch {
                 setAnalytics({
                     customers: { activeUsers: 11 },
-                    orders: {
-                        pending: 10,
-                        completed: 0,
-                        daily: 0,
-                        weekly: 0,
-                        monthly: 0,
-                        statusBreakdown: {
-                            Draft: 3,
-                            Submitted: 10,
-                            Processing: 0,
-                            Completed: 0,
-                            Cancelled: 0
-                        }
-                    },
+                    orders: { pending: 10, completed: 0, daily: 0, weekly: 0, monthly: 0, statusBreakdown: { Draft: 3, Submitted: 10, Processing: 0, Completed: 0, Cancelled: 0 } },
                     staff: { total: 52 },
                     recentOrders: [
-                        {
-                            _id: "6a1586ded5a9719367ee297f",
-                            orderNumber: "ORD-20260526-0002",
-                            customer: { customerName: "Test Shop" },
-                            totalOrderPrice: 0,
-                            status: "Submitted",
-                            createdAt: "2026-05-26T11:41:18.824Z"
-                        },
-                        {
-                            _id: "6a1544cb0b77ad59d3a03342",
-                            orderNumber: "ORD-20260526-0001",
-                            customer: { customerName: "Test Shop" },
-                            totalOrderPrice: 0,
-                            status: "Submitted",
-                            createdAt: "2026-05-26T06:59:23.754Z"
-                        },
-                        {
-                            _id: "69e1d320a735847dd2e4d464",
-                            orderNumber: "ORD-20260417-0010",
-                            customer: { customerName: "Test Shop" },
-                            totalOrderPrice: 760,
-                            status: "Submitted",
-                            createdAt: "2026-04-17T06:28:48.907Z"
-                        }
+                        { _id: '1', orderNumber: 'ORD-20260526-0002', customer: { customerName: 'Test Shop' }, totalOrderPrice: 0, status: 'Submitted', createdAt: '2026-05-26T11:41:18.824Z' },
+                        { _id: '2', orderNumber: 'ORD-20260526-0001', customer: { customerName: 'Test Shop' }, totalOrderPrice: 0, status: 'Submitted', createdAt: '2026-05-26T06:59:23.754Z' },
+                        { _id: '3', orderNumber: 'ORD-20260417-0010', customer: { customerName: 'Test Shop' }, totalOrderPrice: 760, status: 'Submitted', createdAt: '2026-04-17T06:28:48.907Z' },
                     ],
-                    generatedAt: "2026-06-01T12:51:49.346Z"
+                    generatedAt: new Date().toISOString(),
                 });
             } finally {
                 setLoading(false);
             }
         };
-
         fetchAnalytics();
     }, []);
 
     if (loading) {
         return (
             <div className="flex h-64 items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+                <div className="h-10 w-10 rounded-full border-2 border-transparent animate-spin"
+                     style={{ borderTopColor: 'var(--primary-glow)', borderRightColor: 'color-mix(in oklab, var(--primary-glow) 40%, transparent)' }} />
             </div>
         );
     }
 
-    const statusData = analytics?.orders?.statusBreakdown ? Object.keys(analytics.orders.statusBreakdown).map((key) => ({
-        name: key,
-        value: analytics.orders.statusBreakdown[key]
-    })) : [];
+    const statusData = analytics?.orders?.statusBreakdown
+        ? Object.entries(analytics.orders.statusBreakdown).map(([name, value]) => ({ name, value }))
+        : [];
 
     const orderTrends = [
-        { name: 'Daily', orders: analytics?.orders?.daily || 0 },
-        { name: 'Weekly', orders: analytics?.orders?.weekly || 0 },
+        { name: 'Daily',   orders: analytics?.orders?.daily   || 0 },
+        { name: 'Weekly',  orders: analytics?.orders?.weekly  || 0 },
         { name: 'Monthly', orders: analytics?.orders?.monthly || 0 },
     ];
 
+    const metrics = [
+        { label: 'Active Customers', value: analytics?.customers?.activeUsers, accent: 'var(--primary-glow)' },
+        { label: 'Pending Orders',   value: analytics?.orders?.pending,        accent: 'var(--warning)' },
+        { label: 'Completed Orders', value: analytics?.orders?.completed,      accent: 'var(--success)' },
+        { label: 'Total Staff',      value: analytics?.staff?.total,           accent: 'var(--primary-glow)' },
+    ];
+
+    const statusColors = {
+        Processing: { bg: 'color-mix(in oklab, var(--primary-glow) 12%, transparent)', text: 'var(--primary-glow)' },
+        Completed:  { bg: 'color-mix(in oklab, var(--success) 12%, transparent)',       text: 'var(--success)' },
+        Cancelled:  { bg: 'color-mix(in oklab, var(--destructive) 12%, transparent)',   text: 'var(--destructive)' },
+        Submitted:  { bg: 'color-mix(in oklab, var(--warning) 12%, transparent)',       text: 'var(--warning)' },
+        Draft:      { bg: 'color-mix(in oklab, var(--muted-foreground) 12%, transparent)', text: 'var(--muted-foreground)' },
+    };
+
     return (
-        <div className="w-full flex flex-col gap-6 font-sans">
-            <header className="flex justify-between items-end">
-                <div>
-                    <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Executive Overview</h1>
-                    <p className="text-sm text-gray-500 mt-1">Last updated: {new Date(analytics?.generatedAt || Date.now()).toLocaleString()}</p>
-                </div>
+        <div className="w-full flex flex-col gap-6">
+            {/* Header */}
+            <header>
+                <h1 className="text-2xl font-bold tracking-tight"
+                    style={{ fontFamily: 'var(--font-display)', color: 'var(--foreground)' }}>
+                    Executive Overview
+                </h1>
+                <p className="text-sm mt-1" style={{ color: 'var(--muted-foreground)' }}>
+                    Last updated: {new Date(analytics?.generatedAt || Date.now()).toLocaleString()}
+                </p>
             </header>
 
-            {/* Metrics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[
-                    { label: 'Active Customers', value: analytics?.customers?.activeUsers, color: 'text-erp-accent', bg: 'bg-blue-50' },
-                    { label: 'Pending Orders', value: analytics?.orders?.pending, color: 'text-erp-accent', bg: 'bg-orange-50' },
-                    { label: 'Completed Orders', value: analytics?.orders?.completed, color: 'text-erp-accent', bg: 'bg-green-50' },
-                    { label: 'Total Staff', value: analytics?.staff?.total, color: 'text-erp-accent', bg: 'bg-purple-50' },
-                ].map((m, idx) => (
-                    <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
-                        <div className={`absolute top-0 right-0 w-24 h-24 ${m.bg} rounded-bl-full -mr-4 -mt-4 opacity-50 group-hover:scale-110 transition-transform duration-500`}></div>
-                        <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2 relative z-10">{m.label}</h3>
-                        <p className={`text-4xl font-extrabold ${m.color} relative z-10`}>{m.value || 0}</p>
+            {/* Metric Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {metrics.map((m, i) => (
+                    <div key={i} className="p-5 rounded-2xl relative overflow-hidden transition-shadow hover:shadow-elegant"
+                         style={cardStyle}>
+                        <div className="absolute top-0 right-0 h-24 w-24 rounded-bl-full opacity-10"
+                             style={{ background: m.accent, filter: 'blur(12px)' }} />
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] mb-2 relative z-10"
+                           style={{ color: 'var(--muted-foreground)' }}>
+                            {m.label}
+                        </p>
+                        <p className="text-4xl font-bold relative z-10"
+                           style={{ fontFamily: 'var(--font-display)', color: m.accent }}>
+                            {m.value ?? 0}
+                        </p>
                     </div>
                 ))}
             </div>
 
-            {/* Charts Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Order Status Pie Chart */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h2 className="text-lg font-bold text-gray-800 mb-6">Order Status Distribution</h2>
-                    <div className="h-72 w-full">
+            {/* Charts */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="p-6 rounded-2xl" style={cardStyle}>
+                    <h2 className="text-base font-semibold mb-5"
+                        style={{ fontFamily: 'var(--font-display)', color: 'var(--foreground)' }}>
+                        Order Status Distribution
+                    </h2>
+                    <div className="h-64">
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={statusData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
-                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#6B7280' }} />
-                                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#6B7280' }} />
-                                <Tooltip
-                                    cursor={{ fill: '#F3F4F6' }}
-                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                                />
-                                <Bar dataKey="value" radius={[6, 6, 0, 0]} maxBarSize={60}>
-                                    {statusData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                    ))}
+                            <BarChart data={statusData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.06)" />
+                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--muted-foreground)', fontSize: 11 }} />
+                                <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--muted-foreground)', fontSize: 11 }} />
+                                <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
+                                <Bar dataKey="value" radius={[6, 6, 0, 0]} maxBarSize={56}>
+                                    {statusData.map((_, idx) => <Cell key={idx} fill={COLORS[idx % COLORS.length]} />)}
                                 </Bar>
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
 
-                {/* Order Trends Bar Chart */}
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h2 className="text-lg font-bold text-gray-800 mb-6">Order Volume Trends</h2>
-                    <div className="h-72 w-full">
+                <div className="p-6 rounded-2xl" style={cardStyle}>
+                    <h2 className="text-base font-semibold mb-5"
+                        style={{ fontFamily: 'var(--font-display)', color: 'var(--foreground)' }}>
+                        Order Volume Trends
+                    </h2>
+                    <div className="h-64">
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={orderTrends} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
-                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#6B7280' }} />
-                                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#6B7280' }} />
-                                <Tooltip
-                                    cursor={{ fill: '#F3F4F6' }}
-                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                                />
-                                <Bar dataKey="orders" fill="#3B82F6" radius={[6, 6, 0, 0]} maxBarSize={60} />
+                            <BarChart data={orderTrends} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.06)" />
+                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: 'var(--muted-foreground)', fontSize: 11 }} />
+                                <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--muted-foreground)', fontSize: 11 }} />
+                                <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
+                                <Bar dataKey="orders" fill="#5EADD4" radius={[6, 6, 0, 0]} maxBarSize={56} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
@@ -166,44 +159,57 @@ const Dashboard = () => {
             </div>
 
             {/* Recent Orders Table */}
-            <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="p-6 border-b border-gray-50 flex justify-between items-center bg-gray-50/30">
-                    <h2 className="text-lg font-bold text-gray-800">Recent Orders Pipeline</h2>
-                    <button className="text-sm text-blue-600 font-semibold hover:text-blue-800 transition-colors">View All</button>
+            <section className="rounded-2xl overflow-hidden" style={cardStyle}>
+                <div className="px-6 py-4 flex justify-between items-center border-b"
+                     style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(4,12,24,0.4)' }}>
+                    <h2 className="text-base font-semibold"
+                        style={{ fontFamily: 'var(--font-display)', color: 'var(--foreground)' }}>
+                        Recent Orders Pipeline
+                    </h2>
+                    <button className="text-xs font-semibold transition-colors"
+                            style={{ color: 'var(--primary-glow)' }}>
+                        View All
+                    </button>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
-                        <thead className="bg-white text-xs text-gray-400 uppercase tracking-wider">
-                            <tr>
-                                <th className="px-6 py-4 font-bold border-b border-gray-100">Order Number</th>
-                                <th className="px-6 py-4 font-bold border-b border-gray-100">Customer</th>
-                                <th className="px-6 py-4 font-bold border-b border-gray-100">Date</th>
-                                <th className="px-6 py-4 font-bold border-b border-gray-100 text-right">Total</th>
-                                <th className="px-6 py-4 font-bold border-b border-gray-100">Status</th>
+                        <thead>
+                            <tr style={{ background: 'rgba(4,12,24,0.5)' }}>
+                                {['Order Number', 'Customer', 'Date', 'Total', 'Status'].map(h => (
+                                    <th key={h} className="px-6 py-3 text-xs font-semibold uppercase tracking-wider border-b"
+                                        style={{ color: 'var(--primary-glow)', borderColor: 'rgba(255,255,255,0.06)' }}>
+                                        {h}
+                                    </th>
+                                ))}
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-50">
-                            {analytics?.recentOrders && analytics.recentOrders.length > 0 ? (
-                                analytics.recentOrders.map((order, i) => (
-                                    <tr key={order._id || i} className="hover:bg-gray-50/50 transition-colors">
-                                        <td className="px-6 py-4 font-bold text-gray-900">{order.orderNumber || 'N/A'}</td>
-                                        <td className="px-6 py-4 text-gray-600 font-medium">{order.customer?.customerName || 'N/A'}</td>
-                                        <td className="px-6 py-4 text-gray-500 text-sm">{order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}</td>
-                                        <td className="px-6 py-4 font-bold text-gray-700 text-right">Rs.{order.totalOrderPrice != null ? Number(order.totalOrderPrice).toFixed(2) : '0.00'}</td>
+                        <tbody>
+                            {analytics?.recentOrders?.length > 0 ? analytics.recentOrders.map((order, i) => {
+                                const sc = statusColors[order.status] || statusColors.Draft;
+                                return (
+                                    <tr key={order._id || i}
+                                        className="transition-colors"
+                                        style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
+                                        onMouseEnter={e => e.currentTarget.style.background = 'color-mix(in oklab, var(--primary-glow) 4%, transparent)'}
+                                        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                                        <td className="px-6 py-4 text-sm font-semibold" style={{ color: 'var(--foreground)' }}>{order.orderNumber}</td>
+                                        <td className="px-6 py-4 text-sm" style={{ color: 'var(--muted-foreground)' }}>{order.customer?.customerName}</td>
+                                        <td className="px-6 py-4 text-xs" style={{ color: 'var(--muted-foreground)' }}>{new Date(order.createdAt).toLocaleDateString()}</td>
+                                        <td className="px-6 py-4 text-sm font-semibold" style={{ color: 'var(--foreground)' }}>₹{Number(order.totalOrderPrice).toFixed(2)}</td>
                                         <td className="px-6 py-4">
-                                            <span className={`px-3 py-1 text-xs font-bold rounded-full ${order.status === 'Processing' ? 'bg-blue-50 text-blue-600' :
-                                                order.status === 'Completed' ? 'bg-green-50 text-green-600' :
-                                                    order.status === 'Cancelled' ? 'bg-red-50 text-red-600' :
-                                                        'bg-gray-100 text-gray-600'
-                                                }`}>
-                                                {order.status || 'Pending'}
+                                            <span className="px-2.5 py-1 text-xs font-semibold rounded-full"
+                                                  style={{ background: sc.bg, color: sc.text }}>
+                                                {order.status}
                                             </span>
                                         </td>
                                     </tr>
-                                ))
-                            ) : (
+                                );
+                            }) : (
                                 <tr>
-                                    <td colSpan="5" className="px-6 py-8 text-center text-gray-400 font-medium">No recent orders found</td>
+                                    <td colSpan={5} className="px-6 py-10 text-center text-sm"
+                                        style={{ color: 'var(--muted-foreground)' }}>
+                                        No recent orders found
+                                    </td>
                                 </tr>
                             )}
                         </tbody>
@@ -215,5 +221,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-

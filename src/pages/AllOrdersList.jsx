@@ -16,31 +16,21 @@ import api from '../services/apiInstance';
 const datePickerStyles = {
     '& .MuiOutlinedInput-root': {
         borderRadius: '9999px',
-        backgroundColor: 'rgba(249, 250, 251, 0.8)',
+        backgroundColor: 'rgba(255,255,255,0.05)',
         fontSize: '0.75rem',
         fontWeight: 700,
         height: '42px',
-        '& fieldset': {
-            borderColor: '#f3f4f6',
-        },
-        '&:hover fieldset': {
-            borderColor: '#f59e0b80',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: '#f59e0b80',
-        },
+        color: 'var(--foreground)',
+        '& fieldset': { borderColor: 'rgba(255,255,255,0.12)' },
+        '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.20)' },
+        '&.Mui-focused fieldset': { borderColor: 'var(--primary-glow)' },
     },
     '& .MuiInputBase-input': {
         padding: '0 16px',
-        color: '#4b5563',
-        '&::placeholder': {
-            opacity: 1,
-            color: '#d1d5db',
-        }
+        color: 'var(--foreground)',
     },
-    '& .MuiInputAdornment-root': {
-        marginRight: '8px'
-    }
+    '& .MuiInputAdornment-root': { marginRight: '8px' },
+    '& .MuiSvgIcon-root': { color: 'var(--muted-foreground)' },
 };
 
 const AllOrdersList = () => {
@@ -263,19 +253,19 @@ const AllOrdersList = () => {
 
     const getStatusBadge = (status) => {
         const statusMap = {
-            'DRAFT': 'bg-gray-100 text-gray-700 border-gray-200',
-            'SUBMITTED': 'bg-amber-100 text-amber-700 border-amber-200',
-            'PROCESSING': 'bg-blue-100 text-blue-700 border-blue-200',
-            'COMPLETED': 'bg-green-100 text-green-700 border-green-200',
-            'CANCELLED': 'bg-red-100 text-red-700 border-red-200'
+            'DRAFT': 'bg-white/5 text-white/50 border-white/10',
+            'SUBMITTED': 'bg-amber-900/30 text-amber-300 border-amber-700/40',
+            'PROCESSING': 'bg-blue-900/30 text-blue-300 border-blue-700/40',
+            'COMPLETED': 'bg-green-900/30 text-green-300 border-green-700/40',
+            'CANCELLED': 'bg-red-900/30 text-red-300 border-red-700/40'
         };
-        const style = statusMap[status?.toUpperCase()] || 'bg-gray-100 text-gray-700 border-gray-200';
+        const style = statusMap[status?.toUpperCase()] || 'bg-white/5 text-white/50 border-white/10';
         return `px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${style}`;
     };
 
     return (
         <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto p-4 animate-in fade-in duration-500">
-            <div className="bg-white p-4 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] shadow-sm border border-gray-100/80 flex flex-col gap-4 md:gap-6">
+            <div className="p-4 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] flex flex-col gap-4 md:gap-6" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-wrap items-end gap-3 md:gap-6">
                     <div className="flex flex-col gap-1.5 col-span-1 md:col-span-2 lg:min-w-[300px] lg:flex-1">
                         <span className="text-[10px] md:text-[11px] font-black text-gray-400 uppercase tracking-[0.15em] ml-2 md:ml-5">Search By Order ID, Shop Name, or Customer</span>
@@ -283,7 +273,8 @@ const AllOrdersList = () => {
                             <Icon icon="mdi:magnify" className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 text-lg group-hover:text-erp-accent transition-colors" />
                             <input
                                 placeholder="Order #65432..."
-                                className="w-full pl-14 pr-6 py-2.5 rounded-full bg-gray-50/80 border border-gray-100/50 text-[11px] font-black uppercase tracking-widest text-gray-700 focus:bg-white focus:ring-4 focus:ring-amber-50 focus:border-erp-accent/10 transition-all outline-none placeholder:text-gray-300"
+                                className="w-full pl-14 pr-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all outline-none"
+                                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.10)', color: 'var(--foreground)' }}
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
@@ -295,7 +286,8 @@ const AllOrdersList = () => {
                         <div className="relative">
                             <Icon icon="mdi:checkbox-blank-circle-outline" className="fixed-icon absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
                             <select
-                                className="w-full pl-14 pr-10 py-2.5 rounded-full bg-gray-50/80 border border-gray-100/50 text-[11px] font-black uppercase tracking-widest text-gray-700 appearance-none focus:bg-white focus:ring-4 focus:ring-amber-50 transition-all outline-none"
+                                className="w-full pl-14 pr-10 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest appearance-none transition-all outline-none"
+                                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.10)', color: 'var(--foreground)' }}
                                 value={filters.status}
                                 onChange={(e) => setFilters({ ...filters, status: e.target.value })}
                             >
@@ -324,8 +316,10 @@ const AllOrdersList = () => {
                                     height: '42px',
                                     fontSize: '0.75rem',
                                     fontWeight: 700,
-                                    backgroundColor: 'rgba(249, 250, 251, 0.8)',
-                                    '& fieldset': { borderColor: '#f3f4f6' },
+                                    backgroundColor: 'rgba(255,255,255,0.05)',
+                                    color: 'var(--foreground)',
+                                    '& fieldset': { borderColor: 'rgba(255,255,255,0.12)' },
+                                    '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.20)' },
                                 }
                             }}
                         />
@@ -371,7 +365,7 @@ const AllOrdersList = () => {
                 </div>
             </div>
 
-            <div className="w-full bg-white rounded-[2rem] shadow-xl overflow-hidden border border-gray-100 min-h-[500px]">
+            <div className="w-full rounded-[2rem] overflow-hidden min-h-[500px]" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
                 {loading ? (
                     <div className="flex justify-center items-center h-[500px]">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-erp-accent"></div>

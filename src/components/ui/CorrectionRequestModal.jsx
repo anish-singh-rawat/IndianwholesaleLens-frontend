@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Icon } from '@iconify/react';
 import Button from './Button';
+import { X } from 'lucide-react';
 
 const ALLOWED_FIELDS = [
     { id: 'shopName', label: 'Shop Name' },
@@ -31,7 +32,7 @@ const ALLOWED_FIELDS = [
     { id: 'courierName', label: 'Courier Name' },
     { id: 'courierTime', label: 'Courier Time' },
     { id: 'brandCategories', label: 'Brand Categories' },
-    { id: 'salesPerson', label: 'Sales Person' }
+    { id: 'salesPerson', label: 'Sales Person' },
 ];
 
 const CorrectionRequestModal = ({ isOpen, onClose, onSubmit, customerName, loading, initialFields = [], showTargetRole = false }) => {
@@ -39,116 +40,130 @@ const CorrectionRequestModal = ({ isOpen, onClose, onSubmit, customerName, loadi
     const [remark, setRemark] = useState('');
     const [targetRole, setTargetRole] = useState('Sales');
 
-    React.useEffect(() => {
-        if (isOpen && initialFields.length > 0) {
-            setSelectedFields(initialFields);
-        }
+    useState(() => {
+        if (isOpen && initialFields.length > 0) setSelectedFields(initialFields);
     }, [isOpen, initialFields]);
 
     if (!isOpen) return null;
 
-    const toggleField = (fieldId) => {
-        setSelectedFields(prev =>
-            prev.includes(fieldId)
-                ? prev.filter(id => id !== fieldId)
-                : [...prev, fieldId]
-        );
-    };
-
-    const handleSelectAll = () => {
-        if (selectedFields.length === ALLOWED_FIELDS.length) {
-            setSelectedFields([]);
-        } else {
-            setSelectedFields(ALLOWED_FIELDS.map(f => f.id));
-        }
-    };
-
     const handleSubmit = () => {
-        if (!remark.trim()) {
-            alert('Please provide a remark for the correction request');
-            return;
-        }
+        if (!remark.trim()) { alert('Please provide a remark'); return; }
         onSubmit({ fieldsToCorrect: initialFields, remark, targetRole });
     };
 
     return createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 backdrop-blur-sm"
+             style={{ background: 'rgba(4,18,38,0.75)' }}>
             <div
-                className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-gray-100 flex flex-col max-h-[90vh]"
-                onClick={(e) => e.stopPropagation()}
-            >
+                className="w-full max-w-2xl rounded-3xl flex flex-col max-h-[90vh] overflow-hidden"
+                style={{
+                    background: 'rgba(8,18,36,0.97)',
+                    backdropFilter: 'blur(28px) saturate(180%)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    boxShadow: '0 40px 80px rgba(0,0,0,0.6)',
+                }}
+                onClick={e => e.stopPropagation()}>
+
                 {/* Header */}
-                <div className="p-8 pb-4 flex items-center justify-between border-b border-gray-50">
+                <div className="px-8 py-6 flex items-center justify-between border-b"
+                     style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
                     <div>
-                        <h2 className="text-2xl font-black text-gray-800 uppercase tracking-tight">Send for Correction</h2>
-                        <p className="text-gray-500 font-medium text-sm mt-1">Reviewing: <span className="text-erp-accent font-bold">{customerName}</span></p>
+                        <h2 className="text-xl font-bold uppercase tracking-tight"
+                            style={{ fontFamily: 'var(--font-display)', color: 'var(--foreground)' }}>
+                            Send for Correction
+                        </h2>
+                        <p className="text-sm mt-0.5" style={{ color: 'var(--muted-foreground)' }}>
+                            Reviewing: <span style={{ color: 'var(--primary-glow)', fontWeight: 600 }}>{customerName}</span>
+                        </p>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                        <Icon icon="mdi:close" className="text-2xl text-gray-400" />
+                    <button onClick={onClose} className="p-2 rounded-full transition-colors"
+                            style={{ color: 'var(--muted-foreground)' }}
+                            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
+                            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                        <X size={20} />
                     </button>
                 </div>
 
-                {/* Content */}
+                {/* Body */}
                 <div className="p-8 flex-1 overflow-y-auto custom-scrollbar">
-                    <div className="mb-8 p-4 bg-erp-accent/5 rounded-2xl border border-erp-accent/10">
-                        <h3 className="text-xs font-black text-amber-800 uppercase tracking-[0.1em] mb-3">Fields Marked for Correction:</h3>
-                        <div className="flex flex-wrap gap-2">
-                            {initialFields.map((fieldId) => {
-                                const field = ALLOWED_FIELDS.find(f => f.id === fieldId);
-                                let label = field ? field.label : fieldId;
-
-                                if (!field) {
-                                    // Strip RefId and format PascalCase/camelCase to labels
-                                    label = fieldId.replace(/RefId$/, '')
-                                        .replace(/([A-Z])/g, ' $1')
-                                        .trim()
-                                        .replace(/^./, str => str.toUpperCase());
-
-                                    if (fieldId.includes('.') || fieldId.includes('[')) {
-                                        // Handle both formats: address.0.branchAddress or address[0].branchAddress
+                    {initialFields.length > 0 && (
+                        <div className="mb-6 p-4 rounded-2xl"
+                             style={{
+                                 background: 'color-mix(in oklab, var(--warning) 8%, transparent)',
+                                 border: '1px solid color-mix(in oklab, var(--warning) 20%, transparent)',
+                             }}>
+                            <h3 className="text-xs font-semibold uppercase tracking-[0.18em] mb-3"
+                                style={{ color: 'var(--warning)' }}>
+                                Fields Marked for Correction
+                            </h3>
+                            <div className="flex flex-wrap gap-2">
+                                {initialFields.map(fieldId => {
+                                    const field = ALLOWED_FIELDS.find(f => f.id === fieldId);
+                                    let label = field ? field.label : fieldId;
+                                    if (!field) {
+                                        label = fieldId.replace(/RefId$/, '').replace(/([A-Z])/g, ' $1').trim().replace(/^./, s => s.toUpperCase());
                                         const parts = fieldId.split(/[.[\]]+/).filter(Boolean);
-                                        if (parts[0] === 'address' && !isNaN(parts[1]) && parts[2]) {
-                                            label = `Address ${parseInt(parts[1]) + 1} - ${parts[2].replace(/([A-Z])/g, ' $1').trim().replace(/^./, str => str.toUpperCase())}`;
-                                        } else if (parts[0] === 'brandCategories' && !isNaN(parts[1]) && parts[2]) {
-                                            label = `Brand ${parseInt(parts[1]) + 1} - ${parts[2].replace(/([A-Z])/g, ' $1').trim().replace(/^./, str => str.toUpperCase())}`;
-                                        }
+                                        if (parts[0] === 'address' && !isNaN(parts[1]) && parts[2])
+                                            label = `Address ${+parts[1]+1} – ${parts[2].replace(/([A-Z])/g,' $1').trim()}`;
+                                        else if (parts[0] === 'brandCategories' && !isNaN(parts[1]) && parts[2])
+                                            label = `Brand ${+parts[1]+1} – ${parts[2].replace(/([A-Z])/g,' $1').trim()}`;
                                     }
-                                }
-                                return (
-                                    <span key={fieldId} className="px-3 py-1 bg-white border border-amber-200 text-amber-700 text-xs font-bold rounded-lg shadow-sm">
-                                        {label}
-                                    </span>
-                                )
-                            })}
+                                    return (
+                                        <span key={fieldId}
+                                              className="px-3 py-1 text-xs font-semibold rounded-lg"
+                                              style={{
+                                                  background: 'color-mix(in oklab, var(--warning) 12%, transparent)',
+                                                  border: '1px solid color-mix(in oklab, var(--warning) 30%, transparent)',
+                                                  color: 'var(--warning)',
+                                              }}>
+                                            {label}
+                                        </span>
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
-                    <div className="space-y-3">
-                        <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em]">Detailed Remark</h3>
+                    <div className="space-y-2">
+                        <label className="block text-xs font-semibold uppercase tracking-[0.18em]"
+                               style={{ color: 'var(--muted-foreground)' }}>
+                            Detailed Remark
+                        </label>
                         <textarea
                             value={remark}
-                            onChange={(e) => setRemark(e.target.value)}
-                            placeholder="Explain what needs to be corrected and why..."
-                            className="w-full h-32 p-5 bg-gray-50 border border-gray-100 rounded-[1.5rem] text-sm font-semibold text-gray-700 outline-none focus:border-amber-500/50 focus:bg-white focus:shadow-md transition-all resize-none placeholder:text-gray-300"
+                            onChange={e => setRemark(e.target.value)}
+                            placeholder="Explain what needs to be corrected and why…"
+                            rows={5}
+                            className="w-full p-4 rounded-xl text-sm font-medium resize-none custom-scrollbar"
+                            style={{
+                                background: 'color-mix(in oklab, var(--foreground) 5%, transparent)',
+                                border: '1px solid color-mix(in oklab, var(--foreground) 12%, transparent)',
+                                color: 'var(--foreground)',
+                                outline: 'none',
+                            }}
+                            onFocus={e => {
+                                e.target.style.borderColor = 'color-mix(in oklab, var(--primary-glow) 60%, transparent)';
+                                e.target.style.boxShadow = '0 0 0 3px color-mix(in oklab, var(--primary-glow) 10%, transparent)';
+                            }}
+                            onBlur={e => {
+                                e.target.style.borderColor = 'color-mix(in oklab, var(--foreground) 12%, transparent)';
+                                e.target.style.boxShadow = '';
+                            }}
                         />
                     </div>
                 </div>
 
                 {/* Footer */}
-                <div className="p-8 pt-4 flex gap-4 border-t border-gray-50 bg-gray-50/30">
-                    <Button
-                        variant="outlined"
-                        onClick={onClose}
-                        disabled={loading}
-                        className="rounded-2xl border-gray-200 text-gray-500 hover:bg-white"
-                    >
+                <div className="px-8 py-5 flex gap-3 border-t"
+                     style={{ borderColor: 'rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.4)' }}>
+                    <Button variant="outlined" onClick={onClose} disabled={loading} className="flex-1">
                         Cancel
                     </Button>
                     <button
                         onClick={handleSubmit}
                         disabled={loading || !remark.trim()}
-                        className={`w-full py-3.5 px-6 font-bold rounded-2xl text-white transition-all focus:outline-none flex items-center justify-center gap-2 bg-erp-accent/50 hover:bg-amber-600 shadow-lg shadow-amber-500/30 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed`}
-                    >
+                        className="flex-1 py-3 px-6 font-semibold rounded-xl text-white transition-all focus:outline-none flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                        style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 100%)', color: 'var(--primary-foreground)' }}>
                         {loading && <Icon icon="mdi:loading" className="animate-spin text-xl" />}
                         Send Request
                     </button>
@@ -160,5 +175,3 @@ const CorrectionRequestModal = ({ isOpen, onClose, onSubmit, customerName, loadi
 };
 
 export default CorrectionRequestModal;
-
-

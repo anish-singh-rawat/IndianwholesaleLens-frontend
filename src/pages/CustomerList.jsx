@@ -17,31 +17,21 @@ import PermissionWrapper from '../components/PermissionWrapper';
 const datePickerStyles = {
     '& .MuiOutlinedInput-root': {
         borderRadius: '9999px',
-        backgroundColor: 'rgba(249, 250, 251, 0.8)',
+        backgroundColor: 'rgba(255,255,255,0.05)',
         fontSize: '0.75rem',
         fontWeight: 700,
         height: '42px',
-        '& fieldset': {
-            borderColor: '#f3f4f6',
-        },
-        '&:hover fieldset': {
-            borderColor: '#f59e0b80',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: '#f59e0b80',
-        },
+        color: 'var(--foreground)',
+        '& fieldset': { borderColor: 'rgba(255,255,255,0.12)' },
+        '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.20)' },
+        '&.Mui-focused fieldset': { borderColor: 'var(--primary-glow)' },
     },
     '& .MuiInputBase-input': {
         padding: '0 16px',
-        color: '#4b5563',
-        '&::placeholder': {
-            opacity: 1,
-            color: '#d1d5db',
-        }
+        color: 'var(--foreground)',
     },
-    '& .MuiInputAdornment-root': {
-        marginRight: '8px'
-    }
+    '& .MuiInputAdornment-root': { marginRight: '8px' },
+    '& .MuiSvgIcon-root': { color: 'var(--muted-foreground)' },
 };
 
 const CustomerList = () => {
@@ -275,7 +265,7 @@ const CustomerList = () => {
                 </div>
             </div> */}
             {/* Filter Bar */}
-            <div className="bg-white p-4 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] shadow-sm border border-gray-100/80 flex flex-col gap-4 md:gap-6 ">
+            <div className="p-4 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] flex flex-col gap-4 md:gap-6" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-wrap items-end gap-3 md:gap-6">
                     {/* Search - Full width on mobile/tablet, flexible on desktop */}
                     <div className="flex flex-col gap-1.5 col-span-1 md:col-span-2 lg:min-w-[300px] lg:flex-1">
@@ -403,7 +393,7 @@ const CustomerList = () => {
             </div>
 
             {/* Table Container */}
-            <div className="w-full bg-white rounded-[2rem] shadow-xl overflow-hidden border border-gray-100 min-h-[500px]">
+            <div className="w-full rounded-[2rem] overflow-hidden min-h-[500px]" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
                 {loading ? (
                     <div className="flex justify-center items-center h-[500px]">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-erp-accent"></div>

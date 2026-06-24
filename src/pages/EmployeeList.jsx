@@ -206,7 +206,7 @@ const EmployeeList = () => {
     return (
         <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto p-4">
             {/* Filter Bar */}
-            <div className="bg-white p-4 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] shadow-sm border border-gray-100/80 flex flex-col gap-4 md:gap-6 ">
+            <div className="p-4 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] flex flex-col gap-4 md:gap-6" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-wrap items-end gap-3 md:gap-6">
                     {/* Search - Full width on mobile/tablet, flexible on desktop */}
                     <div className="flex flex-col gap-1.5 col-span-1 md:col-span-2 lg:min-w-[300px] lg:flex-1">
@@ -304,7 +304,7 @@ const EmployeeList = () => {
                 </div>
             </div>
 
-            <div className="w-full bg-white rounded-[2rem] shadow-xl overflow-hidden border border-gray-100 min-h-[500px]">
+            <div className="w-full rounded-[2rem] overflow-hidden min-h-[500px]" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
                 {loading ? (
                     <div className="flex justify-center items-center h-[500px]">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-erp-accent"></div>
@@ -342,7 +342,7 @@ const EmployeeList = () => {
                                                 </div>
                                             </td>
                                             <td className="px-4 py-2 text-center border-r border-gray-50">
-                                                <span className="px-2.5 py-1 bg-gray-100 text-gray-600 rounded-md text-[9px] font-black uppercase tracking-widest border border-gray-200">
+                                                <span className="px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-widest" style={{ background: 'rgba(255,255,255,0.08)', color: 'var(--muted-foreground)', border: '1px solid rgba(255,255,255,0.10)' }}>
                                                     {emp?.Department?.name || emp?.Department || '---'}
                                                 </span>
                                             </td>
@@ -353,7 +353,7 @@ const EmployeeList = () => {
                                                 {emp.phone || '---'}
                                             </td>
                                             <td className="px-4 py-2 text-center border-r border-gray-50">
-                                                <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${emp.isActive ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-red-100 text-red-700 border border-red-200'}`}>
+                                                <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${emp.isActive ? 'bg-green-900/30 text-green-300 border-green-700/40' : 'bg-red-900/30 text-red-300 border-red-700/40'}`}>
                                                     {emp.isActive ? 'ACTIVE' : 'INACTIVE'}
                                                 </span>
                                             </td>
@@ -371,7 +371,8 @@ const EmployeeList = () => {
                                                             className="fixed inset-0 z-[60]"
                                                             onClick={() => setActiveActionMenu(null)}
                                                         />
-                                                        <div className="absolute right-full top-1/2 -translate-y-1/2 mr-2 z-[70] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden min-w-[140px] animate-in fade-in slide-in-from-right-4 duration-200">
+                                                        <div className="absolute right-full top-1/2 -translate-y-1/2 mr-2 z-[70] rounded-2xl shadow-2xl overflow-hidden min-w-[140px] animate-in fade-in slide-in-from-right-4 duration-200"
+                                                            style={{ background: 'color-mix(in oklab, var(--card) 90%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.12)' }}>
                                                             <button
                                                                 onClick={() => { toggleRow(emp._id); setActiveActionMenu(null); }}
                                                                 className="w-full flex items-center gap-3 px-4 py-3 text-xs font-bold text-gray-600 hover:bg-erp-accent/10 hover:text-erp-accent/80 transition-colors"

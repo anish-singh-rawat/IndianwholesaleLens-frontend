@@ -23,34 +23,39 @@ import { FiUpload, FiDownload, FiCheckCircle, FiAlertCircle } from "react-icons/
 
 // ─── shared primitives ────────────────────────────────────────────────────────
 const Modal = ({ children, onClose, maxWidth = "max-w-5xl" }) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-        <div className={`bg-white w-full ${maxWidth} max-h-[92vh] rounded-2xl shadow-2xl flex flex-col animate-fadeIn`}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        style={{ background: 'rgba(4,18,38,0.75)', backdropFilter: 'blur(28px) saturate(180%)' }}>
+        <div className={`w-full ${maxWidth} max-h-[92vh] rounded-2xl shadow-2xl flex flex-col animate-fadeIn`}
+            style={{ background: 'color-mix(in oklab, var(--card) 85%, transparent)', backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.12)' }}>
             {children}
         </div>
     </div>
 );
 
-const ModalHeader = ({ title, subtitle, onClose, icon: Icon }) => (
-    <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 flex-shrink-0">
+const ModalHeader = ({ title, subtitle, onClose, icon: IconComp }) => (
+    <div className="flex items-center justify-between px-6 py-4 flex-shrink-0"
+        style={{ borderBottom: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.4)' }}>
         <div className="flex items-center gap-3">
-            {Icon && (
-                <div className="w-8 h-8 rounded-xl bg-erp-accent/5 flex items-center justify-center">
-                    <Icon size={15} className="text-erp-accent" />
+            {IconComp && (
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center"
+                    style={{ background: 'color-mix(in oklab, var(--primary-glow) 12%, transparent)', color: 'var(--primary-glow)' }}>
+                    <IconComp size={15} />
                 </div>
             )}
             <div>
-                <h2 className="text-sm font-bold text-gray-800">{title}</h2>
-                {subtitle && <p className="text-xs text-gray-400 mt-0.5">{subtitle}</p>}
+                <h2 className="text-sm font-bold" style={{ color: 'var(--foreground)' }}>{title}</h2>
+                {subtitle && <p className="text-xs mt-0.5" style={{ color: 'var(--muted-foreground)' }}>{subtitle}</p>}
             </div>
         </div>
-        <button onClick={onClose} className="p-2 rounded-full text-gray-400 hover:bg-gray-100 transition">
+        <button onClick={onClose} className="p-2 rounded-full transition" style={{ color: 'var(--muted-foreground)' }}>
             <FiX size={15} />
         </button>
     </div>
 );
 
 const ModalFooter = ({ children }) => (
-    <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50/60 rounded-b-2xl flex-shrink-0">
+    <div className="flex items-center justify-end gap-3 px-6 py-4 rounded-b-2xl flex-shrink-0"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.4)' }}>
         {children}
     </div>
 );
@@ -69,7 +74,8 @@ const FieldInput = ({ label, children }) => (
     </div>
 );
 
-const inputCls = "w-full px-3 py-2 text-sm border border-gray-300 rounded-xl outline-none focus:border-erp-accent/30 focus:ring-2 focus:ring-erp-accent/10 hover:border-gray-400 bg-gray-50 text-gray-700 transition placeholder:text-gray-300";
+const inputCls = "w-full px-3 py-2 text-sm border rounded-xl outline-none transition";
+const inputSty = { background: 'color-mix(in oklab, var(--foreground) 5%, transparent)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' };
 const selectCls = inputCls;
 
 const FETCH_LIMIT = 100;

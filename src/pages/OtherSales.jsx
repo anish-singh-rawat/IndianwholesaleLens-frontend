@@ -126,21 +126,23 @@ const OtherSales = () => {
         }
     };
 
-    const inputClasses = "w-full px-4 py-3 text-sm text-gray-700 bg-gray-50/50 border border-gray-200 rounded-xl outline-none focus:bg-white focus:border-erp-accent/50 focus:ring-4 focus:ring-erp-accent/10 transition-all";
-    const labelClasses = "block text-[10px] font-black text-gray-600 uppercase tracking-widest mb-2 flex items-center gap-1.5";
+    const inputClasses = "w-full px-4 py-3 text-sm border rounded-xl outline-none transition-all";
+    const inputStyle = { background: 'color-mix(in oklab, var(--foreground) 5%, transparent)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' };
+    const labelClasses = "block text-[10px] font-black uppercase tracking-widest mb-2 flex items-center gap-1.5";
+    const labelStyle = { color: 'var(--muted-foreground)' };
 
     return (
         <div className="w-full flex flex-col gap-6 animate-in fade-in duration-500">
             <header className="flex justify-between items-end">
                 <div>
-                    <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tighter">Other Sales</h1>
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mt-1">Record service or secondary sales</p>
+                    <h1 className="text-3xl font-black uppercase tracking-tighter" style={{ color: 'var(--foreground)', fontFamily: 'var(--font-display)' }}>Other Sales</h1>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] mt-1" style={{ color: 'var(--muted-foreground)' }}>Record service or secondary sales</p>
                 </div>
             </header>
 
-            <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/40 p-8">
+            <div className="rounded-[2.5rem] p-8" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.10)' }}>
                 <div className="flex items-center gap-2 mb-8 border-l-[3px] border-erp-accent pl-3">
-                    <h2 className="text-xs font-black text-gray-700 uppercase tracking-widest">Sale Details</h2>
+                    <h2 className="text-xs font-black uppercase tracking-widest" style={{ color: 'var(--foreground)' }}>Sale Details</h2>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-6">
@@ -243,8 +245,9 @@ const OtherSales = () => {
                     </div>
                 </div>
 
-                <div className="pt-8 border-t border-gray-100 flex justify-end gap-4 mt-8">
-                    <button type="button" onClick={handleReset} className="flex items-center gap-2 px-8 py-3 rounded-full border border-gray-200 text-gray-600 text-[10px] font-black uppercase tracking-widest hover:bg-gray-50 transition-all">
+                <div className="pt-8 flex justify-end gap-4 mt-8" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+                    <button type="button" onClick={handleReset} className="flex items-center gap-2 px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all"
+                        style={{ border: '1px solid rgba(255,255,255,0.12)', color: 'var(--muted-foreground)' }}>
                         <Icon icon="mdi:refresh" className="text-xl" />
                         Reset
                     </button>

@@ -1,24 +1,24 @@
-import React from 'react';
-
-/**
- * A reusable toggle/switch component for binary options (e.g., Single/Both, Yes/No).
- */
 const CustomToggle = ({
     options = [],
     value,
     onChange,
     label,
-    containerClassName = "",
-    disabled = false
+    containerClassName = '',
+    disabled = false,
 }) => {
     return (
-        <div className={`space-x-2 flex items-center ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${containerClassName}`}>
+        <div className={`flex items-center gap-2 ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${containerClassName}`}>
             {label && (
-                <label className="block text-xs whitespace-nowrap font-black uppercase tracking-widest text-erp-accent  px-1">
+                <label className="block text-xs whitespace-nowrap font-semibold uppercase tracking-widest px-1"
+                       style={{ color: 'var(--primary-glow)' }}>
                     {label}
                 </label>
             )}
-            <div className="flex bg-gray-100/80 p-1 w-full rounded-2xl border border-gray-200/50">
+            <div className="flex p-1 w-full rounded-2xl"
+                 style={{
+                     background: 'color-mix(in oklab, var(--foreground) 6%, transparent)',
+                     border: '1px solid color-mix(in oklab, var(--foreground) 10%, transparent)',
+                 }}>
                 {options.map((option) => {
                     const isActive = value === option.value;
                     return (
@@ -27,11 +27,17 @@ const CustomToggle = ({
                             type="button"
                             onClick={() => !disabled && onChange(option.value)}
                             disabled={disabled}
-                            className={`flex-1 py-2.5 px-4 rounded-xl whitespace-nowrap text-xs font-black uppercase transition-all duration-300 ${disabled ? 'cursor-not-allowed' : ''} ${isActive
-                                ? 'bg-erp-accent text-white shadow-lg shadow-orange-500/20 scale-[1.02]'
-                                : 'text-gray-400 hover:text-gray-600 hover:bg-gray-200/50'
-                                }`}
-                        >
+                            className="flex-1 py-2.5 px-4 rounded-xl whitespace-nowrap text-xs font-semibold uppercase transition-all duration-200"
+                            style={{
+                                background: isActive
+                                    ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 100%)'
+                                    : 'transparent',
+                                color: isActive ? 'var(--primary-foreground)' : 'var(--muted-foreground)',
+                                boxShadow: isActive
+                                    ? '0 0 0 1px color-mix(in oklab, var(--primary-glow) 30%, transparent)'
+                                    : 'none',
+                                cursor: disabled ? 'not-allowed' : 'pointer',
+                            }}>
                             {option.label}
                         </button>
                     );
@@ -42,5 +48,3 @@ const CustomToggle = ({
 };
 
 export default CustomToggle;
-
-

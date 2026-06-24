@@ -92,22 +92,24 @@ const DraftsList = () => {
                     <p className="text-gray-500 font-medium">Manage and continue your pending registrations</p>
                 </div>
 
-                <div className="flex bg-gray-100 p-1 rounded-2xl w-fit">
+                <div className="flex p-1 rounded-2xl w-fit" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.09)' }}>
                     <button
                         onClick={() => setActiveTab('customers')}
                         className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === 'customers'
-                            ? 'bg-white text-erp-accent/80 shadow-sm'
-                            : 'text-gray-500 hover:text-gray-700'
+                            ? 'shadow-sm'
+                            : ''
                             }`}
+                        style={activeTab === 'customers' ? { background: 'rgba(255,255,255,0.12)', color: 'var(--foreground)' } : { color: 'var(--muted-foreground)' }}
                     >
                         Customers
                     </button>
                     <button
                         onClick={() => setActiveTab('employees')}
                         className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === 'employees'
-                            ? 'bg-white text-erp-accent/80 shadow-sm'
-                            : 'text-gray-500 hover:text-gray-700'
+                            ? 'shadow-sm'
+                            : ''
                             }`}
+                        style={activeTab === 'employees' ? { background: 'rgba(255,255,255,0.12)', color: 'var(--foreground)' } : { color: 'var(--muted-foreground)' }}
                     >
                         Staff
                     </button>
@@ -120,8 +122,8 @@ const DraftsList = () => {
                     <span className="text-gray-400 font-bold uppercase tracking-widest text-xs animate-pulse">Loading Drafts...</span>
                 </div>
             ) : drafts.length === 0 ? (
-                <div className="bg-white rounded-[40px] p-20 border-2 border-dashed border-gray-100 flex flex-col items-center justify-center text-center gap-6 shadow-sm">
-                    <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center">
+                <div className="rounded-[40px] p-20 border-2 border-dashed flex flex-col items-center justify-center text-center gap-6" style={{ borderColor: 'rgba(255,255,255,0.10)', background: 'rgba(255,255,255,0.03)' }}>
+                    <div className="w-24 h-24 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
                         <Icon icon="mdi:file-search-outline" className="text-5xl text-gray-200" />
                     </div>
                     <div>
@@ -141,7 +143,8 @@ const DraftsList = () => {
                     {drafts.map((draft) => (
                         <div
                             key={draft._id}
-                            className="bg-white/80 backdrop-blur-sm rounded-[32px] p-6 border border-gray-100 shadow-sm hover:shadow-xl transition-all group relative overflow-hidden"
+                            className="rounded-[32px] p-6 backdrop-blur-sm shadow-sm hover:shadow-xl transition-all group relative overflow-hidden"
+                            style={{ background: 'color-mix(in oklab, var(--card) 80%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.10)' }}
                         >
                             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
                                 <Icon
@@ -159,7 +162,7 @@ const DraftsList = () => {
                                         }
                                     </h3>
                                     <div className="flex items-center gap-2 mt-1">
-                                        <span className="bg-amber-100 text-amber-700 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
+                                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full uppercase" style={{ background: 'rgba(251,191,36,0.15)', color: 'rgb(251,191,36)' }}>
                                             {activeTab === 'customers' ? (draft.data?.businessType?.name || draft.data?.businessType || draft.data?.CustomerType || 'Customer') : 'Staff'}
                                         </span>
                                         <span className="text-gray-400 text-[10px] font-bold">
@@ -168,7 +171,7 @@ const DraftsList = () => {
                                     </div>
                                 </div>
 
-                                <div className="mt-auto flex items-center justify-between pt-6 border-t border-gray-50">
+                                <div className="mt-auto flex items-center justify-between pt-6 border-t" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
                                     <div className="flex flex-col">
                                         <span className="text-gray-400 text-[10px] font-bold uppercase  ">Reference</span>
                                         <span className="text-gray-600 font-mono text-xs">{draft._id.slice(-8).toUpperCase()}</span>

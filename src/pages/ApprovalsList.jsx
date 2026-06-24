@@ -98,19 +98,19 @@ const ApprovalsList = () => {
             </div> */}
 
             {/* Table Area */}
-            <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
+            <div className="rounded-[2.5rem] overflow-hidden" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
                 <div className="overflow-x-auto custom-scrollbar">
                     <table className="w-full text-left border-collapse">
                         <thead>
-                            <tr className="bg-gray-50/50 border-b border-gray-100">
-                                <th className="p-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Shop Info</th>
-                                <th className="p-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Customer Type</th>
-                                <th className="p-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Created By</th>
-                                <th className="p-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Submission Date</th>
-                                <th className="p-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] text-right">Actions</th>
+                            <tr style={{ background: 'rgba(4,12,24,0.5)', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: 'var(--muted-foreground)' }}>Shop Info</th>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: 'var(--muted-foreground)' }}>Customer Type</th>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: 'var(--muted-foreground)' }}>Created By</th>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: 'var(--muted-foreground)' }}>Submission Date</th>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-[0.2em] text-right" style={{ color: 'var(--muted-foreground)' }}>Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-50">
+                        <tbody style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                             {loading ? (
                                 Array(5).fill(0).map((_, i) => (
                                     <tr key={i} className="animate-pulse">
@@ -154,7 +154,7 @@ const ApprovalsList = () => {
                                             </div>
                                         </td>
                                         <td className="p-6">
-                                            <span className="px-3 py-1 whitespace-nowrap bg-gray-100 text-gray-600 rounded-full text-[10px] font-black uppercase tracking-widest">
+                                            <span className="px-3 py-1 whitespace-nowrap rounded-full text-[10px] font-black uppercase tracking-widest" style={{ background: 'rgba(255,255,255,0.08)', color: 'var(--muted-foreground)' }}>
                                                 {approval.businessType?.name || approval.businessType || approval.CustomerType?.name || approval.CustomerType || 'N/A'}
                                             </span>
                                         </td>
@@ -171,7 +171,7 @@ const ApprovalsList = () => {
                                             </span>
                                         </td>
                                         <td className="p-6 text-right">
-                                            <button className="p-2.5 bg-gray-50 text-gray-400 rounded-xl group-hover:bg-erp-accent group-hover:text-white transition-all shadow-sm">
+                                            <button className="p-2.5 rounded-xl group-hover:bg-erp-accent group-hover:text-white transition-all" style={{ background: 'rgba(255,255,255,0.06)', color: 'var(--muted-foreground)' }}>
                                                 <Icon icon="mdi:eye-outline" className="text-xl" />
                                             </button>
                                         </td>
@@ -184,7 +184,7 @@ const ApprovalsList = () => {
 
                 {/* Pagination */}
                 {!loading && approvals.length > 0 && (
-                    <div className="p-6 flex items-center justify-between bg-gray-50/50 border-t border-gray-100">
+                    <div className="p-6 flex items-center justify-between" style={{ borderTop: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.3)' }}>
                         <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
                             Page {pagination.currentPage} of {pagination.totalPages}
                         </p>
@@ -192,7 +192,8 @@ const ApprovalsList = () => {
                             <button
                                 onClick={(e) => { e.stopPropagation(); fetchApprovals(pagination.currentPage - 1); }}
                                 disabled={pagination.currentPage === 1}
-                                className="p-2 rounded-xl bg-white border border-gray-200 text-gray-400 disabled:opacity-50 hover:bg-gray-100 transition-all font-black text-[10px] uppercase tracking-widest px-4"
+                                className="p-2 rounded-xl disabled:opacity-50 transition-all font-black text-[10px] uppercase tracking-widest px-4"
+                                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)', color: 'var(--muted-foreground)' }}
                             >
                                 Prev
                             </button>

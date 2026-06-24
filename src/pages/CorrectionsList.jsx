@@ -94,19 +94,19 @@ const CorrectionsList = () => {
             </div>
 
             {/* Table Area */}
-            <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
+            <div className="rounded-[2.5rem] overflow-hidden" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
                 <div className="overflow-x-auto custom-scrollbar">
                     <table className="w-full text-left border-collapse">
                         <thead>
-                            <tr className="bg-gray-50/50 border-b border-gray-100">
-                                <th className="p-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Shop Info</th>
-                                <th className="p-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Remark</th>
-                                <th className="p-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Requested By</th>
-                                <th className="p-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Rejected On</th>
-                                <th className="p-6 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] text-right">Actions</th>
+                            <tr style={{ background: 'rgba(4,12,24,0.5)', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: 'var(--muted-foreground)' }}>Shop Info</th>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: 'var(--muted-foreground)' }}>Remark</th>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: 'var(--muted-foreground)' }}>Requested By</th>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: 'var(--muted-foreground)' }}>Rejected On</th>
+                                <th className="p-6 text-[10px] font-black uppercase tracking-[0.2em] text-right" style={{ color: 'var(--muted-foreground)' }}>Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-50">
+                        <tbody style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                             {loading ? (
                                 Array(5).fill(0).map((_, i) => (
                                     <tr key={i} className="animate-pulse">
@@ -170,7 +170,7 @@ const CorrectionsList = () => {
                                             </span>
                                         </td>
                                         <td className="p-6 text-right">
-                                            <button className="p-2.5 bg-gray-50 text-gray-400 rounded-xl group-hover:bg-red-500 group-hover:text-white transition-all shadow-sm">
+                                            <button className="p-2.5 rounded-xl group-hover:bg-red-500 group-hover:text-white transition-all" style={{ background: 'rgba(255,255,255,0.06)', color: 'var(--muted-foreground)' }}>
                                                 <Icon icon="mdi:pencil-outline" className="text-xl" />
                                             </button>
                                         </td>
@@ -183,7 +183,7 @@ const CorrectionsList = () => {
 
                 {/* Pagination */}
                 {!loading && corrections.length > 0 && (
-                    <div className="p-6 flex items-center justify-between bg-gray-50/50 border-t border-gray-100">
+                    <div className="p-6 flex items-center justify-between" style={{ borderTop: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.3)' }}>
                         <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
                             Page {pagination.currentPage} of {pagination.totalPages}
                         </p>
@@ -191,7 +191,8 @@ const CorrectionsList = () => {
                             <button
                                 onClick={(e) => { e.stopPropagation(); fetchCorrections(pagination.currentPage - 1); }}
                                 disabled={pagination.currentPage === 1}
-                                className="p-2 rounded-xl bg-white border border-gray-200 text-gray-400 disabled:opacity-50 hover:bg-gray-100 transition-all font-black text-[10px] uppercase tracking-widest px-4"
+                                className="p-2 rounded-xl disabled:opacity-50 transition-all font-black text-[10px] uppercase tracking-widest px-4"
+                                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)', color: 'var(--muted-foreground)' }}
                             >
                                 Prev
                             </button>

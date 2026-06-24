@@ -6,8 +6,9 @@ import { showLoader, hideLoader } from "../../features/loader/loaderSlice";
 import * as repairService from "../../services/repairService";
 import api from "../../utils/api";
 
-const inputCls = "w-full bg-gray-50/50 border border-gray-100 rounded-full px-5 py-2.5 text-sm text-gray-700 outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 transition-all placeholder:text-gray-300";
-const labelCls = "text-xs font-semibold text-gray-500 block mb-1.5 ml-4";
+const inputCls = "w-full border rounded-full px-5 py-2.5 text-sm outline-none transition-all";
+const labelCls = "text-xs font-semibold block mb-1.5 ml-4";
+const inputStyle = { background: 'color-mix(in oklab, var(--foreground) 5%, transparent)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' };
 
 /* ───── IMAGE NORMALIZATION ───── */
 const normalizeToJpeg = (file) =>
@@ -136,19 +137,19 @@ export default function AddRepair() {
   return (
     <div className="w-full flex flex-col gap-6 animate-in fade-in duration-500">
       <div className="mb-10">
-        <h1 className="text-3xl font-bold text-gray-900">Add Repair</h1>
-        <p className="text-sm text-gray-500 mt-1">Fill customer and item details</p>
+        <h1 className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: 'var(--foreground)' }}>Add Repair</h1>
+        <p className="text-sm mt-1" style={{ color: 'var(--muted-foreground)' }}>Fill customer and item details</p>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* LEFT PANEL — Repair Details */}
-          <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/40 overflow-hidden">
-            <div className="flex items-center gap-4 px-8 py-6 border-b border-gray-50 bg-gray-50/30">
-              <div className="w-10 h-10 rounded-2xl bg-erp-accent/5 border border-erp-accent/10 text-erp-accent flex items-center justify-center">
+          <div className="rounded-[2rem] overflow-hidden" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.10)' }}>
+            <div className="flex items-center gap-4 px-8 py-6 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(4,12,24,0.4)' }}>
+              <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: 'color-mix(in oklab, var(--primary-glow) 10%, transparent)', border: '1px solid color-mix(in oklab, var(--primary-glow) 20%, transparent)', color: 'var(--primary-glow)' }}>
                 <Icon icon="mdi:tools" className="text-xl" />
               </div>
-              <span className="text-sm font-bold text-gray-700">Repair Info</span>
+              <span className="text-sm font-semibold" style={{ color: 'var(--foreground)' }}>Repair Info</span>
             </div>
             <div className="p-8 space-y-8">
 
@@ -164,7 +165,7 @@ export default function AddRepair() {
                 </div>
               </div>
 
-              <div className="h-px bg-gray-50" />
+              <div className="h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
 
               {/* Item */}
               <div className="space-y-4">
@@ -178,7 +179,7 @@ export default function AddRepair() {
                 <div><label className={labelCls}>Issue</label><textarea name="issueDescription" rows={3} value={formData.issueDescription} onChange={handleChange} className={`${inputCls} rounded-[1.5rem] py-4 resize-none`} placeholder="Describe the issue..." /></div>
               </div>
 
-              <div className="h-px bg-gray-50" />
+              <div className="h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
 
               {/* Delivery */}
               <div className="space-y-4">
@@ -194,13 +195,13 @@ export default function AddRepair() {
           </div>
 
           {/* RIGHT PANEL — Photos */}
-          <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/40 overflow-hidden sticky top-8">
-            <div className="flex items-center justify-between px-8 py-6 border-b border-gray-50 bg-gray-50/30">
+          <div className="rounded-[2rem] overflow-hidden sticky top-8" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.10)' }}>
+            <div className="flex items-center justify-between px-8 py-6 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(4,12,24,0.4)' }}>
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-2xl bg-erp-accent/5 border border-erp-accent/10 text-erp-accent flex items-center justify-center">
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: 'color-mix(in oklab, var(--primary-glow) 10%, transparent)', border: '1px solid color-mix(in oklab, var(--primary-glow) 20%, transparent)', color: 'var(--primary-glow)' }}>
                   <Icon icon="mdi:camera-outline" className="text-xl" />
                 </div>
-                <span className="text-sm font-bold text-gray-700">Photos</span>
+                <span className="text-sm font-semibold" style={{ color: 'var(--foreground)' }}>Photos</span>
               </div>
               <span className="text-xs font-bold bg-erp-accent text-white px-4 py-1 rounded-full shadow-lg shadow-erp-accent/20">{images.length} / 10 Photos</span>
             </div>
@@ -217,9 +218,10 @@ export default function AddRepair() {
                   <span className="text-xs font-bold text-gray-400 group-hover:text-erp-accent">Take Photo</span>
                 </button>
                 <button type="button" onClick={() => galleryRef.current?.click()} disabled={images.length >= 10}
-                  className="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-gray-100 bg-gray-50/50 hover:bg-gray-100 hover:border-gray-200 rounded-[2rem] py-8 transition-all group disabled:opacity-40">
-                  <Icon icon="mdi:image-multiple-outline" className="text-3xl text-gray-300 group-hover:text-gray-500 group-hover:scale-110 transition-all" />
-                  <span className="text-xs font-bold text-gray-400 group-hover:text-gray-600">Upload</span>
+                  className="flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-[2rem] py-8 transition-all group disabled:opacity-40"
+                  style={{ borderColor: 'rgba(255,255,255,0.10)', background: 'rgba(255,255,255,0.03)' }}>
+                  <Icon icon="mdi:image-multiple-outline" className="text-3xl group-hover:scale-110 transition-all" style={{ color: 'var(--muted-foreground)' }} />
+                  <span className="text-xs font-semibold" style={{ color: 'var(--muted-foreground)' }}>Upload</span>
                 </button>
               </div>
 
@@ -227,7 +229,7 @@ export default function AddRepair() {
               {images.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 animate-fadeIn">
                   {images.map((img, i) => (
-                    <div key={img.preview} className="relative group aspect-square rounded-[1.5rem] overflow-hidden border border-gray-100 shadow-sm bg-gray-50">
+                    <div key={img.preview} className="relative group aspect-square rounded-[1.5rem] overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.04)' }}>
                       <img src={img.preview} alt={`photo-${i + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                         <button type="button" onClick={() => removeImage(i)} className="bg-rose-500 hover:bg-rose-600 active:scale-90 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-xl transition-all">

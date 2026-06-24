@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut, selectCurrentUser, setCredentials } from '../../store/slices/authSlice';
@@ -8,40 +8,28 @@ import { acceptTermsConditions } from '../../services/customerService';
 import { toast } from 'react-toastify';
 import GoBackButton from '../navigation/GoBackButton';
 import {
-    Box,
-    AppBar,
-    Toolbar,
-    Typography,
-    Button,
-    Container,
-    Paper,
-    Avatar,
-    Stack,
-    Chip,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    IconButton,
-    useTheme,
-    alpha,
-    Fade
+    Box, AppBar, Toolbar, Typography, Button, Container, Chip,
+    Dialog, DialogTitle, DialogContent, DialogActions, Stack, alpha, useTheme, Fade
 } from '@mui/material';
+
+const surfaceStyle = {
+    background: 'rgba(8,18,36,0.97)',
+    backdropFilter: 'blur(28px) saturate(180%)',
+    border: '1px solid rgba(255,255,255,0.08)',
+};
 
 const CustomerLayout = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector(selectCurrentUser);
-    const token = useSelector((state) => state.auth.token);
+    const token = useSelector(state => state.auth.token);
     const theme = useTheme();
 
     const [showTermsModal, setShowTermsModal] = useState(false);
     const [termsAccepting, setTermsAccepting] = useState(false);
 
     useEffect(() => {
-        if (user && !user?.termsAndConditionsAccepted) {
-            setShowTermsModal(true);
-        }
+        if (user && !user?.termsAndConditionsAccepted) setShowTermsModal(true);
     }, [user]);
 
     const handleLogout = () => {
@@ -73,67 +61,41 @@ const CustomerLayout = () => {
     };
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: '#FDFCFB', display: 'flex', flexDirection: 'column' }}>
-            {/* Elegant Header */}
-            <AppBar
-                position="sticky"
-                elevation={0}
+        <Box sx={{ minHeight: '100vh', bgcolor: 'var(--background)', display: 'flex', flexDirection: 'column' }}>
+
+            {/* Header */}
+            <AppBar position="sticky" elevation={0}
                 sx={{
-                    bgcolor: 'rgba(255, 255, 255, 0.8)',
-                    backdropFilter: 'blur(12px)',
-                    borderBottom: '1px solid',
-                    borderColor: alpha(theme.palette.accent.main, 0.1)
-                }}
-            >
+                    background: 'rgba(8,18,36,0.85)',
+                    backdropFilter: 'blur(20px)',
+                    borderBottom: '1px solid rgba(255,255,255,0.08)',
+                }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters sx={{ py: 1.5, justifyContent: 'space-between' }}>
-                        <Stack direction="row" spacing={3} alignItems="center">
-                            <Box
-                                sx={{
-                                    p: 1.2,
-                                    borderRadius: '16px',
-                                    bgcolor: 'white',
-                                    boxShadow: '0 4px 12px rgba(255, 99, 0, 0.08)',
-                                    display: 'flex',
-                                    border: '1px solid rgba(255, 99, 0, 0.1)'
-                                }}
-                            >
-                                <img src={logo} alt="Indian Lens Wholesale" style={{ height: '34px' }} />
+                        <Stack direction="row" spacing={2} alignItems="center">
+                            <Box sx={{
+                                p: 1, borderRadius: '14px', display: 'flex',
+                                background: 'color-mix(in oklab, var(--primary) 15%, transparent)',
+                                border: '1px solid color-mix(in oklab, var(--primary-glow) 20%, transparent)',
+                            }}>
+                                <img src={logo} alt="Indian Lens Wholesale" style={{ height: '30px' }} />
                             </Box>
-
                             <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                                <Typography variant="caption" sx={{ color: 'accent.main', fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase' }}>
+                                <Typography variant="caption" sx={{ color: 'var(--primary-glow)', fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', display: 'block' }}>
                                     Customer Portal
                                 </Typography>
-                                <Typography variant="h6" sx={{ color: 'text.primary', fontWeight: 700, lineHeight: 1.2 }}>
+                                <Typography variant="subtitle2" sx={{ color: 'var(--foreground)', fontWeight: 700, lineHeight: 1.2 }}>
                                     {user?.shopName || user?.ownerName || 'Welcome'}
                                 </Typography>
                             </Box>
                         </Stack>
 
                         <Stack direction="row" spacing={2} alignItems="center">
-                            <Chip
-                                label={user?.customerCode || 'GUEST'}
-                                size="small"
-                                sx={{
-                                    bgcolor: alpha(theme.palette.accent.main, 0.1),
-                                    color: 'accent.main',
-                                    fontWeight: 800,
-                                    borderRadius: '8px'
-                                }}
-                            />
-                            <Button
-                                variant="outlined"
-                                color="error"
-                                onClick={handleLogout}
+                            <Chip label={user?.customerCode || 'GUEST'} size="small"
+                                sx={{ bgcolor: 'color-mix(in oklab, var(--primary-glow) 15%, transparent)', color: 'var(--primary-glow)', fontWeight: 700, borderRadius: '8px' }} />
+                            <Button variant="outlined" color="error" onClick={handleLogout}
                                 startIcon={<Icon icon="mdi:logout" />}
-                                sx={{
-                                    borderRadius: '50px',
-                                    borderWidth: '1.5px',
-                                    px: 3,
-                                    '&:hover': { borderWidth: '1.5px', bgcolor: alpha(theme.palette.error.main, 0.05) }
-                                }}
-                            >
+                                sx={{ borderRadius: '50px', borderWidth: '1.5px', px: 3, '&:hover': { borderWidth: '1.5px' } }}>
                                 Logout
                             </Button>
                         </Stack>
@@ -141,102 +103,59 @@ const CustomerLayout = () => {
                 </Container>
             </AppBar>
 
-            {/* Main Content Area */}
+            {/* Content */}
             <Box component="main" sx={{ flexGrow: 1, py: { xs: 3, md: 5 } }}>
                 <Container maxWidth="xl">
-                    <Fade in timeout={800}>
+                    <Fade in timeout={600}>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                            <Paper
-                                elevation={0}
-                                sx={{
-                                    p: 1.5,
-                                    borderRadius: '20px',
-                                    bgcolor: 'rgba(255, 255, 255, 0.6)',
-                                    backdropFilter: 'blur(10px)',
-                                    border: '1px solid rgba(255,255,255,0.8)',
-                                    boxShadow: '0 4px 20px rgba(0,0,0,0.02)'
-                                }}
-                            >
+                            <Box sx={{ p: 1.5, borderRadius: '16px', ...surfaceStyle }}>
                                 <GoBackButton />
-                            </Paper>
-
-                            <Paper
-                                elevation={0}
-                                sx={{
-                                    p: { xs: 2, md: 5 },
-                                    borderRadius: '32px',
-                                    bgcolor: 'white',
-                                    border: '1px solid rgba(255, 99, 0, 0.05)',
-                                    boxShadow: '0 20px 60px rgba(0,0,0,0.05)',
-                                    minHeight: '60vh'
-                                }}
-                            >
+                            </Box>
+                            <Box sx={{ p: { xs: 2, md: 4 }, borderRadius: '24px', minHeight: '60vh', ...surfaceStyle }}>
                                 <Outlet />
-                            </Paper>
+                            </Box>
                         </Box>
                     </Fade>
                 </Container>
             </Box>
 
-            {/* Terms & Conditions Dialog */}
-            <Dialog
-                open={showTermsModal}
-                maxWidth="sm"
-                fullWidth
-                PaperProps={{
-                    sx: { borderRadius: '24px', p: 1 }
-                }}
-            >
+            {/* Terms Dialog */}
+            <Dialog open={showTermsModal} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: '20px', p: 1 } }}>
                 <DialogTitle sx={{ textAlign: 'center', pb: 1 }}>
-                    <Typography variant="h5" fontWeight={800} color="accent.main">
+                    <Typography variant="h5" fontWeight={800} sx={{ color: 'var(--primary-glow)' }}>
                         Terms & Conditions
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" sx={{ color: 'var(--muted-foreground)' }}>
                         Please review and accept to continue
                     </Typography>
                 </DialogTitle>
                 <DialogContent dividers sx={{ border: 'none', px: 4 }}>
-                    <Typography variant="body2" component="div" sx={{ color: 'text.secondary', lineHeight: 1.7 }}>
+                    <Typography variant="body2" component="div" sx={{ color: 'var(--muted-foreground)', lineHeight: 1.7 }}>
                         <Box sx={{ mb: 2 }}>
-                            <Typography variant="subtitle1" fontWeight={700} color="text.primary">Indian Lens Wholesale Customer Agreement</Typography>
-                            By accessing and using the Indian Lens Wholesale Customer Portal, you agree to be bound by the following terms and conditions.
+                            <Typography variant="subtitle1" fontWeight={700} sx={{ color: 'var(--foreground)' }}>
+                                Indian Lens Wholesale Customer Agreement
+                            </Typography>
+                            By accessing and using the Indian Lens Wholesale Customer Portal, you agree to be bound by the following terms.
                         </Box>
-
                         <Box sx={{ mb: 2 }}>
-                            <Typography variant="subtitle2" fontWeight={700} color="text.primary">1. Account Responsibility</Typography>
+                            <Typography variant="subtitle2" fontWeight={700} sx={{ color: 'var(--foreground)' }}>1. Account Responsibility</Typography>
                             You are responsible for maintaining the confidentiality of your account credentials.
                         </Box>
-
                         <Box sx={{ mb: 2 }}>
-                            <Typography variant="subtitle2" fontWeight={700} color="text.primary">2. Order & Payment Terms</Typography>
+                            <Typography variant="subtitle2" fontWeight={700} sx={{ color: 'var(--foreground)' }}>2. Order & Payment Terms</Typography>
                             All orders placed through the portal are subject to acceptance and availability.
                         </Box>
-                        {/* More terms could be added here or scrollable */}
-                        <Box sx={{ fontStyle: 'italic', mt: 2, p: 2, bgcolor: '#F8FAFC', borderRadius: '12px' }}>
+                        <Box sx={{ p: 2, borderRadius: '12px', mt: 2, background: 'color-mix(in oklab, var(--primary-glow) 5%, transparent)', border: '1px solid color-mix(in oklab, var(--primary-glow) 15%, transparent)', fontStyle: 'italic' }}>
                             Full terms and conditions apply as per company policy.
                         </Box>
                     </Typography>
                 </DialogContent>
                 <DialogActions sx={{ p: 3, justifyContent: 'center', gap: 2 }}>
-                    <Button
-                        onClick={handleDeclineTerms}
-                        sx={{ color: 'text.secondary', fontWeight: 700 }}
-                    >
-                        Decline & Logout
+                    <Button onClick={handleDeclineTerms} sx={{ color: 'var(--muted-foreground)', fontWeight: 600 }}>
+                        Decline &amp; Logout
                     </Button>
-                    <Button
-                        onClick={handleAcceptTerms}
-                        variant="contained"
-                        disabled={termsAccepting}
-                        sx={{
-                            bgcolor: 'accent.main',
-                            '&:hover': { bgcolor: 'accent.dark' },
-                            px: 5,
-                            borderRadius: '50px',
-                            fontWeight: 700,
-                            boxShadow: '0 8px 24px rgba(255, 99, 0, 0.3)'
-                        }}
-                    >
+                    <Button onClick={handleAcceptTerms} variant="contained" disabled={termsAccepting}
+                        sx={{ bgcolor: 'var(--primary)', '&:hover': { bgcolor: 'var(--primary-glow)' }, px: 5, borderRadius: '50px', fontWeight: 700 }}>
                         {termsAccepting ? 'Accepting...' : 'I Accept'}
                     </Button>
                 </DialogActions>
@@ -246,5 +165,3 @@ const CustomerLayout = () => {
 };
 
 export default CustomerLayout;
-
-

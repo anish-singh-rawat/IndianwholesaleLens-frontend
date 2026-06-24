@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCredentials, signup, selectRegisteredUsers } from '../store/slices/authSlice';
 
@@ -12,68 +12,70 @@ const Auth = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!username || !password) return alert('Fill all fields');
-
         if (isLogin) {
             const user = registeredUsers.find(u => u.username === username && u.password === password);
-            if (user) {
-                dispatch(setCredentials({
-                    user: user.username,
-                    token: 'dummy-token-' + Date.now(),
-                    role: user.role
-                }));
-            } else {
-                alert('Invalid credentials');
-            }
+            if (user) dispatch(setCredentials({ user: user.username, token: 'dummy-token-' + Date.now(), role: user.role }));
+            else alert('Invalid credentials');
         } else {
-            const userExists = registeredUsers.some(u => u.username === username);
-            if (userExists) return alert('Username already taken');
-
+            if (registeredUsers.some(u => u.username === username)) return alert('Username already taken');
             dispatch(signup({ username, password }));
             alert('Signup successful! Please login.');
             setIsLogin(true);
         }
     };
 
-    return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-erp-primary to-erp-secondary p-4">
-            <div className="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md text-center transform transition-all hover:scale-[1.01]">
-                <h2 className="text-3xl font-extrabold text-erp-primary mb-2">Indian Lens Wholesale</h2>
-                <h3 className="text-lg text-erp-accent mb-8 font-medium">{isLogin ? 'Welcome Back' : 'Create Industry Account'}</h3>
+    const inputStyle = {
+        width: '100%',
+        padding: '12px 16px',
+        background: 'color-mix(in oklab, var(--foreground) 5%, transparent)',
+        border: '1px solid color-mix(in oklab, var(--foreground) 12%, transparent)',
+        borderRadius: '10px',
+        color: 'var(--foreground)',
+        outline: 'none',
+        fontFamily: 'var(--font-sans)',
+    };
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="text-left">
-                        <label className="block text-sm  font-bold text-gray-700 mb-2 ml-1">Username</label>
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            className="w-full text-dark px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-erp-accent focus:border-transparent outline-none transition-all "
-                            placeholder="admin"
-                        />
+    return (
+        <div className="flex items-center justify-center min-h-screen p-4"
+             style={{ background: 'var(--background)' }}>
+            <div className="w-full max-w-md rounded-3xl p-10 text-center"
+                 style={{
+                     background: 'color-mix(in oklab, var(--card) 75%, transparent)',
+                     backdropFilter: 'blur(20px) saturate(160%)',
+                     border: '1px solid color-mix(in oklab, var(--foreground) 10%, transparent)',
+                     boxShadow: '0 40px 80px rgba(0,0,0,0.4)',
+                 }}>
+                <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--primary-glow)' }}>
+                    Indian Lens Wholesale
+                </h2>
+                <h3 className="text-sm mb-8" style={{ color: 'var(--muted-foreground)' }}>
+                    {isLogin ? 'Welcome Back' : 'Create Account'}
+                </h3>
+
+                <form onSubmit={handleSubmit} className="space-y-5 text-left">
+                    <div>
+                        <label className="block text-xs font-semibold uppercase tracking-[0.18em] mb-1.5"
+                               style={{ color: 'var(--muted-foreground)' }}>Username</label>
+                        <input type="text" value={username} onChange={e => setUsername(e.target.value)}
+                               placeholder="admin" style={inputStyle} />
                     </div>
-                    <div className="text-left">
-                        <label className="block text-sm font-bold text-gray-700 mb-2 ml-1">Password</label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full text-dark px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-erp-accent focus:border-transparent outline-none transition-all "
-                            placeholder="••••••••"
-                        />
+                    <div>
+                        <label className="block text-xs font-semibold uppercase tracking-[0.18em] mb-1.5"
+                               style={{ color: 'var(--muted-foreground)' }}>Password</label>
+                        <input type="password" value={password} onChange={e => setPassword(e.target.value)}
+                               placeholder="••••••••" style={inputStyle} />
                     </div>
-                    <button
-                        type="submit"
-                        className="w-full py-4 bg-erp-primary text-white font-bold rounded-xl hover:bg-erp-dark transform transition-all active:scale-[0.98] shadow-lg shadow-blue-900/20"
-                    >
+                    <button type="submit"
+                            className="w-full py-3 font-semibold rounded-xl transition-all"
+                            style={{ background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 100%)', color: 'var(--primary-foreground)' }}>
                         {isLogin ? 'Sign In' : 'Register Account'}
                     </button>
                 </form>
 
-                <p
-                    className="mt-8 text-erp-primary cursor-pointer hover:underline font-semibold"
-                    onClick={() => setIsLogin(!isLogin)}
-                >
-                    {isLogin ? "New here? Set up an account" : "Back to secure login"}
+                <p className="mt-6 text-sm font-semibold cursor-pointer hover:underline"
+                   style={{ color: 'var(--primary-glow)' }}
+                   onClick={() => setIsLogin(!isLogin)}>
+                    {isLogin ? 'New here? Set up an account' : 'Back to secure login'}
                 </p>
             </div>
         </div>
@@ -81,5 +83,3 @@ const Auth = () => {
 };
 
 export default Auth;
-
-

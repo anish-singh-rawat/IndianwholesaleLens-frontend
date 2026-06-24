@@ -17,9 +17,12 @@ const PAGE_SIZE = 100;
 // Shared UI primitives
 // ─────────────────────────────────────────────────────────────────────────────
 const Modal = ({ onClose, children, maxWidth = "max-w-lg" }) => (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 transition-all duration-300"
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 transition-all duration-300"
+        style={{ background: 'rgba(4,18,38,0.75)', backdropFilter: 'blur(28px) saturate(180%)' }}
         onClick={onClose}>
-        <div className={`relative bg-white rounded-[2.5rem] shadow-2xl w-full ${maxWidth} overflow-hidden scale-in-center`} onClick={e => e.stopPropagation()}>
+        <div className={`relative rounded-[2rem] shadow-2xl w-full ${maxWidth} overflow-hidden scale-in-center`}
+            style={{ background: 'color-mix(in oklab, var(--card) 85%, transparent)', backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.12)' }}
+            onClick={e => e.stopPropagation()}>
             {children}
         </div>
     </div>
@@ -44,36 +47,40 @@ const ModalHeader = ({ title, subtitle, icon, onClose }) => (
 );
 
 const ModalFooter = ({ children }) => (
-    <div className="flex items-center justify-end gap-3 px-8 py-6 border-t border-gray-50 bg-gray-50/30 flex-shrink-0">
+    <div className="flex items-center justify-end gap-3 px-8 py-6 flex-shrink-0"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.4)' }}>
         {children}
     </div>
 );
 
 const InfoRow = ({ label, value, icon }) => (
     <div className="flex items-start gap-3">
-        <div className="w-8 h-8 rounded-full bg-erp-accent/5 flex items-center justify-center flex-shrink-0">
-            <Icon icon={icon || "mdi:information-outline"} className="text-erp-accent/60" />
+        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+            style={{ background: 'color-mix(in oklab, var(--primary-glow) 10%, transparent)', color: 'var(--primary-glow)' }}>
+            <Icon icon={icon || "mdi:information-outline"} />
         </div>
         <div className="flex flex-col">
-            <span className="text-xs font-semibold text-gray-400 mb-0.5">{label}</span>
-            <span className="text-sm font-bold text-gray-700">{value || "—"}</span>
+            <span className="text-xs font-semibold mb-0.5" style={{ color: 'var(--muted-foreground)' }}>{label}</span>
+            <span className="text-sm font-bold" style={{ color: 'var(--foreground)' }}>{value || "—"}</span>
         </div>
     </div>
 );
 
-const fieldCls = "w-full bg-gray-50/50 border border-gray-100 rounded-full px-5 py-2.5 text-sm text-gray-700 outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 transition-all placeholder:text-gray-300";
-const readonlyCls = "w-full bg-gray-100/50 border border-gray-100 rounded-full px-5 py-2.5 text-sm font-semibold text-gray-400 outline-none cursor-default";
-const labelCls = "block text-xs font-semibold text-gray-500 mb-1.5 ml-4";
+const fieldCls = "w-full border rounded-full px-5 py-2.5 text-sm outline-none transition-all";
+const fieldStyle = { background: 'color-mix(in oklab, var(--foreground) 5%, transparent)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' };
+const readonlyCls = "w-full border rounded-full px-5 py-2.5 text-sm font-semibold outline-none cursor-default";
+const readonlyStyle = { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', color: 'var(--muted-foreground)' };
+const labelCls = "block text-xs font-semibold mb-1.5 ml-4";
 
 const OrderStatusBadge = ({ value }) => {
     const map = {
-        COMPLETED: { cls: "bg-emerald-100 text-emerald-700 border-emerald-200", icon: "mdi:check-circle-outline" },
-        RECEIVED: { cls: "bg-blue-100 text-blue-700 border-blue-200", icon: "mdi:tray-arrow-down" },
-        RETURN: { cls: "bg-amber-100 text-amber-700 border-amber-200", icon: "mdi:keyboard-return" },
-        PENDING: { cls: "bg-gray-100 text-gray-500 border-gray-200", icon: "mdi:clock-outline" },
-        CANCELLED: { cls: "bg-rose-100 text-rose-700 border-rose-200", icon: "mdi:close-circle-outline" },
+        COMPLETED: { cls: "bg-emerald-900/30 text-emerald-300 border-emerald-700/40", icon: "mdi:check-circle-outline" },
+        RECEIVED: { cls: "bg-blue-900/30 text-blue-300 border-blue-700/40", icon: "mdi:tray-arrow-down" },
+        RETURN: { cls: "bg-amber-900/30 text-amber-300 border-amber-700/40", icon: "mdi:keyboard-return" },
+        PENDING: { cls: "bg-white/5 text-white/50 border-white/10", icon: "mdi:clock-outline" },
+        CANCELLED: { cls: "bg-rose-900/30 text-rose-300 border-rose-700/40", icon: "mdi:close-circle-outline" },
     };
-    const cfg = map[value] || { cls: "bg-gray-100 text-gray-400 border-gray-200", icon: "mdi:help-circle-outline" };
+    const cfg = map[value] || { cls: "bg-white/5 text-white/40 border-white/10", icon: "mdi:help-circle-outline" };
     return (
         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${cfg.cls}`}>
             <Icon icon={cfg.icon} className="text-sm" />

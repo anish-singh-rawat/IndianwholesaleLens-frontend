@@ -74,7 +74,7 @@ const AuthLayout = () => {
                             fontStyle: 'italic'
                         }}
                     >
-                        Digi<Box component="span" sx={{ color: 'accent.main' }}>Optics</Box>
+                        Indian Lens <Box component="span" sx={{ color: 'accent.main' }}>Wholesale</Box>
                     </Typography>
                 </Stack>
 

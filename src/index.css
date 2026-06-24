@@ -175,21 +175,15 @@ h1, h2, h3, h4, h5, h6 {
   0%, 100% { transform: translateY(0) translateX(0); }
   50%       { transform: translateY(-30px) translateX(15px); }
 }
-
 @keyframes pulse-glow {
   0%, 100% { opacity: 0.4; transform: scale(1); }
   50%       { opacity: 0.7; transform: scale(1.08); }
 }
-
 @keyframes shimmer {
   0%   { background-position: -200% 0; }
   100% { background-position:  200% 0; }
 }
-
-@keyframes draw-line {
-  to { stroke-dashoffset: 0; }
-}
-
+@keyframes draw-line { to { stroke-dashoffset: 0; } }
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -215,6 +209,244 @@ h1, h2, h3, h4, h5, h6 {
   background-color: color-mix(in oklab, var(--primary) 50%, transparent);
 }
 
-/* ── MUI overrides ─────────────────────────────────────────────────────────── */
-.MuiButton-root { text-transform: none !important; font-weight: 600 !important; }
-.MuiPaper-root  { transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; }
+/* ══════════════════════════════════════════════════════════════════════════════
+   GLOBAL DARK THEME — MUI OVERRIDES
+   These fire globally so every MUI component inherits the dark system
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Paper / surfaces */
+.MuiPaper-root {
+  background-color: rgba(10, 22, 40, 0.82) !important;
+  background-image: none !important;
+  backdrop-filter: blur(20px) saturate(160%) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  color: var(--foreground) !important;
+}
+
+/* Dialogs */
+.MuiDialog-paper,
+.MuiDialog-root .MuiPaper-root {
+  background-color: rgba(8, 18, 36, 0.97) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+}
+
+/* Menus / dropdowns */
+.MuiMenu-paper,
+.MuiPopover-paper,
+.MuiAutocomplete-paper {
+  background-color: rgba(8, 18, 36, 0.98) !important;
+  backdrop-filter: blur(24px) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.6) !important;
+}
+
+.MuiMenuItem-root {
+  color: var(--muted-foreground) !important;
+  font-family: var(--font-sans) !important;
+}
+.MuiMenuItem-root:hover {
+  background: color-mix(in oklab, var(--primary-glow) 10%, transparent) !important;
+  color: var(--foreground) !important;
+}
+.MuiMenuItem-root.Mui-selected {
+  background: color-mix(in oklab, var(--primary) 20%, transparent) !important;
+  color: var(--primary-glow) !important;
+}
+.MuiMenuItem-root.Mui-selected:hover {
+  background: color-mix(in oklab, var(--primary) 28%, transparent) !important;
+}
+
+/* Tables */
+.MuiTableContainer-root,
+.MuiTable-root { background: transparent !important; }
+.MuiTableHead-root .MuiTableRow-root {
+  background: rgba(5, 15, 30, 0.8) !important;
+}
+.MuiTableCell-root {
+  border-color: rgba(255,255,255,0.06) !important;
+  color: var(--foreground) !important;
+  font-family: var(--font-sans) !important;
+}
+.MuiTableCell-head {
+  color: var(--primary-glow) !important;
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  background: rgba(5, 15, 30, 0.85) !important;
+}
+.MuiTableRow-root:hover {
+  background: color-mix(in oklab, var(--primary-glow) 5%, transparent) !important;
+}
+.MuiTableBody-root .MuiTableRow-root {
+  background: transparent !important;
+}
+
+/* Form inputs */
+.MuiOutlinedInput-root {
+  background-color: rgba(255,255,255,0.04) !important;
+  color: var(--foreground) !important;
+  border-radius: 10px !important;
+}
+.MuiOutlinedInput-root fieldset {
+  border-color: rgba(255,255,255,0.12) !important;
+}
+.MuiOutlinedInput-root:hover fieldset {
+  border-color: color-mix(in oklab, var(--primary-glow) 40%, transparent) !important;
+}
+.MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: var(--primary-glow) !important;
+  border-width: 2px !important;
+}
+.MuiOutlinedInput-input,
+.MuiSelect-select,
+.MuiInputBase-input {
+  color: var(--foreground) !important;
+}
+.MuiInputLabel-root {
+  color: var(--muted-foreground) !important;
+  font-family: var(--font-sans) !important;
+}
+.MuiInputLabel-root.Mui-focused {
+  color: var(--primary-glow) !important;
+}
+.MuiFormHelperText-root {
+  color: var(--muted-foreground) !important;
+  font-family: var(--font-sans) !important;
+}
+.MuiFormHelperText-root.Mui-error {
+  color: var(--destructive) !important;
+}
+.MuiInputLabel-root.Mui-error,
+.MuiOutlinedInput-root.Mui-error fieldset {
+  color: var(--destructive) !important;
+  border-color: var(--destructive) !important;
+}
+
+/* Chips */
+.MuiChip-root {
+  background: color-mix(in oklab, var(--primary) 18%, transparent) !important;
+  color: var(--primary-glow) !important;
+  border-color: color-mix(in oklab, var(--primary-glow) 25%, transparent) !important;
+  font-family: var(--font-sans) !important;
+}
+.MuiChip-deleteIcon { color: var(--muted-foreground) !important; }
+
+/* Tabs */
+.MuiTab-root { color: var(--muted-foreground) !important; font-family: var(--font-sans) !important; }
+.MuiTab-root.Mui-selected { color: var(--primary-glow) !important; }
+.MuiTabs-indicator { background: var(--primary-glow) !important; }
+.MuiTabs-root { border-color: rgba(255,255,255,0.08) !important; }
+
+/* Accordion */
+.MuiAccordion-root {
+  background: rgba(10,22,40,0.7) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 12px !important;
+}
+.MuiAccordionSummary-root { color: var(--foreground) !important; }
+.MuiAccordionDetails-root { color: var(--muted-foreground) !important; }
+
+/* Divider */
+.MuiDivider-root { border-color: rgba(255,255,255,0.07) !important; }
+
+/* Drawer */
+.MuiDrawer-paper {
+  background-color: rgba(8, 18, 36, 0.97) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  border-color: rgba(255,255,255,0.06) !important;
+}
+
+/* Avatar */
+.MuiAvatar-root {
+  background: color-mix(in oklab, var(--primary) 30%, transparent) !important;
+  color: var(--primary-glow) !important;
+}
+
+/* Stepper */
+.MuiStepLabel-label { color: var(--muted-foreground) !important; }
+.MuiStepLabel-label.Mui-active { color: var(--primary-glow) !important; }
+.MuiStepLabel-label.Mui-completed { color: var(--success) !important; }
+.MuiStepIcon-root { color: rgba(255,255,255,0.15) !important; }
+.MuiStepIcon-root.Mui-active { color: var(--primary-glow) !important; }
+.MuiStepIcon-root.Mui-completed { color: var(--success) !important; }
+.MuiStepConnector-line { border-color: rgba(255,255,255,0.1) !important; }
+
+/* Alert */
+.MuiAlert-root {
+  background: rgba(10,22,40,0.85) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  color: var(--foreground) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+/* Skeleton */
+.MuiSkeleton-root { background: rgba(255,255,255,0.06) !important; }
+
+/* Tooltip */
+.MuiTooltip-tooltip {
+  background: rgba(8,18,36,0.97) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  backdrop-filter: blur(12px) !important;
+  color: var(--foreground) !important;
+  font-size: 0.75rem !important;
+}
+
+/* Buttons */
+.MuiButton-root {
+  text-transform: none !important;
+  font-weight: 600 !important;
+  font-family: var(--font-sans) !important;
+}
+.MuiButton-outlined {
+  border-color: rgba(255,255,255,0.14) !important;
+  color: var(--foreground) !important;
+}
+.MuiButton-outlined:hover {
+  border-color: color-mix(in oklab, var(--primary-glow) 40%, transparent) !important;
+  background: color-mix(in oklab, var(--primary-glow) 6%, transparent) !important;
+}
+.MuiButton-text { color: var(--primary-glow) !important; }
+.MuiIconButton-root { color: var(--muted-foreground) !important; }
+.MuiIconButton-root:hover { color: var(--foreground) !important; background: rgba(255,255,255,0.06) !important; }
+
+/* Badge */
+.MuiBadge-badge { font-family: var(--font-sans) !important; }
+
+/* Pagination */
+.MuiPaginationItem-root { color: var(--muted-foreground) !important; border-color: rgba(255,255,255,0.1) !important; }
+.MuiPaginationItem-root.Mui-selected { background: color-mix(in oklab, var(--primary) 25%, transparent) !important; color: var(--primary-glow) !important; }
+
+/* Breadcrumbs */
+.MuiBreadcrumbs-root, .MuiBreadcrumbs-ol { color: var(--muted-foreground) !important; }
+
+/* Switch */
+.MuiSwitch-track { background: rgba(255,255,255,0.2) !important; }
+.MuiSwitch-thumb { background: var(--muted-foreground) !important; }
+.MuiSwitch-root.Mui-checked .MuiSwitch-thumb { background: var(--primary-glow) !important; }
+.MuiSwitch-root.Mui-checked .MuiSwitch-track { background: color-mix(in oklab, var(--primary-glow) 40%, transparent) !important; }
+
+/* Typography global */
+.MuiTypography-root { color: var(--foreground) !important; font-family: var(--font-sans) !important; }
+.MuiTypography-caption,
+.MuiTypography-body2 { color: var(--muted-foreground) !important; }
+
+/* ── Plain HTML form elements ──────────────────────────────────────────────── */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+select,
+textarea {
+  background: color-mix(in oklab, var(--foreground) 5%, transparent);
+  color: var(--foreground);
+  border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);
+  border-radius: 10px;
+}
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: color-mix(in oklab, var(--primary-glow) 60%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary-glow) 10%, transparent);
+}
+input::placeholder, textarea::placeholder { color: var(--muted-foreground); opacity: 0.6; }
+
+/* ── MUI Button overrides ──────────────────────────────────────────────────── */
+.MuiPaper-root { transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; }
