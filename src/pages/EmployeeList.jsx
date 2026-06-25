@@ -12,31 +12,21 @@ import dayjs from 'dayjs';
 const datePickerStyles = {
     '& .MuiOutlinedInput-root': {
         borderRadius: '9999px',
-        backgroundColor: 'rgba(249, 250, 251, 0.8)',
+        backgroundColor: 'rgba(255,255,255,0.05)',
         fontSize: '0.75rem',
         fontWeight: 700,
         height: '42px',
-        '& fieldset': {
-            borderColor: '#f3f4f6',
-        },
-        '&:hover fieldset': {
-            borderColor: '#f59e0b80',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: '#f59e0b80',
-        },
+        color: 'var(--foreground)',
+        '& fieldset': { borderColor: 'rgba(255,255,255,0.12)' },
+        '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.20)' },
+        '&.Mui-focused fieldset': { borderColor: 'var(--primary-glow)' },
     },
     '& .MuiInputBase-input': {
         padding: '0 16px',
-        color: '#4b5563',
-        '&::placeholder': {
-            opacity: 1,
-            color: '#d1d5db',
-        }
+        color: 'var(--foreground)',
     },
-    '& .MuiInputAdornment-root': {
-        marginRight: '8px'
-    }
+    '& .MuiInputAdornment-root': { marginRight: '8px' },
+    '& .MuiSvgIcon-root': { color: 'var(--muted-foreground)' },
 };
 
 const EmployeeList = () => {

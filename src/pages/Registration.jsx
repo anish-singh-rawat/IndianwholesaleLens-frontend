@@ -79,32 +79,23 @@ const ACCESS_PERMISSION_OPTIONS = [
 const datePickerStyles = {
     '& .MuiOutlinedInput-root': {
         borderRadius: '12px',
-        backgroundColor: 'rgba(229, 231, 235, 0.5)',
+        backgroundColor: 'rgba(255,255,255,0.05)',
         fontSize: '0.875rem',
-        height: '56px', // Standard MUI Height to match other inputs
-        '& fieldset': {
-            borderColor: 'var(--color-erp-accent)',
-            borderWidth: '1px',
-        },
-        '&:hover fieldset': {
-            borderColor: 'var(--color-erp-accent)',
-            borderWidth: '2px',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: 'var(--color-erp-accent)',
-            borderWidth: '2px',
-        },
+        height: '56px',
+        color: 'var(--foreground)',
+        '& fieldset': { borderColor: 'rgba(255,255,255,0.15)', borderWidth: '1px' },
+        '&:hover fieldset': { borderColor: 'rgba(255,255,255,0.25)', borderWidth: '2px' },
+        '&.Mui-focused fieldset': { borderColor: 'var(--primary-glow)', borderWidth: '2px' },
     },
     '& .MuiInputBase-input': {
         paddingLeft: '1rem',
-        color: '#000',
+        color: 'var(--foreground)',
     },
     '& .MuiInputLabel-root': {
-        color: '#4B5563',
-        '&.Mui-focused': {
-            color: 'var(--color-erp-accent)',
-        },
-    }
+        color: 'var(--muted-foreground)',
+        '&.Mui-focused': { color: 'var(--primary-glow)' },
+    },
+    '& .MuiSvgIcon-root': { color: 'var(--muted-foreground)' },
 };
 
 const Registration = () => {

@@ -179,7 +179,7 @@ const ShipTo = () => {
     return (
         <div className="p-6 max-w-7xl mx-auto space-y-8">
             {/* Header / Selection Card */}
-            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
+            <div className="rounded-3xl p-8" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
                 <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
                     <div className="flex-1 w-full">
                         <SearchableSelect
@@ -197,15 +197,15 @@ const ShipTo = () => {
                         <div className="flex flex-wrap gap-6 bg-erp-accent/5 rounded-2xl p-4 border border-erp-accent/10 flex-1 w-full">
                             <div>
                                 <p className="text-xs text-erp-accent/80 font-bold uppercase  ">Customer ID</p>
-                                <p className="text-gray-900 font-semibold">{selectedCustomer.customerCode || 'N/A'}</p>
+                                <p className="font-semibold" style={{ color: 'var(--foreground)' }}>{selectedCustomer.customerCode || 'N/A'}</p>
                             </div>
                             <div>
-                                <p className="text-xs text-erp-accent/80 font-bold uppercase  ">Shop Name</p>
-                                <p className="text-gray-900 font-semibold">{selectedCustomer.shopName}</p>
+                                <p className="text-xs text-erp-accent/80 font-bold uppercase">Shop Name</p>
+                                <p className="font-semibold" style={{ color: 'var(--foreground)' }}>{selectedCustomer.shopName}</p>
                             </div>
                             <div>
-                                <p className="text-xs text-erp-accent/80 font-bold uppercase  ">Contact</p>
-                                <p className="text-gray-900 font-semibold">{selectedCustomer.mobileNo1 || selectedCustomer.businessEmail}</p>
+                                <p className="text-xs text-erp-accent/80 font-bold uppercase">Contact</p>
+                                <p className="font-semibold" style={{ color: 'var(--foreground)' }}>{selectedCustomer.mobileNo1 || selectedCustomer.businessEmail}</p>
                             </div>
                         </div>
                     )}
@@ -223,14 +223,13 @@ const ShipTo = () => {
                             {({ push, remove }) => (
                                 <div className="space-y-8">
                                     {formik.values.shipToDetails.map((addr, index) => (
-                                        <div key={index} className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-10 relative overflow-hidden">
-                                            {/* Zebra Stripe/Accent */}
-                                            <div className="absolute top-0 left-0 w-2 h-full bg-[#fef3c6]" />
+                                        <div key={index} className="rounded-[2rem] p-10 relative overflow-hidden" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
+                                            <div className="absolute top-0 left-0 w-2 h-full bg-erp-accent/60 rounded-l-full" />
 
                                             <div className="flex justify-between items-center mb-8">
                                                 <h3 className="text-erp-accent font-bold text-xl flex items-center gap-2">
                                                     Ship To Address {index + 1}
-                                                    {addr._id && <span className="text-[10px] bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full uppercase">Existing</span>}
+                                                    {addr._id && <span className="text-[10px] bg-emerald-900/30 text-emerald-300 border border-emerald-700/40 px-2 py-0.5 rounded-full uppercase">Existing</span>}
                                                 </h3>
                                                 <div className="flex gap-4">
                                                     {/* {index === 0 && (
@@ -370,7 +369,7 @@ const ShipTo = () => {
                             )}
                         </FieldArray>
 
-                        <div className="flex justify-center gap-6 pt-12 border-t border-gray-100">
+                        <div className="flex justify-center gap-6 pt-12" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
                             <Button
                                 type="submit"
                                 className="rounded-full px-20 py-4 font-bold text-lg shadow-xl min-w-[250px] cursor-pointer"
@@ -386,7 +385,8 @@ const ShipTo = () => {
                             <button
                                 type="button"
                                 onClick={() => handleCustomerChange(formik.values.customerId)}
-                                className="px-12 py-4 rounded-full border-2  cursor-pointer border-gray-200 text-gray-500 font-bold hover:bg-gray-50 transition-colors"
+                                className="px-12 py-4 rounded-full border-2 cursor-pointer font-bold hover:bg-erp-accent/5 transition-colors"
+                                style={{ borderColor: 'rgba(255,255,255,0.15)', color: 'var(--muted-foreground)' }}
                             >
                                 Reset Form
                             </button>
@@ -394,7 +394,8 @@ const ShipTo = () => {
                     </form>
                 </FormikProvider>
             ) : (
-                <div className="bg-white rounded-[3rem] border-2 border-dashed border-gray-200 p-20 flex flex-col items-center justify-center text-gray-400">
+                <div className="rounded-[3rem] border-2 border-dashed p-20 flex flex-col items-center justify-center opacity-40"
+                    style={{ borderColor: 'rgba(255,255,255,0.15)' }}>
                     <Icon icon="mdi:account-search-outline" className="text-6xl mb-4" />
                     <p className="text-xl font-medium">Please select a customer to manage their ship-to details</p>
                 </div>

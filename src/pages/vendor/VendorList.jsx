@@ -20,9 +20,12 @@ const PAGE_SIZE = 100;
 // Shared UI primitives
 // ─────────────────────────────────────────────────────────────────────────────
 const Modal = ({ onClose, children, maxWidth = "max-w-lg" }) => (
-    <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 transition-all duration-300"
+    <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 transition-all duration-300"
+        style={{ background: 'rgba(4,18,38,0.75)', backdropFilter: 'blur(28px) saturate(180%)' }}
         onClick={onClose}>
-        <div className={`relative bg-white rounded-2xl shadow-2xl w-full ${maxWidth} animate-fadeIn`} onClick={e => e.stopPropagation()}>
+        <div className={`relative rounded-2xl shadow-2xl w-full ${maxWidth} animate-fadeIn`}
+            style={{ background: 'color-mix(in oklab, var(--card) 85%, transparent)', backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.12)' }}
+            onClick={e => e.stopPropagation()}>
             {children}
         </div>
         <style>{`@keyframes fadeIn{from{opacity:0;transform:scale(.97) translateY(6px)}to{opacity:1;transform:scale(1) translateY(0)}}.animate-fadeIn{animation:fadeIn .18s ease both}`}</style>
@@ -30,40 +33,44 @@ const Modal = ({ onClose, children, maxWidth = "max-w-lg" }) => (
 );
 
 const ModalHeader = ({ title, subtitle, onClose }) => (
-    <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
+    <div className="flex items-center justify-between px-6 pt-5 pb-4"
+        style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
         <div>
-            <h2 className="text-sm font-bold text-gray-800">{title}</h2>
-            {subtitle && <p className="text-xs text-gray-400 mt-0.5">{subtitle}</p>}
+            <h2 className="text-sm font-bold" style={{ color: 'var(--foreground)' }}>{title}</h2>
+            {subtitle && <p className="text-xs mt-0.5" style={{ color: 'var(--muted-foreground)' }}>{subtitle}</p>}
         </div>
-        <button onClick={onClose} className="p-2 rounded-full text-gray-400 hover:bg-gray-100 transition">
+        <button onClick={onClose} className="p-2 rounded-full transition" style={{ color: 'var(--muted-foreground)' }}>
             <FiX size={15} />
         </button>
     </div>
 );
 
 const ModalFooter = ({ children }) => (
-    <div className="flex items-center justify-end gap-2 px-6 py-4 border-t border-gray-100 bg-gray-50/60 rounded-b-2xl">
+    <div className="flex items-center justify-end gap-2 px-6 py-4 rounded-b-2xl"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.4)' }}>
         {children}
     </div>
 );
 
 const InfoRow = ({ label, value }) => (
     <div>
-        <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-0.5">{label}</p>
-        <p className="text-sm font-semibold text-gray-800 break-words">{value || "-"}</p>
+        <p className="text-[10px] font-semibold uppercase tracking-wide mb-0.5" style={{ color: 'var(--muted-foreground)' }}>{label}</p>
+        <p className="text-sm font-semibold break-words" style={{ color: 'var(--foreground)' }}>{value || "-"}</p>
     </div>
 );
 
 const SectionTitle = ({ children }) => (
     <div className="flex items-center gap-2 mb-4">
         <span className="w-1 h-5 rounded-full bg-erp-accent inline-block shadow-lg shadow-erp-accent/30" />
-        <h3 className="text-xs font-bold text-gray-500">{children}</h3>
+        <h3 className="text-xs font-bold" style={{ color: 'var(--muted-foreground)' }}>{children}</h3>
     </div>
 );
 
-const fieldCls = "w-full bg-gray-50/50 border border-gray-100 rounded-full px-5 py-2.5 text-sm text-gray-700 outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 transition-all placeholder:text-gray-300";
-const labelCls = "text-xs font-semibold text-gray-500 block mb-1.5 ml-4";
-const iconInputCls = "w-full pl-12 pr-5 py-2.5 text-sm text-gray-700 bg-gray-50/50 border border-gray-100 rounded-full outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 transition-all placeholder:text-gray-300";
+const fieldCls = "w-full border rounded-full px-5 py-2.5 text-sm outline-none transition-all";
+const fieldSty = { background: 'color-mix(in oklab, var(--foreground) 5%, transparent)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' };
+const labelCls = "text-xs font-semibold block mb-1.5 ml-4";
+const labelSty = { color: 'var(--muted-foreground)' };
+const iconInputCls = "w-full pl-12 pr-5 py-2.5 text-sm border rounded-full outline-none transition-all";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Keyword input with vendor suggestion dropdown
@@ -403,17 +410,19 @@ export default function VendorList() {
         <div className="w-full flex flex-col gap-6 animate-in fade-in duration-500">
 
             {/* ── Filter bar ── */}
-            <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100 mb-6">
+            <div className="p-6 rounded-[2rem] mb-6" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
                 <div className="flex flex-wrap items-end gap-6">
                     <div className="flex flex-col gap-1.5">
                         <span className="text-xs font-bold text-gray-500 ml-2">Period</span>
                         <div className="flex items-center gap-2">
                             <input type="date" value={fromDate} onChange={e => setFromDate(e.target.value)}
-                                className="bg-gray-50/50 border border-gray-100 px-4 py-2 rounded-full text-xs font-semibold outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 hover:border-erp-accent/20 transition-all w-40 text-gray-700"
+                                className="px-4 py-2 rounded-full text-xs font-semibold outline-none transition-all w-40"
+                                style={fieldSty}
                             />
-                            <span className="text-xs font-bold text-gray-300">to</span>
+                            <span className="text-xs font-bold" style={{ color: 'var(--muted-foreground)' }}>to</span>
                             <input type="date" value={toDate} onChange={e => setToDate(e.target.value)}
-                                className="bg-gray-50/50 border border-gray-100 px-4 py-2 rounded-full text-xs font-semibold outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 hover:border-erp-accent/20 transition-all w-40 text-gray-700"
+                                className="px-4 py-2 rounded-full text-xs font-semibold outline-none transition-all w-40"
+                                style={fieldSty}
                             />
                         </div>
                     </div>
@@ -433,7 +442,8 @@ export default function VendorList() {
                         </div>
                         {isSearching && (
                             <button onClick={handleResetSearch}
-                                className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-600 px-6 py-2.5 text-xs font-bold rounded-full transition-all">
+                                className="flex items-center gap-2 px-6 py-2.5 text-xs font-bold rounded-full transition-all"
+                                style={{ background: 'rgba(255,255,255,0.08)', color: 'var(--muted-foreground)', border: '1px solid rgba(255,255,255,0.10)' }}>
                                 Clear
                             </button>
                         )}
@@ -446,19 +456,20 @@ export default function VendorList() {
             </div>
 
             {/* ── Table card ── */}
-            <div className="bg-white rounded-[2rem] shadow-2xl border border-gray-100 overflow-hidden min-h-[600px] flex flex-col">
+            <div className="rounded-[2rem] overflow-hidden min-h-[600px] flex flex-col" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
 
                 {/* Table top bar */}
-                <div className="flex items-center justify-between px-8 py-5 border-b border-gray-50 bg-gray-50/30">
+                <div className="flex items-center justify-between px-8 py-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.3)' }}>
                     <div className="flex items-center gap-3">
                         <div className="w-2 h-6 bg-erp-accent rounded-full" />
-                        <h2 className="text-sm font-bold text-gray-700">Vendors</h2>
+                        <h2 className="text-sm font-bold" style={{ color: 'var(--foreground)' }}>Vendors</h2>
                     </div>
                     <div className="relative w-64 group">
-                        <Icon icon="mdi:filter-variant" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-erp-accent transition-colors" />
+                        <Icon icon="mdi:filter-variant" className="absolute left-4 top-1/2 -translate-y-1/2 transition-colors" style={{ color: 'var(--muted-foreground)' }} />
                         <input type="text" value={globalFilter ?? ""} onChange={e => setGlobalFilter(e.target.value)}
                             placeholder="Filter..."
-                            className="w-full pl-11 pr-4 py-2.5 text-sm font-semibold border border-gray-100 rounded-full outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 transition-all text-gray-600 placeholder:text-gray-300 bg-white"
+                            className="w-full pl-11 pr-4 py-2.5 text-sm font-semibold rounded-full outline-none transition-all"
+                            style={fieldSty}
                         />
                     </div>
                 </div>
@@ -477,20 +488,20 @@ export default function VendorList() {
                                 </tr>
                             ))}
                         </thead>
-                        <tbody className="divide-y divide-gray-50">
+                        <tbody>
                             {table.getRowModel().rows.length === 0 && (
                                 <tr><td colSpan={columns.length} className="py-24 text-center">
-                                    <div className="flex flex-col items-center gap-3 opacity-20">
+                                    <div className="flex flex-col items-center gap-3 opacity-30">
                                         <Icon icon="mdi:account-off-outline" className="text-6xl" />
                                         <p className="text-sm font-bold">No vendors found</p>
                                     </div>
                                 </td></tr>
                             )}
                             {table.getRowModel().rows.map(row => (
-                                <tr key={row.id} className="hover:bg-erp-accent/[0.02] transition-colors group">
+                                <tr key={row.id} className="hover:bg-erp-accent/[0.04] transition-colors group" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                                     {row.getVisibleCells().map(cell => (
                                         <td key={cell.id} className="px-6 py-4 text-center">
-                                            <div className="text-xs font-semibold text-gray-600 group-hover:text-gray-900 transition-colors">
+                                            <div className="text-xs font-semibold transition-colors" style={{ color: 'var(--foreground)' }}>
                                                 {flexRender(cell.column.columnDef.cell ?? cell.column.columnDef.accessorKey, cell.getContext())}
                                             </div>
                                         </td>
@@ -502,16 +513,17 @@ export default function VendorList() {
                 </div>
 
                 {/* Pagination */}
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-8 py-6 border-t border-gray-50 bg-gray-50/30">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-8 py-6" style={{ borderTop: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.3)' }}>
                     <div className="flex items-center gap-4">
                         <button
                             onClick={isSearching ? handleResetSearch : handleLoadMore}
                             disabled={loadingMore || (!isSearching && !hasMore)}
                             className={`px-8 py-2.5 rounded-full text-xs font-bold transition-all shadow-sm hover:shadow-md
                                 ${loadingMore || (!isSearching && !hasMore)
-                                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                                    : isSearching ? "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+                                    ? "opacity-40 cursor-not-allowed"
+                                    : isSearching ? ""
                                         : "bg-erp-accent text-white hover:bg-erp-accent/90"}`}
+                            style={loadingMore || (!isSearching && !hasMore) ? { background: 'rgba(255,255,255,0.06)', color: 'var(--muted-foreground)' } : isSearching ? { background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' } : {}}
                         >
                             {loadingMore ? "Loading..." : isSearching ? "Reset Filters" : "Load More"}
                         </button>
@@ -524,19 +536,22 @@ export default function VendorList() {
 
                     <div className="flex items-center gap-2">
                         <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}
-                            className="p-2.5 rounded-full border border-gray-100 text-gray-400 hover:bg-white hover:text-erp-accent disabled:opacity-30 transition-all shadow-sm">
+                            className="p-2.5 rounded-full disabled:opacity-30 transition-all"
+                            style={{ border: '1px solid rgba(255,255,255,0.10)', color: 'var(--muted-foreground)' }}>
                             <Icon icon="mdi:chevron-left" className="text-xl" />
                         </button>
                         <div className="flex items-center gap-1.5 px-4">
                             {pages.map(p => (
                                 <button key={p} onClick={() => table.setPageIndex(p)}
-                                    className={`w-9 h-9 text-[10px] font-black rounded-full transition-all shadow-sm ${p === currentPage ? "bg-erp-accent text-white scale-110 shadow-lg shadow-erp-accent/20" : "bg-white text-gray-400 hover:bg-gray-50 hover:text-erp-accent border border-gray-50"}`}>
+                                    className={`w-9 h-9 text-[10px] font-black rounded-full transition-all ${p === currentPage ? "bg-erp-accent text-white scale-110 shadow-lg shadow-erp-accent/20" : ""}`}
+                                    style={p === currentPage ? {} : { background: 'rgba(255,255,255,0.06)', color: 'var(--muted-foreground)', border: '1px solid rgba(255,255,255,0.08)' }}>
                                     {p + 1}
                                 </button>
                             ))}
                         </div>
                         <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}
-                            className="p-2.5 rounded-full border border-gray-100 text-gray-400 hover:bg-white hover:text-erp-accent disabled:opacity-30 transition-all shadow-sm">
+                            className="p-2.5 rounded-full disabled:opacity-30 transition-all"
+                            style={{ border: '1px solid rgba(255,255,255,0.10)', color: 'var(--muted-foreground)' }}>
                             <Icon icon="mdi:chevron-right" className="text-xl" />
                         </button>
                     </div>
@@ -553,7 +568,7 @@ export default function VendorList() {
                         onClose={() => { setSelectedVendor(null); setViewVendor(false); }}
                     />
                     <div className="px-6 py-5 space-y-5">
-                        <div className="bg-gray-50 rounded-2xl border border-gray-100 p-5">
+                        <div className="rounded-2xl p-5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
                             <SectionTitle>Basic Information</SectionTitle>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
                                 <InfoRow label="Date Added" value={selectedVendor.createdAt ? new Date(selectedVendor.createdAt).toLocaleString("en-GB") : "-"} />
@@ -563,7 +578,7 @@ export default function VendorList() {
                                 <InfoRow label="Email" value={selectedVendor.email} />
                             </div>
                         </div>
-                        <div className="bg-gray-50 rounded-2xl border border-gray-100 p-5">
+                        <div className="rounded-2xl p-5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
                             <SectionTitle>Business Information</SectionTitle>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
                                 <InfoRow label="Firm Name" value={selectedVendor.firm} />
@@ -575,7 +590,7 @@ export default function VendorList() {
                             </div>
                         </div>
                         {selectedVendor.notes && (
-                            <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4">
+                            <div className="rounded-2xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.20)' }}>
                                 <SectionTitle>Additional Notes</SectionTitle>
                                 <p className="text-sm text-gray-700">{selectedVendor.notes}</p>
                             </div>
@@ -583,7 +598,8 @@ export default function VendorList() {
                     </div>
                     <ModalFooter>
                         <button onClick={() => { setSelectedVendor(null); setViewVendor(false); }}
-                            className="px-4 py-2 text-xs font-semibold text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition">
+                            className="px-4 py-2 text-xs font-semibold rounded-xl transition"
+                            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' }}>
                             Close
                         </button>
                     </ModalFooter>
@@ -592,8 +608,10 @@ export default function VendorList() {
 
             {/* ── Purchase Order Modal ── */}
             {showOrderModal && (
-                <div className="fixed inset-0 z-[1001] flex items-center justify-center bg-black/60 backdrop-blur-sm p-2 sm:p-4 animate-fadeIn transition-all duration-300">
-                    <div className="bg-white w-full max-w-7xl h-[88%] sm:h-[92%] rounded-[1.5rem] sm:rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden border border-white/20">
+                <div className="fixed inset-0 z-[1001] flex items-center justify-center p-2 sm:p-4 animate-fadeIn transition-all duration-300"
+                    style={{ background: 'rgba(4,18,38,0.80)', backdropFilter: 'blur(28px) saturate(180%)' }}>
+                    <div className="w-full max-w-7xl h-[88%] sm:h-[92%] rounded-[1.5rem] sm:rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden"
+                        style={{ background: 'color-mix(in oklab, var(--card) 85%, transparent)', backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.12)' }}>
 
                         {/* Header */}
                         <div className="flex items-center justify-between px-8 py-6 bg-erp-accent text-white flex-shrink-0 relative overflow-hidden">

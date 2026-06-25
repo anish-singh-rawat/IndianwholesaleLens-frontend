@@ -217,7 +217,7 @@ const AddStore = () => {
                         {[1, 2, 3, 4].map(step => (
                             <div
                                 key={step}
-                                className={`h-3 w-3 rounded-full transition-all duration-300 ${step === currentStep ? 'bg-erp-accent w-8' : 'bg-gray-300'}`}
+                                className={`h-3 w-3 rounded-full transition-all duration-300 ${step === currentStep ? 'bg-erp-accent w-8' : 'bg-erp-accent/20'}`}
                             ></div>
                         ))}
                     </div>

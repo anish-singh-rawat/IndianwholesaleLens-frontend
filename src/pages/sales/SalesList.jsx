@@ -24,7 +24,8 @@ const SALES_ITEMS = [
 const FETCH_LIMIT = 20;
 const PAGE_SIZE = 20;
 
-const inputCls = "w-full bg-gray-50/50 border border-gray-100 rounded-full px-5 py-2.5 text-xs font-bold text-gray-700 outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 transition-all placeholder:text-gray-300";
+const inputCls = "w-full border rounded-full px-5 py-2.5 text-xs font-bold outline-none transition-all";
+const inputSty = { background: 'color-mix(in oklab, var(--foreground) 5%, transparent)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' };
 const fmt = (v) => v ? new Date(v).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "—";
 
 /* ─── Add / Edit Sale Modal ─────────────────────────────────────────────── */
@@ -129,7 +130,9 @@ const SaleModal = ({ sale, onClose, onSuccess }) => {
   return (
     <div className="fixed inset-0 z-[1100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
       onClick={onClose}>
-      <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
+      <div className="rounded-[2.5rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
+        style={{ background: 'color-mix(in oklab, var(--card) 85%, transparent)', backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.12)' }}
+        onClick={e => e.stopPropagation()}>
         <div className="bg-erp-accent p-6 text-white flex justify-between items-center">
           <div className="flex items-center gap-4">
             <Icon icon={isEdit ? "mdi:pencil-circle" : "mdi:plus-circle"} className="text-3xl" />
@@ -143,35 +146,35 @@ const SaleModal = ({ sale, onClose, onSuccess }) => {
         <form onSubmit={handleSubmit} className="p-8 overflow-y-auto custom-scrollbar flex-1 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="space-y-1 lg:col-span-2">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Sales Item *</label>
-              <select value={form.item} onChange={update("item")} className={inputCls}>
+              <label className="text-[10px] font-black uppercase tracking-widest ml-4" style={{ color: 'var(--muted-foreground)' }}>Sales Item *</label>
+              <select value={form.item} onChange={update("item")} className={inputCls} style={inputSty}>
                 {SALES_ITEMS.map((item, idx) => (
                   <option key={idx} value={item}>{item}</option>
                 ))}
               </select>
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Amount *</label>
-              <input type="number" value={form.amount} onChange={update("amount")} className={inputCls} placeholder="Amount" />
+              <label className="text-[10px] font-black uppercase tracking-widest ml-4" style={{ color: 'var(--muted-foreground)' }}>Amount *</label>
+              <input type="number" value={form.amount} onChange={update("amount")} className={inputCls} style={inputSty} placeholder="Amount" />
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Qty</label>
-              <input type="number" value={form.qty} onChange={update("qty")} className={inputCls} placeholder="Qty" />
+              <label className="text-[10px] font-black uppercase tracking-widest ml-4" style={{ color: 'var(--muted-foreground)' }}>Qty</label>
+              <input type="number" value={form.qty} onChange={update("qty")} className={inputCls} style={inputSty} placeholder="Qty" />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="space-y-1">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Discount</label>
-              <input type="number" value={form.discount} onChange={update("discount")} className={inputCls} placeholder="0.00" />
+              <label className="text-[10px] font-black uppercase tracking-widest ml-4" style={{ color: 'var(--muted-foreground)' }}>Discount</label>
+              <input type="number" value={form.discount} onChange={update("discount")} className={inputCls} style={inputSty} placeholder="0.00" />
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Subtotal</label>
-              <input type="text" readOnly value={form.subtotal} className={`${inputCls} bg-gray-100 cursor-not-allowed`} />
+              <label className="text-[10px] font-black uppercase tracking-widest ml-4" style={{ color: 'var(--muted-foreground)' }}>Subtotal</label>
+              <input type="text" readOnly value={form.subtotal} className={`${inputCls} cursor-not-allowed`} style={{ ...inputSty, background: 'rgba(255,255,255,0.03)', opacity: 0.7 }} />
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">GST %</label>
-              <select value={form.gst} onChange={update("gst")} className={inputCls}>
+              <label className="text-[10px] font-black uppercase tracking-widest ml-4" style={{ color: 'var(--muted-foreground)' }}>GST %</label>
+              <select value={form.gst} onChange={update("gst")} className={inputCls} style={inputSty}>
                 <option value="0">0%</option>
                 <option value="5">5%</option>
                 <option value="12">12%</option>
@@ -180,8 +183,8 @@ const SaleModal = ({ sale, onClose, onSuccess }) => {
               </select>
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">GST Type</label>
-              <select value={form.gstType} onChange={update("gstType")} className={inputCls}>
+              <label className="text-[10px] font-black uppercase tracking-widest ml-4" style={{ color: 'var(--muted-foreground)' }}>GST Type</label>
+              <select value={form.gstType} onChange={update("gstType")} className={inputCls} style={inputSty}>
                 <option value="excluded">Excluded</option>
                 <option value="included">Included</option>
               </select>
@@ -190,16 +193,16 @@ const SaleModal = ({ sale, onClose, onSuccess }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-1">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">GST Amt</label>
-              <input type="text" readOnly value={form.gstAmt} className={`${inputCls} bg-gray-100 cursor-not-allowed`} />
+              <label className="text-[10px] font-black uppercase tracking-widest ml-4" style={{ color: 'var(--muted-foreground)' }}>GST Amt</label>
+              <input type="text" readOnly value={form.gstAmt} className={`${inputCls} cursor-not-allowed`} style={{ ...inputSty, background: 'rgba(255,255,255,0.03)', opacity: 0.7 }} />
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Total Amount</label>
-              <input type="text" readOnly value={form.totalAmount} className={`${inputCls} bg-emerald-50 text-emerald-700 cursor-not-allowed text-lg`} />
+              <label className="text-[10px] font-black uppercase tracking-widest ml-4" style={{ color: 'var(--muted-foreground)' }}>Total Amount</label>
+              <input type="text" readOnly value={form.totalAmount} className={`${inputCls} cursor-not-allowed text-lg font-black`} style={{ background: 'rgba(16,185,129,0.10)', border: '1px solid rgba(16,185,129,0.30)', color: 'rgb(52,211,153)' }} />
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Payment Mode</label>
-              <select value={form.paymentMode} onChange={update("paymentMode")} className={inputCls}>
+              <label className="text-[10px] font-black uppercase tracking-widest ml-4" style={{ color: 'var(--muted-foreground)' }}>Payment Mode</label>
+              <select value={form.paymentMode} onChange={update("paymentMode")} className={inputCls} style={inputSty}>
                 <option value="CASH">CASH</option>
                 <option value="CARD">CARD</option>
                 <option value="UPI">UPI</option>
@@ -208,8 +211,9 @@ const SaleModal = ({ sale, onClose, onSuccess }) => {
           </div>
         </form>
 
-        <div className="p-6 bg-gray-50 flex justify-end gap-3 border-t border-gray-100">
-          <button type="button" onClick={onClose} className="px-8 py-2.5 text-[10px] font-black uppercase tracking-widest text-gray-400 bg-white border border-gray-100 rounded-full hover:bg-gray-100">Cancel</button>
+        <div className="p-6 flex justify-end gap-3" style={{ background: 'rgba(4,12,24,0.4)', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+          <button type="button" onClick={onClose} className="px-8 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-full"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)', color: 'var(--muted-foreground)' }}>Cancel</button>
           <button type="submit" onClick={handleSubmit} disabled={loading} className="px-10 py-2.5 bg-erp-accent text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg shadow-erp-accent/20 hover:scale-105 active:scale-95 disabled:opacity-50">
             {loading ? "Saving..." : isEdit ? "Update Sale" : "Create Sale"}
           </button>
@@ -378,13 +382,14 @@ export default function SalesList() {
     <div className="flex flex-col gap-6 w-full animate-in fade-in duration-500">
 
       {/* ── Filter Bar ── */}
-      <div className="bg-white p-6 rounded-[2rem] shadow-xl border border-gray-100/80 mb-2 flex items-center justify-between">
+      <div className="p-6 rounded-[2rem] mb-2 flex items-center justify-between" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
         <div className="relative w-full max-w-sm group">
-          <Icon icon="mdi:magnify" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-erp-accent" />
+          <Icon icon="mdi:magnify" className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--muted-foreground)' }} />
           <input
             type="text" value={globalFilter ?? ""} onChange={e => setGlobalFilter(e.target.value)}
             placeholder="Search sales..."
-            className="w-full pl-11 pr-4 py-2.5 text-xs font-bold border border-gray-100 rounded-full outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 transition-all bg-gray-50/50"
+            className="w-full pl-11 pr-4 py-2.5 text-xs font-bold rounded-full outline-none transition-all"
+            style={inputSty}
           />
         </div>
 
@@ -395,7 +400,7 @@ export default function SalesList() {
       </div>
 
       {/* ── Table Card ── */}
-      <div className="bg-white rounded-[2rem] shadow-2xl border border-gray-100 overflow-hidden flex flex-col min-h-[500px]">
+      <div className="rounded-[2rem] overflow-hidden flex flex-col min-h-[500px]" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
         <div className="overflow-x-auto custom-scrollbar flex-1">
           <table className="w-full border-collapse">
             <thead>
@@ -407,7 +412,7 @@ export default function SalesList() {
                 )))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody>
               {table.getRowModel().rows.length === 0 ? (
                 <tr>
                   <td colSpan={columns.length} className="py-32 text-center opacity-40">

@@ -12,39 +12,42 @@ const firstOfMonth = () => { const d = new Date(); return new Date(d.getFullYear
 
 const StatCard = ({ icon, label, value, sub, color = "blue" }) => {
   const themes = {
-    orange: "bg-orange-50 text-orange-600 border-orange-100",
-    green: "bg-emerald-50 text-emerald-600 border-emerald-100",
-    red: "bg-rose-50 text-rose-600 border-rose-100",
-    blue: "bg-blue-50 text-blue-600 border-blue-100",
-    teal: "bg-teal-50 text-teal-600 border-teal-100"
+    orange: { background: 'rgba(251,146,60,0.12)', color: 'rgb(251,146,60)' },
+    green: { background: 'rgba(16,185,129,0.12)', color: 'rgb(52,211,153)' },
+    red: { background: 'rgba(244,63,94,0.12)', color: 'rgb(251,113,133)' },
+    blue: { background: 'rgba(59,130,246,0.12)', color: 'rgb(96,165,250)' },
+    teal: { background: 'rgba(20,184,166,0.12)', color: 'rgb(45,212,191)' },
   };
+  const theme = themes[color] || themes.blue;
 
   return (
-    <div className="bg-white rounded-[2rem] border border-gray-100 shadow-sm p-6 flex items-start gap-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-      <div className={`p-4 rounded-2xl ${themes[color] || themes.blue} flex-shrink-0 flex items-center justify-center shadow-inner`}>
+    <div className="rounded-[2rem] p-6 flex items-start gap-5 hover:-translate-y-1 transition-all duration-300"
+      style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
+      <div className="p-4 rounded-2xl flex-shrink-0 flex items-center justify-center" style={theme}>
         <Icon icon={icon} className="text-2xl" />
       </div>
       <div className="min-w-0">
-        <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">{label}</p>
-        <p className="text-xl font-black text-gray-800 truncate">{value}</p>
-        {sub && <p className="text-[11px] font-bold text-gray-400 mt-1 uppercase  ">{sub}</p>}
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-1" style={{ color: 'var(--muted-foreground)' }}>{label}</p>
+        <p className="text-xl font-black truncate" style={{ color: 'var(--foreground)' }}>{value}</p>
+        {sub && <p className="text-[11px] font-bold mt-1 uppercase" style={{ color: 'var(--muted-foreground)' }}>{sub}</p>}
       </div>
     </div>
   );
 };
 
 const DataCard = ({ title, icon, children, footer }) => (
-  <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/40 flex flex-col overflow-hidden">
-    <div className="px-8 py-5 border-b border-gray-50 flex items-center gap-3 bg-gray-50/30">
+  <div className="rounded-[2.5rem] flex flex-col overflow-hidden"
+    style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
+    <div className="px-8 py-5 flex items-center gap-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.3)' }}>
       <Icon icon={icon} className="text-erp-accent text-lg" />
-      <h3 className="text-xs font-black text-gray-700 uppercase tracking-widest">{title}</h3>
+      <h3 className="text-xs font-black uppercase tracking-widest" style={{ color: 'var(--foreground)' }}>{title}</h3>
     </div>
     <div className="flex-1 overflow-x-auto overflow-y-auto max-h-[400px] custom-scrollbar">
       {children}
     </div>
     {footer !== undefined && (
-      <div className="px-8 py-3 border-t border-gray-50 bg-gray-50/10">
-        <p className="text-[9px] font-black text-gray-300 uppercase tracking-[0.2em]">{footer}</p>
+      <div className="px-8 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.2)' }}>
+        <p className="text-[9px] font-black uppercase tracking-[0.2em]" style={{ color: 'var(--muted-foreground)' }}>{footer}</p>
       </div>
     )}
   </div>
@@ -52,24 +55,26 @@ const DataCard = ({ title, icon, children, footer }) => (
 
 const InnerTable = ({ headers, rows, emptyMsg = "No records available", highlightLast = false }) => (
   <table className="w-full border-collapse">
-    <thead className="sticky top-0 bg-white z-10">
-      <tr className="border-b border-gray-50">
+    <thead className="sticky top-0 z-10" style={{ background: 'rgba(4,12,24,0.8)' }}>
+      <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
         {headers.map((h, i) => (
-          <th key={i} className="px-6 py-3 text-left text-[9px] font-black text-gray-400 uppercase tracking-widest whitespace-nowrap">
+          <th key={i} className="px-6 py-3 text-left text-[9px] font-black uppercase tracking-widest whitespace-nowrap" style={{ color: 'var(--muted-foreground)' }}>
             {h}
           </th>
         ))}
       </tr>
     </thead>
-    <tbody className="divide-y divide-gray-50">
+    <tbody>
       {rows.length === 0
-        ? <tr><td colSpan={headers.length} className="px-6 py-12 text-center text-[10px] font-black uppercase tracking-widest text-gray-300">{emptyMsg}</td></tr>
+        ? <tr><td colSpan={headers.length} className="px-6 py-12 text-center text-[10px] font-black uppercase tracking-widest opacity-30">{emptyMsg}</td></tr>
         : rows.map((row, i) => {
           const hi = highlightLast && i === rows.length - 1;
           return (
-            <tr key={i} className={`transition-colors group ${hi ? "bg-erp-accent text-white" : "hover:bg-erp-accent/[0.02]"}`}>
+            <tr key={i} className={`transition-colors group ${hi ? "bg-erp-accent" : "hover:bg-erp-accent/[0.04]"}`}
+              style={hi ? {} : { borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
               {row.map((cell, j) => (
-                <td key={j} className={`px-6 py-3 whitespace-nowrap text-[11px] font-bold ${hi ? "text-white" : "text-gray-600 group-hover:text-gray-900"}`}>
+                <td key={j} className={`px-6 py-3 whitespace-nowrap text-[11px] font-bold ${hi ? "text-white" : ""}`}
+                  style={hi ? {} : { color: 'var(--foreground)' }}>
                   {cell}
                 </td>
               ))}
@@ -150,16 +155,17 @@ export default function DailyReport() {
 
       {/* ══ HEADER ══════════════════════════════════════════════════════ */}
       <div>
-        <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tighter">Business Report</h1>
-        <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mt-1">Daily Report</p>
+        <h1 className="text-3xl font-black uppercase tracking-tighter" style={{ color: 'var(--foreground)' }}>Business Report</h1>
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] mt-1" style={{ color: 'var(--muted-foreground)' }}>Daily Report</p>
       </div>
 
       {/* Date Filter */}
-      <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/40 p-8">
+      <div className="rounded-[2.5rem] p-8" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
         <div className="flex flex-wrap gap-3 mb-8">
           {presets.map(({ label, fn }) => (
             <button key={label} type="button" onClick={() => { setForm(fn()); setErrors({}); }}
-              className="px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border border-gray-100 text-gray-400 hover:border-erp-accent hover:text-erp-accent hover:bg-erp-accent/5 transition-all">
+              className="px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all hover:text-erp-accent hover:border-erp-accent hover:bg-erp-accent/5"
+              style={{ border: '1px solid rgba(255,255,255,0.10)', color: 'var(--muted-foreground)' }}>
               {label}
             </button>
           ))}
@@ -167,21 +173,23 @@ export default function DailyReport() {
 
         <div className="flex flex-col lg:flex-row gap-6 items-end">
           <div className="flex-1 w-full">
-            <label className="block text-[10px] font-black text-gray-300 uppercase tracking-widest mb-2 ml-4">Start Date</label>
+            <label className="block text-[10px] font-black uppercase tracking-widest mb-2 ml-4" style={{ color: 'var(--muted-foreground)' }}>Start Date</label>
             <div className="relative">
-              <Icon icon="mdi:calendar-start" className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 text-lg" />
+              <Icon icon="mdi:calendar-start" className="absolute left-5 top-1/2 -translate-y-1/2 text-lg" style={{ color: 'var(--muted-foreground)' }} />
               <input type="date" value={form.startDate} max={today()}
                 onChange={(e) => { setForm(p => ({ ...p, startDate: e.target.value })); setErrors(p => ({ ...p, startDate: "" })); }}
-                className={inputCls(errors.startDate)} />
+                className="w-full pl-12 pr-4 py-3 text-xs font-bold rounded-full outline-none transition-all"
+                style={{ background: 'color-mix(in oklab, var(--foreground) 5%, transparent)', border: errors.startDate ? '1px solid rgba(244,63,94,0.5)' : '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' }} />
             </div>
           </div>
           <div className="flex-1 w-full">
-            <label className="block text-[10px] font-black text-gray-300 uppercase tracking-widest mb-2 ml-4">End Date</label>
+            <label className="block text-[10px] font-black uppercase tracking-widest mb-2 ml-4" style={{ color: 'var(--muted-foreground)' }}>End Date</label>
             <div className="relative">
-              <Icon icon="mdi:calendar-end" className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 text-lg" />
+              <Icon icon="mdi:calendar-end" className="absolute left-5 top-1/2 -translate-y-1/2 text-lg" style={{ color: 'var(--muted-foreground)' }} />
               <input type="date" value={form.endDate} min={form.startDate} max={today()}
                 onChange={(e) => { setForm(p => ({ ...p, endDate: e.target.value })); setErrors(p => ({ ...p, endDate: "" })); }}
-                className={inputCls(errors.endDate)} />
+                className="w-full pl-12 pr-4 py-3 text-xs font-bold rounded-full outline-none transition-all"
+                style={{ background: 'color-mix(in oklab, var(--foreground) 5%, transparent)', border: errors.endDate ? '1px solid rgba(244,63,94,0.5)' : '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' }} />
             </div>
           </div>
           <button type="button" onClick={handleFetch} disabled={loading}
@@ -197,7 +205,7 @@ export default function DailyReport() {
       </div>
 
       {!report && !loading && (
-        <div className="flex flex-col items-center justify-center py-32 text-gray-200">
+        <div className="flex flex-col items-center justify-center py-32 opacity-20">
           <Icon icon="mdi:file-chart-outline" className="text-8xl mb-4 opacity-10" />
           <p className="text-[10px] font-black uppercase tracking-[0.4em]">Awaiting date selection</p>
         </div>

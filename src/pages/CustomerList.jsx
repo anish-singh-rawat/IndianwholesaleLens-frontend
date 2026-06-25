@@ -414,7 +414,7 @@ const CustomerList = () => {
                                     <th className="py-4 px-4 font-semibold text-xs text-center uppercase  ">Action</th>
                                 </tr>
                             </thead>
-                            <tbody className="text-gray-600">
+                            <tbody style={{ color: 'var(--foreground)' }}>
                                 {customers.map((cust) => (
                                     <React.Fragment key={cust._id}>
                                         <tr
@@ -433,7 +433,7 @@ const CustomerList = () => {
                                                 </div>
                                             </td>
                                             <td className="px-4 py-2 text-center border-r border-gray-50">
-                                                <span className="px-2.5 py-1 bg-gray-100 text-gray-600 whitespace-nowrap rounded-md text-[9px] font-black uppercase tracking-widest border border-gray-200">
+                                                <span className="px-2.5 py-1 whitespace-nowrap rounded-md text-[9px] font-black uppercase tracking-widest" style={{ background: 'rgba(255,255,255,0.08)', color: 'var(--muted-foreground)', border: '1px solid rgba(255,255,255,0.10)' }}>
                                                     {cust?.businessType?.name || cust?.businessType || cust?.CustomerType?.name || cust?.CustomerType || '---'}
                                                 </span>
                                             </td>
@@ -450,7 +450,7 @@ const CustomerList = () => {
                                                 </div>
                                             </td>
                                             <td className="px-4 py-2 text-center border-r border-gray-50">
-                                                <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${cust?.status?.isActive || cust?.Status?.isActive || cust?.status?.toLowerCase?.() === 'active' ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-red-100 text-red-700 border border-red-200'}`}>
+                                                <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${cust?.status?.isActive || cust?.Status?.isActive || cust?.status?.toLowerCase?.() === 'active' ? 'bg-green-900/30 text-green-300 border-green-700/40' : 'bg-red-900/30 text-red-300 border-red-700/40'}`}>
                                                     {cust?.status?.isActive !== undefined ? (cust.status.isActive ? 'ACTIVE' : 'INACTIVE') : (cust?.Status?.isActive ? 'ACTIVE' : (cust?.status || 'ACTIVE'))}
                                                 </span>
                                             </td>
@@ -482,7 +482,8 @@ const CustomerList = () => {
                                                             className="fixed inset-0 z-[60]"
                                                             onClick={() => setActiveActionMenu(null)}
                                                         />
-                                                        <div className="absolute right-full top-1/2 -translate-y-1/2 mr-2 z-[70] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden min-w-[140px] animate-in fade-in slide-in-from-right-4 duration-200">
+                                                        <div className="absolute right-full top-1/2 -translate-y-1/2 mr-2 z-[70] rounded-2xl shadow-2xl overflow-hidden min-w-[140px] animate-in fade-in slide-in-from-right-4 duration-200"
+                                                            style={{ background: 'color-mix(in oklab, var(--card) 90%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.12)' }}>
                                                             <button
                                                                 onClick={() => { handleViewDetails(cust._id); setActiveActionMenu(null); }}
                                                                 className="w-full flex items-center gap-3 px-4 py-3 text-xs font-bold text-gray-600 hover:bg-erp-accent/5 hover:text-erp-accent/80 transition-colors"

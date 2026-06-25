@@ -9,17 +9,18 @@ import * as repairService from "../../services/repairService";
 
 /* ─── Constants ─────────────────────────────────────────────────────────── */
 const STATUS_CFG = {
-  PENDING: { cls: "bg-amber-100 text-amber-700 border-amber-200", icon: "mdi:clock-outline" },
-  IN_PROGRESS: { cls: "bg-blue-100 text-blue-700 border-blue-200", icon: "mdi:progress-wrench" },
-  COMPLETED: { cls: "bg-emerald-100 text-emerald-700 border-emerald-200", icon: "mdi:check-circle-outline" },
-  DELIVERED: { cls: "bg-indigo-100 text-indigo-700 border-indigo-200", icon: "mdi:truck-check-outline" },
-  CANCELLED: { cls: "bg-rose-100 text-rose-700 border-rose-200", icon: "mdi:close-circle-outline" },
+  PENDING: { cls: "bg-amber-900/30 text-amber-300 border-amber-700/40", icon: "mdi:clock-outline" },
+  IN_PROGRESS: { cls: "bg-blue-900/30 text-blue-300 border-blue-700/40", icon: "mdi:progress-wrench" },
+  COMPLETED: { cls: "bg-emerald-900/30 text-emerald-300 border-emerald-700/40", icon: "mdi:check-circle-outline" },
+  DELIVERED: { cls: "bg-indigo-900/30 text-indigo-300 border-indigo-700/40", icon: "mdi:truck-check-outline" },
+  CANCELLED: { cls: "bg-rose-900/30 text-rose-300 border-rose-700/40", icon: "mdi:close-circle-outline" },
 };
 const ALL_STATUSES = ["Pending", "In Progress", "Completed", "Delivered", "Cancelled"];
 const FETCH_LIMIT = 100;
 const PAGE_SIZE = 100;
 
-const inputCls = "w-full bg-gray-50/50 border border-gray-100 rounded-full px-5 py-2.5 text-xs font-bold text-gray-700 outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 transition-all placeholder:text-gray-300";
+const inputCls = "w-full border rounded-full px-5 py-2.5 text-xs font-bold outline-none transition-all";
+const inputSty = { background: 'color-mix(in oklab, var(--foreground) 5%, transparent)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' };
 const fmt = (v) => v ? new Date(v).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "—";
 
 /* ─── Status Badge ──────────────────────────────────────────────────────── */
@@ -60,7 +61,9 @@ const DetailModal = ({ repair, onClose, onStatusChange, canDelete, onDelete }) =
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-all duration-300"
       onClick={onClose}>
-      <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col scale-in-center" onClick={e => e.stopPropagation()}>
+      <div className="rounded-[2.5rem] shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col scale-in-center"
+        style={{ background: 'color-mix(in oklab, var(--card) 85%, transparent)', backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.12)' }}
+        onClick={e => e.stopPropagation()}>
 
         {/* Header */}
         <div className="bg-erp-accent p-6 text-white flex justify-between items-center relative overflow-hidden">
@@ -110,13 +113,13 @@ const DetailModal = ({ repair, onClose, onStatusChange, canDelete, onDelete }) =
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-3">
               <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Issues</h4>
-              <p className="text-xs font-bold text-gray-700 bg-gray-50 p-4 rounded-2xl border border-gray-100 leading-relaxed min-h-[80px]">
+              <p className="text-xs font-bold p-4 rounded-2xl leading-relaxed min-h-[80px]" style={{ color: 'var(--foreground)', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
                 {repair.issueDescription || repair.issue || "No specific fault recorded"}
               </p>
             </div>
             <div className="space-y-3">
-              <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Notes</h4>
-              <p className="text-xs font-bold text-gray-700 bg-gray-50 p-4 rounded-2xl border border-gray-100 leading-relaxed min-h-[80px]">
+              <h4 className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--muted-foreground)' }}>Notes</h4>
+              <p className="text-xs font-bold p-4 rounded-2xl leading-relaxed min-h-[80px]" style={{ color: 'var(--foreground)', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
                 {repair.remark || "No internal remarks"}
               </p>
             </div>
@@ -138,7 +141,7 @@ const DetailModal = ({ repair, onClose, onStatusChange, canDelete, onDelete }) =
           )}
 
           {/* Status Update */}
-          <div className="bg-gray-50 p-6 rounded-[2rem] border border-gray-100">
+          <div className="p-6 rounded-[2rem]" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex items-center gap-4">
                 <div className="flex flex-col">
@@ -148,7 +151,7 @@ const DetailModal = ({ repair, onClose, onStatusChange, canDelete, onDelete }) =
                 <Icon icon="mdi:arrow-right" className="text-gray-300 text-xl hidden md:block" />
                 <div className="flex flex-col">
                   <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Change To</span>
-                  <select value={status} onChange={e => setStatus(e.target.value)} className={inputCls + " w-56"}>
+                  <select value={status} onChange={e => setStatus(e.target.value)} className={inputCls + " w-56"} style={inputSty}>
                     {ALL_STATUSES.map(s => <option key={s} value={s}>{s.replace("_", " ")}</option>)}
                   </select>
                 </div>
@@ -165,7 +168,7 @@ const DetailModal = ({ repair, onClose, onStatusChange, canDelete, onDelete }) =
         </div>
 
         {/* Footer */}
-        <div className="p-6 bg-gray-50/50 border-t border-gray-50 flex justify-between items-center">
+        <div className="p-6 flex justify-between items-center" style={{ borderTop: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.3)' }}>
           {canDelete && (
             <button
               onClick={handleDelete}
@@ -176,7 +179,8 @@ const DetailModal = ({ repair, onClose, onStatusChange, canDelete, onDelete }) =
               {deleting ? "Deleting..." : "Delete Repair"}
             </button>
           )}
-          <button onClick={onClose} className="px-10 py-3 bg-white border border-gray-100 text-gray-400 text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-gray-50 transition-all">
+          <button onClick={onClose} className="px-10 py-3 text-[10px] font-black uppercase tracking-widest rounded-full transition-all"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)', color: 'var(--muted-foreground)' }}>
             Close
           </button>
         </div>
@@ -506,7 +510,7 @@ export default function RepairList() {
     <div className="flex flex-col gap-6 w-full animate-in fade-in duration-500">
 
       {/* ── Filter Bar ── */}
-      <div className="bg-white p-6 rounded-[2rem] shadow-xl border border-gray-100/80 mb-6">
+      <div className="p-6 rounded-[2rem] mb-6" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div className="flex flex-wrap items-end gap-6 flex-1">
             <div className="flex flex-col gap-1.5">
@@ -523,9 +527,9 @@ export default function RepairList() {
             <div className="flex flex-col gap-1.5">
               <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Date Range</span>
               <div className="flex items-center gap-2">
-                <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className={inputCls + " w-40"} />
-                <span className="text-[10px] font-black text-gray-300 uppercase tracking-tighter">to</span>
-                <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className={inputCls + " w-40"} />
+                <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className={inputCls + " w-40"} style={inputSty} />
+                <span className="text-[10px] font-black uppercase tracking-tighter" style={{ color: 'var(--muted-foreground)' }}>to</span>
+                <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className={inputCls + " w-40"} style={inputSty} />
               </div>
             </div>
 
@@ -537,7 +541,7 @@ export default function RepairList() {
                   type="text" value={keyword} onChange={e => setKeyword(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && searchRepairs()}
                   placeholder="Customer name, mobile or item..."
-                  className={inputCls + " pl-12 pr-4"}
+                  className={inputCls + " pl-12 pr-4"} style={inputSty}
                 />
               </div>
             </div>
@@ -550,18 +554,19 @@ export default function RepairList() {
       </div>
 
       {/* ── Table Card ── */}
-      <div className="bg-white rounded-[2rem] shadow-2xl border border-gray-100 overflow-hidden flex flex-col min-h-[600px]">
-        <div className="px-8 py-5 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
+      <div className="rounded-[2rem] overflow-hidden flex flex-col min-h-[600px]" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
+        <div className="px-8 py-5 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.3)' }}>
           <div className="flex items-center gap-3">
             <div className="w-2 h-6 bg-erp-accent rounded-full" />
-            <h2 className="text-sm font-black text-gray-700 uppercase tracking-widest">Repairs</h2>
+            <h2 className="text-sm font-black uppercase tracking-widest" style={{ color: 'var(--foreground)' }}>Repairs</h2>
           </div>
           <div className="relative w-64 group">
-            <Icon icon="mdi:filter-variant" className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-erp-accent" />
+            <Icon icon="mdi:filter-variant" className="absolute left-4 top-1/2 -translate-y-1/2 transition-colors" style={{ color: 'var(--muted-foreground)' }} />
             <input
               type="text" value={globalFilter ?? ""} onChange={e => setGlobalFilter(e.target.value)}
               placeholder="Search..."
-              className="w-full pl-11 pr-4 py-2.5 text-[10px] font-black border border-gray-100 rounded-full outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 transition-all bg-white"
+              className="w-full pl-11 pr-4 py-2.5 text-[10px] font-black rounded-full outline-none transition-all"
+              style={{ background: 'color-mix(in oklab, var(--foreground) 5%, transparent)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' }}
             />
           </div>
         </div>
@@ -577,19 +582,19 @@ export default function RepairList() {
                 )))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody>
               {table.getRowModel().rows.length === 0 ? (
                 <tr>
-                  <td colSpan={columns.length} className="py-32 text-center opacity-20">
+                  <td colSpan={columns.length} className="py-32 text-center opacity-30">
                     <Icon icon="mdi:tools-off" className="text-6xl mx-auto mb-4" />
                     <p className="text-xs font-black uppercase tracking-widest">No repairs matching criteria</p>
                   </td>
                 </tr>
               ) : table.getRowModel().rows.map(row => (
-                <tr key={row.id} className="hover:bg-erp-accent/[0.02] transition-all group">
+                <tr key={row.id} className="hover:bg-erp-accent/[0.04] transition-all group" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                   {row.getVisibleCells().map(cell => (
                     <td key={cell.id} className="px-6 py-4 text-center">
-                      <div className="text-[11px] font-bold text-gray-600 group-hover:text-gray-900 transition-colors">
+                      <div className="text-[11px] font-bold transition-colors" style={{ color: 'var(--foreground)' }}>
                         {flexRender(cell.column.columnDef.cell ?? cell.column.columnDef.accessorKey, cell.getContext())}
                       </div>
                     </td>
@@ -601,34 +606,35 @@ export default function RepairList() {
         </div>
 
         {/* Pagination */}
-        <div className="p-8 border-t border-gray-50 bg-gray-50/30 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="p-8 flex flex-col sm:flex-row items-center justify-between gap-6" style={{ borderTop: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.3)' }}>
           <button
             onClick={isSearching ? handleResetSearch : handleLoadMore}
             disabled={loadingMore || (!isSearching && !hasMore)}
-            className={`px-10 py-3 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg transition-all
-              ${loadingMore || (!isSearching && !hasMore)
-                ? "bg-gray-100 text-gray-300 shadow-none cursor-not-allowed"
-                : isSearching ? "bg-white border border-gray-100 text-gray-600 hover:bg-gray-50 shadow-gray-200/50"
-                  : "bg-erp-accent text-white shadow-erp-accent/20 hover:scale-105 active:scale-95"}`}
+            className={`px-10 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all
+              ${(!isSearching && !hasMore) ? "opacity-40 cursor-not-allowed" : isSearching ? "" : "bg-erp-accent text-white shadow-lg shadow-erp-accent/20 hover:scale-105 active:scale-95"}`}
+            style={loadingMore || (!isSearching && !hasMore) ? { background: 'rgba(255,255,255,0.06)', color: 'var(--muted-foreground)' } : isSearching ? { background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' } : {}}
           >
             {loadingMore ? "Loading Records..." : isSearching ? "Reset All Filters" : "Load More Data"}
           </button>
 
           <div className="flex items-center gap-2">
             <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}
-              className="p-2.5 rounded-full bg-white border border-gray-100 text-gray-400 hover:text-erp-accent disabled:opacity-30 transition-all">
+              className="p-2.5 rounded-full disabled:opacity-30 transition-all"
+              style={{ border: '1px solid rgba(255,255,255,0.10)', color: 'var(--muted-foreground)' }}>
               <Icon icon="mdi:chevron-left" className="text-xl" />
             </button>
             <div className="flex items-center gap-1 px-4">
               {pages.slice(Math.max(0, currentPage - 2), Math.min(totalPages, currentPage + 3)).map(p => (
                 <button key={p} onClick={() => table.setPageIndex(p)}
-                  className={`w-9 h-9 rounded-full text-[10px] font-black transition-all ${p === currentPage ? "bg-erp-accent text-white shadow-lg shadow-erp-accent/20 scale-110" : "bg-white text-gray-400 border border-gray-100 hover:bg-gray-50"}`}>
+                  className={`w-9 h-9 rounded-full text-[10px] font-black transition-all ${p === currentPage ? "bg-erp-accent text-white shadow-lg shadow-erp-accent/20 scale-110" : ""}`}
+                  style={p === currentPage ? {} : { background: 'rgba(255,255,255,0.06)', color: 'var(--muted-foreground)', border: '1px solid rgba(255,255,255,0.08)' }}>
                   {p + 1}
                 </button>
               ))}
             </div>
             <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}
-              className="p-2.5 rounded-full bg-white border border-gray-100 text-gray-400 hover:text-erp-accent disabled:opacity-30 transition-all">
+              className="p-2.5 rounded-full disabled:opacity-30 transition-all"
+              style={{ border: '1px solid rgba(255,255,255,0.10)', color: 'var(--muted-foreground)' }}>
               <Icon icon="mdi:chevron-right" className="text-xl" />
             </button>
           </div>

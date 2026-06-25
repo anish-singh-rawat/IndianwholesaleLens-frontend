@@ -148,11 +148,11 @@ const OtherSales = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-6">
                     {/* Row 1 */}
                     <div>
-                        <label className={labelClasses}>
-                            <Icon icon="mdi:package-variant" className="text-gray-400 text-lg" />
-                            Item <span className="text-red-500">*</span>
+                        <label className={labelClasses} style={labelStyle}>
+                            <Icon icon="mdi:package-variant" className="text-lg" />
+                            Item <span className="text-red-400">*</span>
                         </label>
-                        <select name="item" value={formData.item} onChange={handleChange} className={inputClasses}>
+                        <select name="item" value={formData.item} onChange={handleChange} className={inputClasses} style={inputStyle}>
                             <option value="">Select item</option>
                             {(settings?.allCategories || SALES_ITEMS).map((opt, idx) => (
                                 <option key={idx} value={opt}>{opt}</option>
@@ -161,39 +161,39 @@ const OtherSales = () => {
                     </div>
 
                     <div>
-                        <label className={labelClasses}>
-                            Amount <span className="text-red-500">*</span>
+                        <label className={labelClasses} style={labelStyle}>
+                            Amount <span className="text-red-400">*</span>
                         </label>
-                        <input type="number" name="amount" value={formData.amount} onChange={handleChange} className={inputClasses} placeholder="0.00" min="0" step="0.01" />
+                        <input type="number" name="amount" value={formData.amount} onChange={handleChange} className={inputClasses} style={inputStyle} placeholder="0.00" min="0" step="0.01" />
                     </div>
 
                     <div>
-                        <label className={labelClasses}>
-                            Quantity <span className="text-red-500">*</span>
+                        <label className={labelClasses} style={labelStyle}>
+                            Quantity <span className="text-red-400">*</span>
                         </label>
-                        <input type="number" name="quantity" value={formData.quantity} onChange={handleChange} className={inputClasses} placeholder="1" min="1" />
+                        <input type="number" name="quantity" value={formData.quantity} onChange={handleChange} className={inputClasses} style={inputStyle} placeholder="1" min="1" />
                     </div>
 
                     <div>
-                        <label className={labelClasses}>
+                        <label className={labelClasses} style={labelStyle}>
                             Discount
                         </label>
-                        <input type="number" name="discount" value={formData.discount} onChange={handleChange} className={inputClasses} placeholder="0.00" min="0" step="0.01" />
+                        <input type="number" name="discount" value={formData.discount} onChange={handleChange} className={inputClasses} style={inputStyle} placeholder="0.00" min="0" step="0.01" />
                     </div>
 
                     <div>
-                        <label className={labelClasses}>
+                        <label className={labelClasses} style={labelStyle}>
                             Subtotal
                         </label>
-                        <input type="text" readOnly value={formData.subtotal} className={`${inputClasses} bg-gray-100 text-gray-800 cursor-not-allowed font-bold`} />
+                        <input type="text" readOnly value={formData.subtotal} className={`${inputClasses} cursor-not-allowed font-bold`} style={{ ...inputStyle, background: 'rgba(255,255,255,0.03)', opacity: 0.7 }} />
                     </div>
 
                     {/* Row 2 */}
                     <div>
-                        <label className={labelClasses}>
+                        <label className={labelClasses} style={labelStyle}>
                             GST %
                         </label>
-                        <select name="gstPercent" value={formData.gstPercent} onChange={handleChange} className={inputClasses}>
+                        <select name="gstPercent" value={formData.gstPercent} onChange={handleChange} className={inputClasses} style={inputStyle}>
                             {settings?.gst?.map((g) => (
                                 <option key={g} value={g}>{g}%</option>
                             )) || (
@@ -209,35 +209,35 @@ const OtherSales = () => {
                     </div>
 
                     <div>
-                        <label className={labelClasses}>
+                        <label className={labelClasses} style={labelStyle}>
                             GST Type
                         </label>
-                        <select name="gstType" value={formData.gstType} onChange={handleChange} className={inputClasses}>
+                        <select name="gstType" value={formData.gstType} onChange={handleChange} className={inputClasses} style={inputStyle}>
                             <option value="excluded">Excluded</option>
                             <option value="included">Included</option>
                         </select>
                     </div>
 
                     <div>
-                        <label className={labelClasses}>
+                        <label className={labelClasses} style={labelStyle}>
                             GST Amount
                         </label>
-                        <input type="text" readOnly value={formData.gstAmount} className={`${inputClasses} bg-gray-100 text-gray-800 cursor-not-allowed font-bold`} />
+                        <input type="text" readOnly value={formData.gstAmount} className={`${inputClasses} cursor-not-allowed font-bold`} style={{ ...inputStyle, background: 'rgba(255,255,255,0.03)', opacity: 0.7 }} />
                     </div>
 
                     <div>
-                        <label className={labelClasses}>
+                        <label className={labelClasses} style={labelStyle}>
                             Total Amount
                         </label>
-                        <input type="text" readOnly value={formData.totalAmount} className={`${inputClasses} bg-gray-100 text-gray-800 cursor-not-allowed font-bold`} />
+                        <input type="text" readOnly value={formData.totalAmount} className={`${inputClasses} cursor-not-allowed font-bold`} style={{ ...inputStyle, background: 'rgba(255,255,255,0.03)', opacity: 0.7 }} />
                     </div>
 
                     <div>
-                        <label className={labelClasses}>
-                            <Icon icon="mdi:credit-card-outline" className="text-gray-400 text-lg" />
+                        <label className={labelClasses} style={labelStyle}>
+                            <Icon icon="mdi:credit-card-outline" className="text-lg" />
                             Payment Mode
                         </label>
-                        <select name="paymentMode" value={formData.paymentMode} onChange={handleChange} className={inputClasses}>
+                        <select name="paymentMode" value={formData.paymentMode} onChange={handleChange} className={inputClasses} style={inputStyle}>
                             <option value="CASH">CASH</option>
                             <option value="CARD">CARD</option>
                             <option value="UPI">UPI</option>

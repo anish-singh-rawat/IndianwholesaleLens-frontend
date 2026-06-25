@@ -6,8 +6,10 @@ import { showLoader, hideLoader } from "../../features/loader/loaderSlice";
 import * as returnRefundService from "../../services/returnRefundService";
 import { getSettings } from "../../services/configService";
 
-const inputCls = "w-full bg-gray-50/50 border border-gray-100 rounded-full px-5 py-2.5 text-sm text-gray-700 outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 transition-all placeholder:text-gray-300";
-const labelCls = "text-xs font-semibold text-gray-500 block mb-1.5 ml-4";
+const inputCls = "w-full border rounded-full px-5 py-2.5 text-sm outline-none transition-all";
+const inputSty = { background: 'color-mix(in oklab, var(--foreground) 5%, transparent)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' };
+const labelCls = "text-xs font-semibold block mb-1.5 ml-4";
+const labelSty = { color: 'var(--muted-foreground)' };
 
 /* ───── IMAGE NORMALIZATION ───── */
 const normalizeToJpeg = (file) =>
@@ -268,22 +270,22 @@ export default function ReturnRefund() {
   if (successData) {
     return (
       <div className="w-full min-h-[70vh] flex flex-col items-center justify-center animate-in fade-in duration-500 py-10">
-        <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-2xl p-10 max-w-xl w-full text-center relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-erp-primary to-erp-secondary"></div>
+        <div className="rounded-[2.5rem] p-10 max-w-xl w-full text-center relative overflow-hidden"
+        style={{ background: 'color-mix(in oklab, var(--card) 85%, transparent)', backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.12)' }}>
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-erp-accent to-erp-primary"></div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Return & Refund Successful</h2>
-          <p className="text-gray-500 text-sm mb-6">Your transaction has been processed successfully.</p>
+          <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--foreground)' }}>Return & Refund Successful</h2>
+          <p className="text-sm mb-6" style={{ color: 'var(--muted-foreground)' }}>Your transaction has been processed successfully.</p>
 
-          {/* Indian Lens Wholesale Mascot Illustration (as shown in mock) */}
-          <div className="w-48 h-48 mx-auto mb-8 bg-gradient-to-br from-blue-50 to-blue-100 rounded-full flex items-center justify-center relative shadow-inner">
-            <div className="absolute inset-0 rounded-full border border-blue-200/50 animate-pulse"></div>
-            <Icon icon="mdi:emoticon-happy-outline" className="text-9xl text-erp-primary animate-bounce duration-1000" />
+          <div className="w-48 h-48 mx-auto mb-8 rounded-full flex items-center justify-center relative" style={{ background: 'rgba(59,130,246,0.12)' }}>
+            <div className="absolute inset-0 rounded-full animate-pulse" style={{ border: '1px solid rgba(59,130,246,0.20)' }}></div>
+            <Icon icon="mdi:emoticon-happy-outline" className="text-9xl text-erp-accent animate-bounce duration-1000" />
           </div>
 
-          <div className="bg-gray-50 rounded-2xl p-4 mb-8 text-left space-y-2">
-            <div className="flex justify-between text-xs"><span className="text-gray-400">Request Name</span><span className="font-bold text-gray-700">{formData.name}</span></div>
-            <div className="flex justify-between text-xs"><span className="text-gray-400">Refund Amount</span><span className="font-bold text-erp-primary">₹ {formData.refundAmount || "0.00"}</span></div>
-            <div className="flex justify-between text-xs"><span className="text-gray-400">Method</span><span className="font-bold text-gray-700">{formData.refundMethod}</span></div>
+          <div className="rounded-2xl p-4 mb-8 text-left space-y-2" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="flex justify-between text-xs"><span style={{ color: 'var(--muted-foreground)' }}>Request Name</span><span className="font-bold" style={{ color: 'var(--foreground)' }}>{formData.name}</span></div>
+            <div className="flex justify-between text-xs"><span style={{ color: 'var(--muted-foreground)' }}>Refund Amount</span><span className="font-bold text-erp-accent">₹ {formData.refundAmount || "0.00"}</span></div>
+            <div className="flex justify-between text-xs"><span style={{ color: 'var(--muted-foreground)' }}>Method</span><span className="font-bold" style={{ color: 'var(--foreground)' }}>{formData.refundMethod}</span></div>
           </div>
 
           <button
@@ -311,21 +313,23 @@ export default function ReturnRefund() {
   return (
     <div className="w-full flex flex-col gap-6 animate-in fade-in duration-500 px-4 md:px-8">
       {/* Header section with Tabs */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Return & Refund</h1>
-          <p className="text-sm text-gray-500 mt-1">Manage return requests and refunds</p>
+          <h1 className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--foreground)' }}>Return & Refund</h1>
+          <p className="text-sm mt-1" style={{ color: 'var(--muted-foreground)' }}>Manage return requests and refunds</p>
         </div>
-        <div className="flex bg-gray-100 p-1.5 rounded-full self-start md:self-auto">
+        <div className="flex p-1.5 rounded-full self-start md:self-auto" style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.10)' }}>
           <button
             onClick={() => setActiveTab("form")}
-            className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all ${activeTab === "form" ? "bg-white text-erp-primary shadow-md" : "text-gray-500 hover:text-gray-800"}`}
+            className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all ${activeTab === "form" ? "bg-erp-accent text-white shadow-md" : ""}`}
+            style={activeTab !== "form" ? { color: 'var(--muted-foreground)' } : {}}
           >
             Create Request
           </button>
           <button
             onClick={() => setActiveTab("list")}
-            className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all ${activeTab === "list" ? "bg-white text-erp-primary shadow-md" : "text-gray-500 hover:text-gray-800"}`}
+            className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all ${activeTab === "list" ? "bg-erp-accent text-white shadow-md" : ""}`}
+            style={activeTab !== "list" ? { color: 'var(--muted-foreground)' } : {}}
           >
             Request List
           </button>
@@ -337,7 +341,7 @@ export default function ReturnRefund() {
 
           {/* Form Left Side (Basic Info, Eligibility, Items, Refund) */}
           <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/40 p-8 space-y-8">
+            <div className="rounded-[2.5rem] p-8 space-y-8" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
 
               {/* Header Selection */}
               <div className="flex items-center gap-3">
@@ -353,35 +357,35 @@ export default function ReturnRefund() {
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   <div>
-                    <label className={labelCls}>Name *</label>
-                    <input name="name" value={formData.name} onChange={handleChange} className={inputCls} placeholder="Customer Name" />
+                    <label className={labelCls} style={labelSty}>Name *</label>
+                    <input name="name" value={formData.name} onChange={handleChange} className={inputCls} style={inputSty} placeholder="Customer Name" />
                   </div>
                   <div>
-                    <label className={labelCls}>Phone *</label>
-                    <input name="phone" value={formData.phone} onChange={handleChange} className={inputCls} placeholder="Phone No." />
+                    <label className={labelCls} style={labelSty}>Phone *</label>
+                    <input name="phone" value={formData.phone} onChange={handleChange} className={inputCls} style={inputSty} placeholder="Phone No." />
                   </div>
                   <div>
-                    <label className={labelCls}>Email</label>
-                    <input name="email" type="email" value={formData.email} onChange={handleChange} className={inputCls} placeholder="Email" />
+                    <label className={labelCls} style={labelSty}>Email</label>
+                    <input name="email" type="email" value={formData.email} onChange={handleChange} className={inputCls} style={inputSty} placeholder="Email" />
                   </div>
                 </div>
               </div>
 
-              <div className="h-px bg-gray-50" />
+              <div className="h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
 
               {/* Eligibility */}
               <div className="space-y-4">
-                <p className="text-xs font-bold text-erp-primary flex items-center gap-2">
+                <p className="text-xs font-bold text-erp-accent flex items-center gap-2">
                   <Icon icon="mdi:shield-check-outline" className="text-lg" /> Eligibility
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   <div>
-                    <label className={labelCls}>Date of Purchase</label>
-                    <input type="date" name="dateOfPurchase" value={formData.dateOfPurchase} onChange={handleChange} className={inputCls} />
+                    <label className={labelCls} style={labelSty}>Date of Purchase</label>
+                    <input type="date" name="dateOfPurchase" value={formData.dateOfPurchase} onChange={handleChange} className={inputCls} style={inputSty} />
                   </div>
                   <div>
-                    <label className={labelCls}>Item Type</label>
-                    <select name="itemType" value={formData.itemType} onChange={handleChange} className={`${inputCls} bg-white appearance-none`}>
+                    <label className={labelCls} style={labelSty}>Item Type</label>
+                    <select name="itemType" value={formData.itemType} onChange={handleChange} className={`${inputCls} appearance-none`} style={inputSty}>
                       <option value="">Select Item Type</option>
                       {settings?.allCategories?.map((cat) => (
                         <option key={cat} value={cat}>{cat}</option>
@@ -395,13 +399,13 @@ export default function ReturnRefund() {
                     </select>
                   </div>
                   <div>
-                    <label className={labelCls}>Condition</label>
-                    <input name="condition" value={formData.condition} onChange={handleChange} className={inputCls} placeholder="e.g. Scratched, Damaged" />
+                    <label className={labelCls} style={labelSty}>Condition</label>
+                    <input name="condition" value={formData.condition} onChange={handleChange} className={inputCls} style={inputSty} placeholder="e.g. Scratched, Damaged" />
                   </div>
                 </div>
                 <div>
-                  <label className={labelCls}>Reason for Return</label>
-                  <select name="reasonForReturn" value={formData.reasonForReturn} onChange={handleChange} className={`${inputCls} bg-white appearance-none`}>
+                  <label className={labelCls} style={labelSty}>Reason for Return</label>
+                  <select name="reasonForReturn" value={formData.reasonForReturn} onChange={handleChange} className={`${inputCls} appearance-none`} style={inputSty}>
                     <option value="">Select Reason</option>
                     <option value="Manufacturing Defect">Manufacturing Defect</option>
                     <option value="Wrong Item Delivered">Wrong Item Delivered</option>
@@ -411,22 +415,22 @@ export default function ReturnRefund() {
                 </div>
               </div>
 
-              <div className="h-px bg-gray-50" />
+              <div className="h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
 
               {/* Items Section */}
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <p className="text-xs font-bold text-erp-primary flex items-center gap-2">
+                  <p className="text-xs font-bold text-erp-accent flex items-center gap-2">
                     <Icon icon="mdi:clipboard-list-outline" className="text-lg" /> Returned Items
                   </p>
-                  <button type="button" onClick={addItemRow} className="text-xs font-bold text-erp-primary flex items-center gap-1 hover:underline">
+                  <button type="button" onClick={addItemRow} className="text-xs font-bold text-erp-accent flex items-center gap-1 hover:underline">
                     <Icon icon="mdi:plus" /> Add Item
                   </button>
                 </div>
 
                 <div className="space-y-4">
                   {items.map((it, idx) => (
-                    <div key={idx} className="bg-gray-50/50 border border-gray-100 rounded-3xl p-5 relative space-y-4">
+                    <div key={idx} className="rounded-3xl p-5 relative space-y-4" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
                       {items.length > 1 && (
                         <button type="button" onClick={() => removeItemRow(idx)} className="absolute top-4 right-4 text-rose-500 hover:text-rose-600">
                           <Icon icon="mdi:close-circle" className="text-xl" />
@@ -434,26 +438,26 @@ export default function ReturnRefund() {
                       )}
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div className="sm:col-span-2">
-                          <label className={labelCls}>Item Name *</label>
-                          <input value={it.item} onChange={e => handleItemChange(idx, "item", e.target.value)} className={inputCls} placeholder="Item description" />
+                          <label className={labelCls} style={labelSty}>Item Name *</label>
+                          <input value={it.item} onChange={e => handleItemChange(idx, "item", e.target.value)} className={inputCls} style={inputSty} placeholder="Item description" />
                         </div>
                         <div>
-                          <label className={labelCls}>Qty</label>
-                          <input type="number" min={1} value={it.qty} onChange={e => handleItemChange(idx, "qty", e.target.value)} className={inputCls} />
+                          <label className={labelCls} style={labelSty}>Qty</label>
+                          <input type="number" min={1} value={it.qty} onChange={e => handleItemChange(idx, "qty", e.target.value)} className={inputCls} style={inputSty} />
                         </div>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                         <div>
-                          <label className={labelCls}>Price / Unit</label>
-                          <input type="number" value={it.amount} onChange={e => handleItemChange(idx, "amount", e.target.value)} className={inputCls} placeholder="₹ 0.00" />
+                          <label className={labelCls} style={labelSty}>Price / Unit</label>
+                          <input type="number" value={it.amount} onChange={e => handleItemChange(idx, "amount", e.target.value)} className={inputCls} style={inputSty} placeholder="₹ 0.00" />
                         </div>
                         <div>
-                          <label className={labelCls}>Discount (₹)</label>
-                          <input type="number" value={it.discount} onChange={e => handleItemChange(idx, "discount", e.target.value)} className={inputCls} placeholder="₹" />
+                          <label className={labelCls} style={labelSty}>Discount (₹)</label>
+                          <input type="number" value={it.discount} onChange={e => handleItemChange(idx, "discount", e.target.value)} className={inputCls} style={inputSty} placeholder="₹" />
                         </div>
                         <div>
-                          <label className={labelCls}>GST (%)</label>
-                          <select value={it.gst || ""} onChange={e => handleItemChange(idx, "gst", e.target.value)} className={`${inputCls} bg-white appearance-none`}>
+                          <label className={labelCls} style={labelSty}>GST (%)</label>
+                          <select value={it.gst || ""} onChange={e => handleItemChange(idx, "gst", e.target.value)} className={`${inputCls} appearance-none`} style={inputSty}>
                             <option value="">Select GST</option>
                             {settings?.gst?.map((g) => (
                               <option key={g} value={g}>{g}%</option>
@@ -469,8 +473,8 @@ export default function ReturnRefund() {
                           </select>
                         </div>
                         <div>
-                          <label className={labelCls}>GST Type</label>
-                          <select value={it.gstType} onChange={e => handleItemChange(idx, "gstType", e.target.value)} className={`${inputCls} bg-white appearance-none`}>
+                          <label className={labelCls} style={labelSty}>GST Type</label>
+                          <select value={it.gstType} onChange={e => handleItemChange(idx, "gstType", e.target.value)} className={`${inputCls} appearance-none`} style={inputSty}>
                             <option value="included">Included</option>
                             <option value="excluded">Excluded</option>
                           </select>
@@ -481,22 +485,22 @@ export default function ReturnRefund() {
                 </div>
               </div>
 
-              <div className="h-px bg-gray-50" />
+              <div className="h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
 
               {/* Refund Info */}
               <div className="space-y-4">
-                <span className="bg-erp-primary/10 text-erp-primary font-bold px-5 py-2 rounded-full text-xs flex items-center gap-2 w-max">
+                <span className="bg-erp-accent/10 text-erp-accent font-bold px-5 py-2 rounded-full text-xs flex items-center gap-2 w-max">
                   <Icon icon="mdi:keyboard-backspace" className="text-base" /> Refund
                 </span>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   <div>
-                    <label className={labelCls}>Refund Amount *</label>
-                    <input type="number" name="refundAmount" value={formData.refundAmount} onChange={handleChange} className={inputCls} placeholder="₹ 0.00" />
+                    <label className={labelCls} style={labelSty}>Refund Amount *</label>
+                    <input type="number" name="refundAmount" value={formData.refundAmount} onChange={handleChange} className={inputCls} style={inputSty} placeholder="₹ 0.00" />
                   </div>
                   <div>
-                    <label className={labelCls}>Method</label>
-                    <select name="refundMethod" value={formData.refundMethod} onChange={handleChange} className={`${inputCls} bg-white appearance-none`}>
+                    <label className={labelCls} style={labelSty}>Method</label>
+                    <select name="refundMethod" value={formData.refundMethod} onChange={handleChange} className={`${inputCls} appearance-none`} style={inputSty}>
                       <option value="CASH">Cash</option>
                       <option value="CARD">Card</option>
                       <option value="UPI">UPI</option>
@@ -505,20 +509,21 @@ export default function ReturnRefund() {
                     </select>
                   </div>
                   <div>
-                    <label className={labelCls}>Loyalty Points (if applicable)</label>
-                    <input type="number" name="loyaltyPoints" value={formData.loyaltyPoints} onChange={handleChange} className={inputCls} placeholder="Points" />
+                    <label className={labelCls} style={labelSty}>Loyalty Points (if applicable)</label>
+                    <input type="number" name="loyaltyPoints" value={formData.loyaltyPoints} onChange={handleChange} className={inputCls} style={inputSty} placeholder="Points" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label className={labelCls}>Remark / Reason</label>
-                    <input name="remark" value={formData.remark} onChange={handleChange} className={inputCls} placeholder="Enter remark" />
+                    <label className={labelCls} style={labelSty}>Remark / Reason</label>
+                    <input name="remark" value={formData.remark} onChange={handleChange} className={inputCls} style={inputSty} placeholder="Enter remark" />
                   </div>
                   <div>
-                    <label className={labelCls}>Gift Voucher Doc (Optional)</label>
-                    <div onClick={() => voucherRef.current?.click()} className="flex items-center gap-3 border border-dashed border-gray-200 rounded-full px-5 py-2.5 text-sm text-gray-500 cursor-pointer hover:bg-gray-50 transition-all">
-                      <Icon icon="mdi:file-document-outline" className="text-lg text-gray-400" />
+                    <label className={labelCls} style={labelSty}>Gift Voucher Doc (Optional)</label>
+                    <div onClick={() => voucherRef.current?.click()} className="flex items-center gap-3 border-dashed rounded-full px-5 py-2.5 text-sm cursor-pointer hover:bg-erp-accent/5 transition-all"
+                      style={{ border: '1px dashed rgba(255,255,255,0.15)', color: 'var(--muted-foreground)' }}>
+                      <Icon icon="mdi:file-document-outline" className="text-lg" style={{ color: 'var(--muted-foreground)' }} />
                       <span className="truncate">{giftVoucherFile ? giftVoucherFile.name : "Choose File"}</span>
                       <input ref={voucherRef} type="file" onChange={handleVoucherUpload} className="hidden" />
                     </div>
@@ -531,11 +536,11 @@ export default function ReturnRefund() {
 
           {/* Right Column (Photos & Submit) */}
           <div className="space-y-8">
-            <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl p-8 sticky top-8 space-y-6">
+            <div className="rounded-[2.5rem] p-8 sticky top-8 space-y-6" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
 
               <div className="flex items-center justify-between">
-                <span className="text-sm font-bold text-gray-700">Attach Photos</span>
-                <span className="text-xs font-bold bg-erp-primary text-white px-4 py-1 rounded-full shadow-lg shadow-erp-primary/20">{photos.length}/10</span>
+                <span className="text-sm font-bold" style={{ color: 'var(--foreground)' }}>Attach Photos</span>
+                <span className="text-xs font-bold bg-erp-accent text-white px-4 py-1 rounded-full shadow-lg shadow-erp-accent/20">{photos.length}/10</span>
               </div>
 
               {/* Hidden file selectors */}
@@ -548,9 +553,10 @@ export default function ReturnRefund() {
                   <Icon icon="mdi:camera" className="text-2xl text-erp-primary/40 group-hover:text-erp-primary transition-all" />
                   <span className="text-[10px] font-bold text-gray-400 group-hover:text-erp-primary">Take Photo</span>
                 </button>
-                <button type="button" onClick={() => galleryRef.current?.click()} className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-gray-100 bg-gray-50/50 hover:bg-gray-100 hover:border-gray-200 rounded-[2rem] py-6 transition-all group">
-                  <Icon icon="mdi:image-multiple-outline" className="text-2xl text-gray-300 group-hover:text-gray-500 transition-all" />
-                  <span className="text-[10px] font-bold text-gray-400 group-hover:text-gray-600">From Gallery</span>
+                <button type="button" onClick={() => galleryRef.current?.click()} className="flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-[2rem] py-6 transition-all group hover:border-erp-accent/30 hover:bg-erp-accent/5"
+                  style={{ borderColor: 'rgba(255,255,255,0.12)' }}>
+                  <Icon icon="mdi:image-multiple-outline" className="text-2xl transition-all" style={{ color: 'var(--muted-foreground)' }} />
+                  <span className="text-[10px] font-bold" style={{ color: 'var(--muted-foreground)' }}>From Gallery</span>
                 </button>
               </div>
 
@@ -586,23 +592,23 @@ export default function ReturnRefund() {
         </form>
       ) : (
         /* Requests List Tab */
-        <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl p-8 space-y-6 pb-16">
+        <div className="rounded-[2.5rem] p-8 space-y-6 pb-16" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
           <form onSubmit={handleSearch} className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
             <div>
-              <label className={labelCls}>Keyword</label>
-              <input value={searchParams.keyword} onChange={e => setSearchParams(prev => ({ ...prev, keyword: e.target.value }))} className={inputCls} placeholder="Keyword search..." />
+              <label className={labelCls} style={labelSty}>Keyword</label>
+              <input value={searchParams.keyword} onChange={e => setSearchParams(prev => ({ ...prev, keyword: e.target.value }))} className={inputCls} style={inputSty} placeholder="Keyword search..." />
             </div>
             <div>
-              <label className={labelCls}>Start Date</label>
-              <input type="date" value={searchParams.startDate} onChange={e => setSearchParams(prev => ({ ...prev, startDate: e.target.value }))} className={inputCls} />
+              <label className={labelCls} style={labelSty}>Start Date</label>
+              <input type="date" value={searchParams.startDate} onChange={e => setSearchParams(prev => ({ ...prev, startDate: e.target.value }))} className={inputCls} style={inputSty} />
             </div>
             <div>
-              <label className={labelCls}>End Date</label>
-              <input type="date" value={searchParams.endDate} onChange={e => setSearchParams(prev => ({ ...prev, endDate: e.target.value }))} className={inputCls} />
+              <label className={labelCls} style={labelSty}>End Date</label>
+              <input type="date" value={searchParams.endDate} onChange={e => setSearchParams(prev => ({ ...prev, endDate: e.target.value }))} className={inputCls} style={inputSty} />
             </div>
             <div>
-              <label className={labelCls}>Status</label>
-              <select value={searchParams.status} onChange={e => setSearchParams(prev => ({ ...prev, status: e.target.value }))} className={`${inputCls} bg-white appearance-none`}>
+              <label className={labelCls} style={labelSty}>Status</label>
+              <select value={searchParams.status} onChange={e => setSearchParams(prev => ({ ...prev, status: e.target.value }))} className={`${inputCls} appearance-none`} style={inputSty}>
                 {settings?.status?.map((st) => (
                   <option key={st} value={st}>{st}</option>
                 )) || (
@@ -615,17 +621,17 @@ export default function ReturnRefund() {
               </select>
             </div>
             <div>
-              <button type="submit" className="w-full bg-erp-primary hover:bg-erp-primary/95 text-white font-bold py-3 rounded-full text-xs transition-all flex items-center justify-center gap-2">
+              <button type="submit" className="w-full bg-erp-accent hover:bg-erp-accent/90 text-white font-bold py-3 rounded-full text-xs transition-all flex items-center justify-center gap-2">
                 <Icon icon="mdi:magnify" /> Search Requests
               </button>
             </div>
           </form>
 
           {/* List Table */}
-          <div className="overflow-x-auto rounded-3xl border border-gray-100">
+          <div className="overflow-x-auto rounded-3xl" style={{ border: '1px solid rgba(255,255,255,0.09)' }}>
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-100 text-gray-600">
+                <tr style={{ background: 'rgba(4,12,24,0.5)', borderBottom: '1px solid rgba(255,255,255,0.07)', color: 'var(--muted-foreground)' }}>
                   <th className="p-4 font-bold">Customer Name</th>
                   <th className="p-4 font-bold">Phone</th>
                   <th className="p-4 font-bold">Date of Purchase</th>
@@ -635,18 +641,18 @@ export default function ReturnRefund() {
                   <th className="p-4 font-bold text-center">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody>
                 {listData.length > 0 ? (
                   listData.map((row) => (
-                    <tr key={row._id} className="hover:bg-gray-50/50">
-                      <td className="p-4 font-semibold text-gray-700">{row.name}</td>
-                      <td className="p-4 text-gray-500">{row.phone}</td>
-                      <td className="p-4 text-gray-500">{row.dateOfPurchase ? row.dateOfPurchase.split("T")[0] : "-"}</td>
-                      <td className="p-4 text-gray-500">{row.itemType || "-"}</td>
-                      <td className="p-4 font-bold text-erp-primary">₹ {row.refundAmount}</td>
+                    <tr key={row._id} className="hover:bg-erp-accent/[0.04] transition-colors" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                      <td className="p-4 font-semibold" style={{ color: 'var(--foreground)' }}>{row.name}</td>
+                      <td className="p-4" style={{ color: 'var(--muted-foreground)' }}>{row.phone}</td>
+                      <td className="p-4" style={{ color: 'var(--muted-foreground)' }}>{row.dateOfPurchase ? row.dateOfPurchase.split("T")[0] : "-"}</td>
+                      <td className="p-4" style={{ color: 'var(--muted-foreground)' }}>{row.itemType || "-"}</td>
+                      <td className="p-4 font-bold text-erp-accent">₹ {row.refundAmount}</td>
                       <td className="p-4">
-                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold ${row.status === "Approved" ? "bg-emerald-50 text-emerald-600" :
-                          row.status === "Rejected" ? "bg-rose-50 text-rose-600" : "bg-amber-50 text-amber-600"
+                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold border ${row.status === "Approved" ? "bg-emerald-900/30 text-emerald-300 border-emerald-700/40" :
+                          row.status === "Rejected" ? "bg-rose-900/30 text-rose-300 border-rose-700/40" : "bg-amber-900/30 text-amber-300 border-amber-700/40"
                           }`}>
                           {row.status}
                         </span>
@@ -656,13 +662,13 @@ export default function ReturnRefund() {
                           <>
                             <button
                               onClick={() => handleUpdateStatus(row._id, "Approved", "Verified")}
-                              className="text-[10px] font-bold text-emerald-600 hover:underline"
+                              className="text-[10px] font-bold text-emerald-400 hover:underline"
                             >
                               <Icon icon="mdi:check-circle" className="text-lg" />
                             </button>
                             <button
                               onClick={() => handleUpdateStatus(row._id, "Rejected", "Rejected by manager")}
-                              className="text-[10px] font-bold text-rose-500 hover:underline"
+                              className="text-[10px] font-bold text-rose-400 hover:underline"
                             >
                               <Icon icon="mdi:close-circle" className="text-lg" />
                             </button>
@@ -673,7 +679,7 @@ export default function ReturnRefund() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={7} className="p-8 text-center text-gray-400">No return requests found</td>
+                    <td colSpan={7} className="p-8 text-center opacity-40">No return requests found</td>
                   </tr>
                 )}
               </tbody>
@@ -682,20 +688,22 @@ export default function ReturnRefund() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between pt-4 border-t border-gray-50 text-xs">
-              <span className="text-gray-500">Page {page} of {totalPages}</span>
+            <div className="flex items-center justify-between pt-4 text-xs" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+              <span style={{ color: 'var(--muted-foreground)' }}>Page {page} of {totalPages}</span>
               <div className="flex gap-2">
                 <button
                   disabled={page <= 1}
                   onClick={() => setPage(prev => prev - 1)}
-                  className="px-4 py-2 border border-gray-100 rounded-full disabled:opacity-40"
+                  className="px-4 py-2 rounded-full disabled:opacity-40"
+                  style={{ border: '1px solid rgba(255,255,255,0.10)', color: 'var(--foreground)' }}
                 >
                   Previous
                 </button>
                 <button
                   disabled={page >= totalPages}
                   onClick={() => setPage(prev => prev + 1)}
-                  className="px-4 py-2 border border-gray-100 rounded-full disabled:opacity-40"
+                  className="px-4 py-2 rounded-full disabled:opacity-40"
+                  style={{ border: '1px solid rgba(255,255,255,0.10)', color: 'var(--foreground)' }}
                 >
                   Next
                 </button>

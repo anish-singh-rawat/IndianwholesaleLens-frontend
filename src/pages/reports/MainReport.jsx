@@ -33,14 +33,14 @@ const PRESETS = [
 /* ─── Status badge ──────────────────────────────────────────────────────── */
 const Badge = ({ v }) => {
     const cfg = {
-        Active: "bg-emerald-100 text-emerald-700 border-emerald-200",
-        Delivered: "bg-blue-100 text-blue-700 border-blue-200",
-        Draft: "bg-gray-100 text-gray-500 border-gray-200",
-        "In-process": "bg-amber-100 text-amber-700 border-amber-200",
-        Pending: "bg-rose-100 text-rose-700 border-rose-200",
+        Active: "bg-emerald-900/30 text-emerald-300 border-emerald-700/40",
+        Delivered: "bg-blue-900/30 text-blue-300 border-blue-700/40",
+        Draft: "bg-gray-800/40 text-gray-400 border-gray-600/40",
+        "In-process": "bg-amber-900/30 text-amber-300 border-amber-700/40",
+        Pending: "bg-rose-900/30 text-rose-300 border-rose-700/40",
     };
     return (
-        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${cfg[v] || "bg-gray-100 text-gray-500 border-gray-200"}`}>
+        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${cfg[v] || "bg-gray-800/40 text-gray-400 border-gray-600/40"}`}>
             {v || "—"}
         </span>
     );
@@ -49,17 +49,18 @@ const Badge = ({ v }) => {
 /* ─── Metric card ───────────────────────────────────────────────────────── */
 const MetricCard = ({ label, value, sub, icon, highlight }) => (
     <div className={`group relative rounded-[2rem] p-6 overflow-hidden border transition-all duration-300 hover:-translate-y-1
-        ${highlight
-            ? "bg-erp-accent border-erp-accent shadow-xl shadow-erp-accent/20"
-            : "bg-white border-gray-100 shadow-sm hover:shadow-xl hover:border-erp-accent/20"
-        }`}>
+        ${highlight ? "bg-erp-accent border-erp-accent shadow-xl shadow-erp-accent/20" : ""}`}
+        style={highlight ? {} : { background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
         <div className="relative z-10">
-            <div className={`w-10 h-10 rounded-2xl mb-4 flex items-center justify-center transition-transform group-hover:scale-110 duration-500 ${highlight ? 'bg-white/20' : 'bg-erp-accent/5'}`}>
+            <div className={`w-10 h-10 rounded-2xl mb-4 flex items-center justify-center transition-transform group-hover:scale-110 duration-500 ${highlight ? 'bg-white/20' : 'bg-erp-accent/10'}`}>
                 <Icon icon={icon} className={`text-xl ${highlight ? 'text-white' : 'text-erp-accent'}`} />
             </div>
-            <p className={`text-[10px] font-black uppercase tracking-[0.2em] mb-1 ${highlight ? 'text-white/70' : 'text-gray-400'}`}>{label}</p>
-            <p className={`text-2xl font-black leading-none ${highlight ? 'text-white' : 'text-gray-800'}`}>{value ?? 0}</p>
-            {sub && <p className={`text-[11px] font-bold mt-2 ${highlight ? 'text-white/60' : 'text-gray-400'}`}>{sub}</p>}
+            <p className={`text-[10px] font-black uppercase tracking-[0.2em] mb-1 ${highlight ? 'text-white/70' : ''}`}
+                style={highlight ? {} : { color: 'var(--muted-foreground)' }}>{label}</p>
+            <p className={`text-2xl font-black leading-none ${highlight ? 'text-white' : ''}`}
+                style={highlight ? {} : { color: 'var(--foreground)' }}>{value ?? 0}</p>
+            {sub && <p className={`text-[11px] font-bold mt-2 ${highlight ? 'text-white/60' : ''}`}
+                style={highlight ? {} : { color: 'var(--muted-foreground)' }}>{sub}</p>}
         </div>
         {highlight && <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />}
     </div>
@@ -67,13 +68,14 @@ const MetricCard = ({ label, value, sub, icon, highlight }) => (
 
 /* ─── Transaction pill ──────────────────────────────────────────────────── */
 const TxnPill = ({ label, count, amount, icon, colorClass }) => (
-    <div className={`flex items-center gap-4 px-6 py-4 rounded-[1.5rem] border transition-all hover:shadow-md ${colorClass}`}>
-        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
+    <div className={`flex items-center gap-4 px-6 py-4 rounded-[1.5rem] border transition-all hover:shadow-md ${colorClass}`}
+        style={{ background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.10)' }}>
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.10)' }}>
             <Icon icon={icon} className="text-xl opacity-70" />
         </div>
         <div className="flex-1">
             <p className="text-[9px] font-black uppercase tracking-widest opacity-60 mb-0.5">{label}</p>
-            <p className="text-sm font-black text-gray-800">{count ?? 0} Orders</p>
+            <p className="text-sm font-black" style={{ color: 'var(--foreground)' }}>{count ?? 0} Orders</p>
         </div>
         <div className="text-right">
             <p className="text-[9px] font-black uppercase tracking-widest opacity-40">Revenue</p>
@@ -84,15 +86,16 @@ const TxnPill = ({ label, count, amount, icon, colorClass }) => (
 
 /* ─── Section wrapper ───────────────────────────────────────────────────── */
 const Section = ({ icon, title, badge, children }) => (
-    <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/40 overflow-hidden mb-8">
-        <div className="flex items-center justify-between px-8 py-6 border-b border-gray-50 bg-gray-50/30">
+    <div className="rounded-[2.5rem] overflow-hidden mb-8"
+        style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
+        <div className="flex items-center justify-between px-8 py-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)', background: 'rgba(4,12,24,0.3)' }}>
             <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-2xl bg-erp-accent/5 border border-erp-accent/10 text-erp-accent flex items-center justify-center">
+                <div className="w-10 h-10 rounded-2xl bg-erp-accent/10 border border-erp-accent/20 text-erp-accent flex items-center justify-center">
                     <Icon icon={icon} className="text-xl" />
                 </div>
                 <div className="flex flex-col">
-                    <span className="text-xs font-black text-gray-700 uppercase tracking-[0.2em]">{title}</span>
-                    {badge !== undefined && <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{badge} records found</span>}
+                    <span className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: 'var(--foreground)' }}>{title}</span>
+                    {badge !== undefined && <span className="text-[9px] font-bold uppercase tracking-widest" style={{ color: 'var(--muted-foreground)' }}>{badge} records found</span>}
                 </div>
             </div>
         </div>
@@ -104,7 +107,7 @@ const Section = ({ icon, title, badge, children }) => (
 const DataTable = ({ table, colCount, empty = "No records found" }) => {
     const rows = table.getRowModel().rows;
     return (
-        <div className="overflow-x-auto overflow-y-auto max-h-[600px] rounded-[2rem] border border-gray-100 custom-scrollbar">
+        <div className="overflow-x-auto overflow-y-auto max-h-[600px] rounded-[2rem] custom-scrollbar" style={{ border: '1px solid rgba(255,255,255,0.09)' }}>
             <table className="w-full border-collapse">
                 <thead className="sticky top-0 z-20 bg-erp-accent text-white">
                     {table.getHeaderGroups().map(hg => (
@@ -117,21 +120,21 @@ const DataTable = ({ table, colCount, empty = "No records found" }) => {
                         </tr>
                     ))}
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody>
                     {rows.length === 0 ? (
                         <tr>
-                            <td colSpan={colCount} className="py-24 text-center">
-                                <Icon icon="mdi:database-off-outline" className="text-5xl mx-auto mb-3 opacity-10" />
-                                <p className="text-[10px] font-black uppercase tracking-widest text-gray-300">
+                            <td colSpan={colCount} className="py-24 text-center opacity-30">
+                                <Icon icon="mdi:database-off-outline" className="text-5xl mx-auto mb-3" />
+                                <p className="text-[10px] font-black uppercase tracking-widest">
                                     {empty}
                                 </p>
                             </td>
                         </tr>
                     ) : rows.map((row, i) => (
-                        <tr key={row.id} className="hover:bg-erp-accent/[0.02] transition-colors group">
+                        <tr key={row.id} className="hover:bg-erp-accent/[0.04] transition-colors group" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                             {row.getVisibleCells().map(cell => (
                                 <td key={cell.id} className="px-6 py-4 text-center">
-                                    <div className="text-[11px] font-bold text-gray-600 group-hover:text-gray-900 transition-colors">
+                                    <div className="text-[11px] font-bold transition-colors" style={{ color: 'var(--foreground)' }}>
                                         {flexRender(cell.column.columnDef.cell ?? cell.column.columnDef.accessorKey, cell.getContext())}
                                     </div>
                                 </td>
@@ -364,7 +367,8 @@ export default function MainReport() {
     const bookingTotal = Object.values(transactionSummary).reduce((acc, curr) => acc + (curr.totalAmount || 0), 0)
         || jobCards.reduce((acc, curr) => acc + (curr.totalOrderPrice || 0), 0);
 
-    const inputCls = "w-full bg-gray-50/50 border border-gray-100 rounded-full px-5 py-2.5 text-xs font-bold text-gray-700 outline-none focus:border-erp-accent/30 focus:ring-4 focus:ring-erp-accent/5 transition-all";
+    const inputCls = "w-full rounded-full px-5 py-2.5 text-xs font-bold outline-none transition-all";
+    const inputSty = { background: 'color-mix(in oklab, var(--foreground) 5%, transparent)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--foreground)' };
 
     return (
         <div className="w-full flex flex-col gap-6 animate-in fade-in duration-500">
@@ -372,13 +376,13 @@ export default function MainReport() {
             {/* ══ HEADER ══════════════════════════════════════════════════════ */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
-                    <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tighter">Main Analytical Report</h1>
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mt-1">Cross-Module Performance & Financial Intelligence</p>
+                    <h1 className="text-3xl font-black uppercase tracking-tighter" style={{ color: 'var(--foreground)' }}>Main Analytical Report</h1>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] mt-1" style={{ color: 'var(--muted-foreground)' }}>Cross-Module Performance & Financial Intelligence</p>
                 </div>
                 {fetched && (
-                    <div className="flex items-center gap-2 px-6 py-2 bg-white border border-gray-100 rounded-full shadow-sm">
+                    <div className="flex items-center gap-2 px-6 py-2 rounded-full" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.10)' }}>
                         <Icon icon="mdi:calendar-range" className="text-erp-accent" />
-                        <span className="text-[10px] font-black text-gray-600 uppercase tracking-widest">
+                        <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: 'var(--foreground)' }}>
                             {fromDate} <span className="mx-2 opacity-30">→</span> {toDate}
                         </span>
                     </div>
@@ -386,12 +390,12 @@ export default function MainReport() {
             </div>
 
             {/* ══ FILTER BAR ══════════════════════════════════════════════════ */}
-            <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/40 p-8">
+            <div className="rounded-[2.5rem] p-8" style={{ background: 'color-mix(in oklab, var(--card) 75%, transparent)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.09)' }}>
                 <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-end justify-between">
 
                     {/* Preset pills */}
                     <div className="flex flex-col gap-3">
-                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 flex items-center gap-2 ml-4">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 ml-4" style={{ color: 'var(--muted-foreground)' }}>
                             <Icon icon="mdi:clock-fast" className="text-lg text-erp-accent" /> Timeline Presets
                         </p>
                         <div className="flex gap-3 flex-wrap">
@@ -402,8 +406,9 @@ export default function MainReport() {
                                     className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest border transition-all duration-300
                                         ${activePreset === i
                                             ? "bg-erp-accent text-white border-erp-accent shadow-lg shadow-erp-accent/20 scale-105"
-                                            : "bg-white text-gray-400 border-gray-100 hover:border-erp-accent/30 hover:text-erp-accent"
+                                            : "hover:border-erp-accent/30 hover:text-erp-accent"
                                         }`}
+                                    style={activePreset !== i ? { background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.12)', color: 'var(--muted-foreground)' } : {}}
                                 >
                                     <Icon icon={p.icon} className="text-lg" />
                                     {p.label}
@@ -415,19 +420,19 @@ export default function MainReport() {
                     {/* Custom date range */}
                     <div className="flex flex-col sm:flex-row gap-4 items-end w-full lg:w-auto">
                         <div className="w-full sm:w-auto">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-gray-300 mb-2 ml-4">Start Date</p>
+                            <p className="text-[10px] font-black uppercase tracking-widest mb-2 ml-4 opacity-50">Start Date</p>
                             <input
                                 type="date" value={fromDate}
                                 onChange={e => { setFromDate(e.target.value); setActivePreset(null); }}
-                                className={inputCls}
+                                className={inputCls} style={inputSty}
                             />
                         </div>
                         <div className="w-full sm:w-auto">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-gray-300 mb-2 ml-4">End Date</p>
+                            <p className="text-[10px] font-black uppercase tracking-widest mb-2 ml-4 opacity-50">End Date</p>
                             <input
                                 type="date" value={toDate}
                                 onChange={e => { setToDate(e.target.value); setActivePreset(null); }}
-                                className={inputCls}
+                                className={inputCls} style={inputSty}
                             />
                         </div>
                         <button
